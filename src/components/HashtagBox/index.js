@@ -2,7 +2,7 @@ import { Container, HashtagList, Title, Divider } from "./style";
 
 export default function HashtagBox() {
     return (
-        <Container>
+        <Container className="sidebar">
             <Title>trending</Title>
             <Divider />
             <HashtagList>
