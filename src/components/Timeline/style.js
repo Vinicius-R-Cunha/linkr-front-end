@@ -399,9 +399,11 @@ const Snippet = styled.div`
 
     img {
         width: 153.44px;
-        height: 155px;
+        height: 153px;
 
         border-radius: 0px 12px 13px 0px;
+
+        object-fit: cover;
     }
 
     @media (max-width: 630px) {
@@ -429,7 +431,7 @@ const Snippet = styled.div`
 
         img {
             width: 95px;
-            height: 115px;
+            height: 113px;
         }
     }
 `
