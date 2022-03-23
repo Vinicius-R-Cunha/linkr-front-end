@@ -1,15 +1,14 @@
 import "./styles/reset.css";
 import "./styles/style.css";
-import Header from "./components/Header";
-import Timeline from "./components/Timeline";
-import HashtagBox from "./components/HashtagBox";
+import Home from "./pages/Home/Home";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 export default function App() {
     return (
-        <>
-            <Header />
-            <Timeline />
-            <HashtagBox />
-        </>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/timeline" element={<Home />} />
+            </Routes>
+        </BrowserRouter>
     );
 }
