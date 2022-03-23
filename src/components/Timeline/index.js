@@ -2,7 +2,6 @@ import Header from "../Header";
 import { TimelineContainer, PostsContainer, Publish, Post, ImageLikes, PostContent, Snippet } from "./style";
 import { FiHeart } from "react-icons/fi";
 import temp from "../../assets/perfil-temp.png";
-import temp2 from "../../assets/snippet-temp.png";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
@@ -50,7 +49,7 @@ export default function Timeline() {
             setLoadingPublish(true);
 
             try {
-                await axios.post(process.env.REACT_APP_BACK_URL + 'posts', { url: link, text: article }, {
+                await axios.post(process.env.REACT_APP_BACK_URL + 'posts', { link, text: article }, {
                     headers: {
                         authorization: `Bearer ${token}`
                     }
@@ -61,8 +60,8 @@ export default function Timeline() {
 
             } catch (error) {
                 setPublishError(true);
-                setTimeout(() => setPublishError(false), 3000);
-                console.log(error);
+                setTimeout(() => setPublishError(false), 5000);
+                console.log(error.response);
             }
 
             setLoadingPublish(false);
@@ -97,6 +96,7 @@ export default function Timeline() {
                                 disabled={loadingPublish}
                                 className="input-link"
                                 type="url"
+                                required
                                 placeholder="http://..."
                                 onChange={e => setLink(e.target.value)}
                                 value={link} />
@@ -132,11 +132,11 @@ export default function Timeline() {
                                     <p className="article-text">{post.text}</p>
                                     <Snippet onClick={() => handleClick(post.url)}>
                                         <div className="snippet-data">
-                                            <p className="title">Como aplicar o Material UI em um projeto React</p>
-                                            <p className="description">Hey! I have moved this tutorial to my personal blog. Same content, new location. Sorry about making you click through to another page.</p>
+                                            <p className="title">{post.title}</p>
+                                            <p className="description">{post.description}</p>
                                             <p className="link">{post.url}</p>
                                         </div>
-                                        <img src={temp2} alt="" />
+                                        <img src={post.linkImage === '' ? temp : post.linkImage} alt="" />
                                     </Snippet>
                                 </PostContent>
                             </Post>
