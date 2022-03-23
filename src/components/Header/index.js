@@ -1,6 +1,8 @@
 import { HeaderDiv } from "./style"
 import { useState } from "react";
 import temp from "../../assets/perfil-temp.png"
+import { BsChevronDown, BsChevronUp } from 'react-icons/bs'
+import { HiOutlineSearch } from 'react-icons/hi'
 
 export default function Header() {
     const [showLogout, setShowLogout] = useState(false);
@@ -10,16 +12,16 @@ export default function Header() {
             <p className="logo-name">linkr</p>
             <div className="input-icon">
                 <input type="text" placeholder="Search for people" />
-                <ion-icon name="search-sharp"></ion-icon>
+                <HiOutlineSearch className="search-icon" />
             </div>
             <div className="icon-image">
                 {showLogout &&
                     <>
-                        <ion-icon onClick={() => setShowLogout(false)} name="chevron-up-outline"></ion-icon>
+                        <BsChevronUp className="chevron-icon" onClick={() => setShowLogout(false)} />
                         <div className="logout-button">Logout</div>
                     </>
                 }
-                {!showLogout && <ion-icon onClick={() => setShowLogout(true)} name="chevron-down-outline"></ion-icon>}
+                {!showLogout && <BsChevronDown className="chevron-icon" onClick={() => setShowLogout(true)} />}
                 <img src={temp} alt="" />
             </div>
         </HeaderDiv>
