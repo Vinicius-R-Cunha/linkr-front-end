@@ -18,7 +18,13 @@ const TimelineContainer = styled.main`
 const PostsContainer = styled.div`
     width: 611px;
 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     .timeline-title {
+        width: 100%;
+
         font-family: 'Oswald';
         font-weight: 700;
         font-size: 43px;
@@ -27,14 +33,32 @@ const PostsContainer = styled.div`
         margin-bottom: 43px;
     }
 
+    .loading-message {
+        font-size: 30px;
+        color: #FFFFFF;
+    }
+
+    .get-error-message {
+        font-size: 36px;
+        line-height: 45px;
+        text-align: center;
+
+        color: #FFFFFF;
+    }
+
     @media (max-width: 630px) {
         width: 100%;
 
         .timeline-title {
             font-size: 33px;
+            text-indent: 17px;
 
-            margin-left: 17px;
             margin-bottom: 26px;
+        }
+
+        .get-error-message {
+            font-size: 20px;
+            line-height: 25px;
         }
     }
 `
@@ -105,6 +129,7 @@ const Publish = styled.div`
             
             box-sizing: border-box;
             padding: 8px 13px 0 13px;
+            margin-bottom: 8px;
             
             background-color: #EFEFEF;
             border-radius: 5px;
@@ -119,35 +144,45 @@ const Publish = styled.div`
             }   
         }
 
+        .error-message {
+            font-size: 13px;
+
+            color: red;
+        }
+
         button {
             all: unset;
-
+            
             width: 112px;
             height: 31px;
-
+            
             font-family: 'Lato';
             font-style: normal;
             font-weight: 700;
             font-size: 14px;
             color: #FFFFFF;
-
+            
             background: #1877F2;
-
-            margin: 8px 22px 0 0;
-
+            
+            margin: 0 22px 0 0;
+            
             align-self: flex-end;
 
             display: flex;
             justify-content: center;
             align-items: center;
-
+            
             border-radius: 5px;
-
+            
             cursor: pointer;
-
+            
             :hover {
                 background-color: #3286f3;
             }
+        }
+
+        .disabled {
+            background-color: #3286f3;
         }
     }
 
@@ -187,6 +222,8 @@ const Publish = styled.div`
 
                 font-size: 13px;
 
+                margin-bottom: 5px;
+
                 padding: 10px;
             }
 
@@ -195,7 +232,7 @@ const Publish = styled.div`
 
                 font-size: 13px;
 
-                margin: 5px 0 0 0;
+                margin: 0;
             }
         }
     }
@@ -236,7 +273,7 @@ const ImageLikes = styled.div`
 
         border-radius: 26.5px;
 
-        padding-bottom: 18px;
+        margin-bottom: 18px;
     }
 
     .like-icon {
@@ -315,6 +352,8 @@ const Snippet = styled.div`
     box-sizing: border-box;
     border-radius: 11px;
     border: 1px solid #4D4D4D;
+
+    cursor: pointer;
 
     .snippet-data {
         width: 100%;
