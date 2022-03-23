@@ -1,6 +1,8 @@
 import Header from "../Header";
 import { TimelineContainer, PostsContainer, Publish, Post, ImageLikes, PostContent, Snippet } from "./style";
 import { FiHeart } from "react-icons/fi";
+import { AiTwotoneEdit } from "react-icons/ai";
+import { FaTrashAlt } from "react-icons/fa";
 import temp from "../../assets/perfil-temp.png";
 import { useEffect, useState } from "react";
 import axios from 'axios';
@@ -22,20 +24,22 @@ export default function Timeline() {
         renderPage();
     }, [])
 
-    function renderPage() {
-        const promise = axios.get(process.env.REACT_APP_BACK_URL + 'posts');
-        promise.then(answer => {
-            setPostsArray(answer.data);
-            if (answer.data.length === 0) {
+    async function renderPage() {
+        try {
+            const posts = await axios.get(process.env.REACT_APP_BACK_URL + 'posts');
+
+            setPostsArray(posts.data);
+
+            if (posts.data.length === 0) {
                 setPostsState('empty');
             } else {
                 setPostsState('full');
             }
-        });
-        promise.catch(error => {
+
+        } catch (error) {
             setPostsState('error');
             console.log(error.response);
-        });
+        }
     }
 
     function handleClick(url) {
@@ -128,7 +132,13 @@ export default function Timeline() {
                                     <p className="likes-quantity">13 likes</p>
                                 </ImageLikes>
                                 <PostContent>
-                                    <p className="profile-name">{post.name}</p>
+                                    <div className="profile-name">
+                                        {post.name}
+                                        <div className="remove-edit-icons">
+                                            <AiTwotoneEdit className="edit-icon" />
+                                            <FaTrashAlt className="remove-icon" />
+                                        </div>
+                                    </div>
                                     <p className="article-text">{post.text}</p>
                                     <Snippet onClick={() => handleClick(post.url)}>
                                         <div className="snippet-data">

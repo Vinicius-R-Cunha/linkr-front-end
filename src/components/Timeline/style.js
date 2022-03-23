@@ -248,7 +248,7 @@ const Post = styled.div`
     margin-bottom: 16px;
 
     background: #171717;
-
+    
     border-radius: 16px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
@@ -313,7 +313,31 @@ const PostContent = styled.div`
         font-size: 19px;
         color: #FFFFFF;
 
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
         margin-bottom: 9px;
+
+        .remove-edit-icons {
+            display: flex;
+            align-items: center;
+            
+            padding-right: 22px;
+            
+            .edit-icon {
+                font-size: 18px;
+
+                cursor: pointer;
+            }
+            
+            .remove-icon {
+                font-size: 16px;
+                margin-left: 8px;
+                
+                cursor: pointer;
+            }
+        }
     }
 
     .article-text {
@@ -332,6 +356,10 @@ const PostContent = styled.div`
 
         .profile-name {
             font-size: 17px;
+
+            .remove-edit-icons {
+                padding-right: 0;
+            }
         }
 
         .article-text {
@@ -394,6 +422,8 @@ const Snippet = styled.div`
             line-height: 13px;
 
             color: #CECECE;
+
+            word-break: break-all;
         }
     }
 
