@@ -1,8 +1,8 @@
 import "./styles/reset.css";
 import "./styles/style.css";
 import Timeline from "./components/Timeline";
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserContext from "./contexts/UserContext";
 import { useEffect, useState } from "react";
