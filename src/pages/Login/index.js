@@ -35,7 +35,7 @@ export default function Login() {
         formData
       );
       promise.then((response) => {
-        setAndPersistToken(response.data.token);
+        setAndPersistToken(response.data);
         navigate("/timeline");
       });
       promise.catch(handleError);
