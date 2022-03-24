@@ -5,6 +5,8 @@ import {
     ImageLikes,
     PostContent,
     Snippet,
+    StyledModal,
+    modalStyles
 } from "./style";
 import { FiHeart } from "react-icons/fi";
 import { AiTwotoneEdit } from "react-icons/ai";
@@ -17,6 +19,8 @@ import "react-toastify/dist/ReactToastify.css";
 import UserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 
+StyledModal.setAppElement(document.getElementById('#home'));
+
 export default function Timeline() {
     const { token } = useContext(UserContext);
     const navigate = useNavigate();
@@ -24,9 +28,12 @@ export default function Timeline() {
     const [postsArray, setPostsArray] = useState();
     const [link, setLink] = useState("");
     const [article, setArticle] = useState("");
-    const [loadingPublish, setLoadingPublish] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [publishError, setPublishError] = useState(false);
     const [postsState, setPostsState] = useState("loading");
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [postId, setPostId] = useState();
 
     useEffect(() => {
         if (token) {
@@ -61,7 +68,7 @@ export default function Timeline() {
         e.preventDefault();
 
         if (link !== "") {
-            setLoadingPublish(true);
+            setLoading(true);
 
             try {
                 await axios.post(
@@ -82,7 +89,7 @@ export default function Timeline() {
                 console.log(error.response);
             }
 
-            setLoadingPublish(false);
+            setLoading(false);
         } else {
             toast.error("Fill in the link field!", {
                 position: "top-center",
@@ -95,10 +102,62 @@ export default function Timeline() {
         }
     }
 
+    function openModal() {
+        setModalIsOpen(true);
+    }
+
+    function closeModal() {
+        setModalIsOpen(false);
+    }
+
+    async function handleDeletion() {
+        setLoading(true);
+        try {
+            await axios.delete(
+                process.env.REACT_APP_BACK_URL + `posts/${postId}`,
+                {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            closeModal();
+            renderPage();
+        } catch (error) {
+            toast.error("Could not delete this post", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                draggable: true,
+                progress: undefined,
+            });
+            closeModal();
+        }
+        setLoading(false);
+    }
+
     return (
         <>
             <PostsContainer>
                 <h1 className="timeline-title">timeline</h1>
+
+                <StyledModal
+                    isOpen={modalIsOpen}
+                    ariaHideApp={false}
+                    onRequestClose={closeModal}
+                    style={modalStyles}
+                >
+                    {loading ? <p>Loading...</p> :
+                        <>
+                            <p>Are you sure you want <br /> to delete this post?</p>
+                            <div>
+                                <button onClick={closeModal}>No, go back</button>
+                                <button onClick={handleDeletion}>Yes, delete it</button>
+                            </div>
+                        </>
+                    }
+                </StyledModal>
 
                 <Publish>
                     <ImageLikes className="image-likes-publish">
@@ -110,7 +169,7 @@ export default function Timeline() {
                             What are you going to share today?
                         </p>
                         <input
-                            disabled={loadingPublish}
+                            disabled={loading}
                             className="input-link"
                             type="url"
                             required
@@ -119,7 +178,7 @@ export default function Timeline() {
                             value={link}
                         />
                         <textarea
-                            disabled={loadingPublish}
+                            disabled={loading}
                             id="story"
                             name="story"
                             className="input-article"
@@ -133,11 +192,11 @@ export default function Timeline() {
                             </p>
                         )}
                         <button
-                            disabled={loadingPublish}
-                            className={loadingPublish ? "disabled" : ""}
+                            disabled={loading}
+                            className={loading ? "disabled" : ""}
                             onClick={(e) => handleSubmit(e)}
                         >
-                            {loadingPublish ? "Publishing..." : "Publish"}
+                            {loading ? "Publishing..." : "Publish"}
                         </button>
                     </form>
                 </Publish>
@@ -155,7 +214,11 @@ export default function Timeline() {
                                     {post.name}
                                     <div className="remove-edit-icons">
                                         <AiTwotoneEdit className="edit-icon" />
-                                        <FaTrashAlt className="remove-icon" />
+                                        <FaTrashAlt onClick={() => {
+                                            openModal()
+                                            setPostId(post.id)
+                                        }
+                                        } className="remove-icon" />
                                     </div>
                                 </div>
                                 <p className="article-text">{post.text}</p>
