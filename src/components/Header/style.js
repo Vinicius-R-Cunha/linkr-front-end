@@ -53,7 +53,7 @@ const HeaderDiv = styled.div`
             }
         }
 
-        ion-icon {
+        .search-icon {
             font-size: 23px;
             color: #C6C6C6;
 
@@ -146,11 +146,13 @@ const HeaderDiv = styled.div`
         }
         
         .logo-name {
-            margin-left: 16px;
+            font-size: 45px;
+
+            margin-left: 17px;
         }
 
         .icon-image {
-            margin-right: 15px;
+            margin-right: 14px;
         }
     }
 `

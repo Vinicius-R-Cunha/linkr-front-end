@@ -2,6 +2,8 @@
 import { HeaderDiv, OverLay } from "./style"
 import { useState } from "react";
 import temp from "../../assets/perfil-temp.png"
+import { BsChevronDown, BsChevronUp } from 'react-icons/bs'
+import { HiOutlineSearch } from 'react-icons/hi'
 
 export default function Header() {
 
@@ -21,7 +23,7 @@ export default function Header() {
             <p className="logo-name">linkr</p>
             <div className="input-icon">
                 <input type="text" placeholder="Search for people" />
-                <ion-icon name="search-sharp"></ion-icon>
+                <HiOutlineSearch className="search-icon" />
             </div>
             <div className="icon-image">
                 {showLogout &&
