@@ -4,8 +4,7 @@ const Container = styled.aside`
     display: ${(props) => (props.none ? "flex" : "none")};
     flex-direction: column;
 
-    /* min-height: 400px; */
-    height: 400px;
+    height: 420px;
     width: 300px;
     
     margin-top: 85px;

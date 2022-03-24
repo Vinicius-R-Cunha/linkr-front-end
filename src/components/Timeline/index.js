@@ -10,13 +10,16 @@ import { FiHeart } from "react-icons/fi";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
 import temp from "../../assets/perfil-temp.png";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Timeline() {
-    const token = "meu-lindo-token";
+    const { token } = useContext(UserContext);
+    const navigate = useNavigate();
 
     const [postsArray, setPostsArray] = useState();
     const [link, setLink] = useState("");
@@ -26,8 +29,12 @@ export default function Timeline() {
     const [postsState, setPostsState] = useState("loading");
 
     useEffect(() => {
-        renderPage();
-    }, []);
+        if (token) {
+            renderPage();
+        } else {
+            navigate('/');
+        }
+    }, [navigate, token]);
 
     async function renderPage() {
         try {
@@ -135,37 +142,36 @@ export default function Timeline() {
                     </form>
                 </Publish>
 
-                {
-                    postsState === 'full' && postsArray.map(post => {
-                        return (
-                            <Post key={post.id}>
-                                <ImageLikes>
-                                    <img className="profile-image" src={post.image} alt="" />
-                                    <FiHeart className="like-icon" />
-                                    <p className="likes-quantity">13 likes</p>
-                                </ImageLikes>
-                                <PostContent>
-                                    <div className="profile-name">
-                                        {post.name}
-                                        <div className="remove-edit-icons">
-                                            <AiTwotoneEdit className="edit-icon" />
-                                            <FaTrashAlt className="remove-icon" />
-                                        </div>
+                {postsState === 'full' && postsArray.map(post => {
+                    return (
+                        <Post key={post.id}>
+                            <ImageLikes>
+                                <img className="profile-image" src={post.image} alt="" />
+                                <FiHeart className="like-icon" />
+                                <p className="likes-quantity">13 likes</p>
+                            </ImageLikes>
+                            <PostContent>
+                                <div className="profile-name">
+                                    {post.name}
+                                    <div className="remove-edit-icons">
+                                        <AiTwotoneEdit className="edit-icon" />
+                                        <FaTrashAlt className="remove-icon" />
                                     </div>
-                                    <p className="article-text">{post.text}</p>
-                                    <Snippet onClick={() => handleClick(post.url)}>
-                                        <div className="snippet-data">
-                                            <p className="title">{post.title}</p>
-                                            <p className="description">{post.description}</p>
-                                            <p className="link">{post.url}</p>
-                                        </div>
-                                        <img src={post.linkImage === '' ? temp : post.linkImage} alt="" />
-                                    </Snippet>
-                                </PostContent>
-                            </Post>
-                        )
-                    })
-                }
+                                </div>
+                                <p className="article-text">{post.text}</p>
+                                <Snippet onClick={() => handleClick(post.url)}>
+                                    <div className="snippet-data">
+                                        <p className="title">{post.title}</p>
+                                        <p className="description">{post.description}</p>
+                                        <p className="link">{post.url}</p>
+                                    </div>
+                                    <img src={post.linkImage === '' ? temp : post.linkImage} alt="" />
+                                </Snippet>
+                            </PostContent>
+                        </Post>
+                    )
+                })}
+
                 {postsState === 'loading' && <p className="loading-message">Loading...</p>}
 
                 {postsState === 'empty' && <p className="get-error-message">There are no posts yet</p>}

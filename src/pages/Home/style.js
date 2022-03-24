@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const TimelineContainer = styled.main`
+const HomeContainer = styled.main`
     width: 100%;
 
     padding-top: 72px;
@@ -14,4 +14,4 @@ const TimelineContainer = styled.main`
     }
 `
 
-export { TimelineContainer }
+export { HomeContainer }
