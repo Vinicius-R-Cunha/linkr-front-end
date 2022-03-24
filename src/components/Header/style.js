@@ -23,6 +23,8 @@ const HeaderDiv = styled.div`
         margin-left: 28px;
 
         cursor: pointer;
+
+        z-index: 10;
     }
 
     .input-icon {
@@ -66,6 +68,8 @@ const HeaderDiv = styled.div`
 
         margin-right: 17px;
 
+        z-index: 9;
+
         ion-icon {
             font-size: 27px;
             color: #FFFFFF;
@@ -73,6 +77,15 @@ const HeaderDiv = styled.div`
             margin-right: 12px;
 
             cursor: pointer;
+
+            z-index: 9;      
+                      
+            animation: fadeIn 0.6s;
+
+            @keyframes fadeIn {
+                0% {opacity:0;}
+                100% {opacity:1;}
+            }
         }
 
         img {
@@ -82,6 +95,8 @@ const HeaderDiv = styled.div`
             border-radius: 26.5px;
 
             cursor: pointer;
+
+            z-index: 9;
         }
 
         .logout-button {
@@ -107,6 +122,21 @@ const HeaderDiv = styled.div`
             border-radius: 0px 0px 20px 20px;
 
             cursor: pointer;
+            
+            z-index: 9;
+
+            animation: go-down 0.3s;
+
+            @keyframes go-down {
+                0% {
+                    background-color: #171717;
+                    color: #171717;
+                    transform: translateY(-30px);
+                }
+                100% {
+                    transform: translateY(0px);
+                }
+            }   
         }
     }
 
@@ -125,4 +155,17 @@ const HeaderDiv = styled.div`
     }
 `
 
-export { HeaderDiv }
+const OverLay = styled.div`
+    width: 100%;
+    height: 100%;
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 7;
+`
+
+export { HeaderDiv, OverLay };

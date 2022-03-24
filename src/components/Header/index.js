@@ -1,9 +1,20 @@
-import { HeaderDiv } from "./style"
+// import { useNavigate } from 'react-router-dom';
+import { HeaderDiv, OverLay } from "./style"
 import { useState } from "react";
 import temp from "../../assets/perfil-temp.png"
 
 export default function Header() {
+
+    // const navigate = useNavigate();
+
     const [showLogout, setShowLogout] = useState(false);
+
+    function signOut(){
+        alert('exit');
+        setShowLogout(false);
+        // localStorage?.removeItem('userInfos');
+        // navigate('/');
+    };
 
     return (
         <HeaderDiv>
@@ -16,11 +27,18 @@ export default function Header() {
                 {showLogout &&
                     <>
                         <ion-icon onClick={() => setShowLogout(false)} name="chevron-up-outline"></ion-icon>
-                        <div className="logout-button">Logout</div>
+                        <div onClick={signOut} className="logout-button">Logout</div>
+                        <OverLay onClick={() => setShowLogout(false)}/>
                     </>
                 }
-                {!showLogout && <ion-icon onClick={() => setShowLogout(true)} name="chevron-down-outline"></ion-icon>}
+                {!showLogout &&
+                    <> 
+                        <ion-icon onClick={() => setShowLogout(true)} name="chevron-down-outline"></ion-icon>
+                    </>
+                }
+                
                 <img src={temp} alt="" />
+                
             </div>
         </HeaderDiv>
     );
