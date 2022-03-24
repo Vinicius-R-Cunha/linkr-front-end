@@ -23,7 +23,7 @@ const DescriptionContainer = styled.div`
   background-color: #151515;
 
   h1 {
-    margin-top: 29%;
+    margin-top: 22%;
     font-family: "Passion One", cursive;
     font-size: 6.625rem;
     font-style: normal;
@@ -63,21 +63,21 @@ const DescriptionContainer = styled.div`
   }
 `;
 
-const DataContainer = styled.div`
+const DataContainer = styled.form`
   width: 45%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #333333;
-  padding-top: 18%;
+  padding-top: 13%;
   input {
-    height: 8%;
+    height: 9%;
     width: 80%;
     border: none;
     border-radius: 6px;
     background-color: #ffffff;
-    margin-bottom: 1.27%;
+    margin-bottom: 1.4%;
     text-indent: 10px;
     font-family: "Oswald", sans-serif;
     font-style: normal;
@@ -91,7 +91,7 @@ const DataContainer = styled.div`
   button {
     box-sizing: border-box;
     padding: 0;
-    height: 8%;
+    height: 9%;
     width: 81%;
     border: none;
     border-radius: 6px;
@@ -105,6 +105,10 @@ const DataContainer = styled.div`
     letter-spacing: 0em;
     text-align: center;
     margin-bottom: 22px;
+  }
+  .error-message {
+    margin-bottom: 12px;
+    color: red;
   }
 
   @media (max-width: 630px) {

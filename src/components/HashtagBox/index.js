@@ -6,6 +6,7 @@ import api from "../../services/api";
 import { Container, HashtagList, Title, Divider } from "./style";
 
 export default function HashtagBox() {
+
     const { token } = useContext(UserContext);
 
     const navigate = useNavigate();
@@ -32,11 +33,7 @@ export default function HashtagBox() {
             <HashtagList>
                 {hashtags.map((hashtag) => (
                     <li key={hashtag.id}>
-                        <ReactHashtag
-                            onHashtagClick={(value) =>
-                                handleHashtagClick(value)
-                            }
-                        >
+                        <ReactHashtag onHashtagClick={(value) => handleHashtagClick(value)}>
                             {"#" + hashtag.name}
                         </ReactHashtag>
                     </li>
