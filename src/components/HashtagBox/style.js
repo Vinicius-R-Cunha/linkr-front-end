@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Container = styled.aside`
-    display: flex;
+    display: ${(props) => (props.none ? "flex" : "none")};
     flex-direction: column;
 
     min-height: 400px;
