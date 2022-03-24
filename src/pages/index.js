@@ -1,3 +1,3 @@
-import Timeline from "./Timeline";
+import Home from "./Home";
 
-export { Timeline };
+export { Home };
