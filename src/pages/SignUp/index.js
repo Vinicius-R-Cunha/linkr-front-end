@@ -4,36 +4,67 @@ import {
   DataContainer,
   StyledLink,
 } from "./style";
+import Swal from "sweetalert2";
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
 export default function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    image: "",
+  });
+  const [errorData, setErrorData] = useState();
+  const [disabledButton, setDisabledButton] = useState(false);
+  const [emailExists, setEmailExists] = useState(false);
+
   const navigate = useNavigate();
-
-  function handleSignUp() {
-    const promise = axios.post(process.env.REACT_APP_BACK_URL + "sign-up", {
-      name,
-      email,
-      password,
-      image,
-    });
-
-    promise.then((response) => {
-      navigate("/");
-    });
-    promise.catch((error) => {
-      console.log(error.response);
-      setEmail("");
-      setPassword("");
-      setName("");
-      setImage("");
-    });
+  function handleInput(e) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
+  function handleSubmit(e) {
+    e.preventDefault();
+    setDisabledButton(true);
+    setErrorData({ ...formData });
+    setTimeout(() => setErrorData(), 3500);
+
+    const imageNotEmpty = formData.image !== "";
+    const nameNotEmpty = formData.name !== "";
+    const emailNotEmpty = formData.email !== "";
+    const emailIsLowerCased = formData.email === formData.email.toLowerCase();
+    const passwordNotEmpty = formData.password !== "";
+
+    if (
+      imageNotEmpty &&
+      nameNotEmpty &&
+      emailNotEmpty &&
+      passwordNotEmpty &&
+      emailIsLowerCased
+    ) {
+      const promise = axios.post(
+        process.env.REACT_APP_BACK_URL + "sign-up",
+        formData
+      );
+      promise.then((response) => {
+        navigate("/");
+      });
+      promise.catch((error) => {
+        console.log(error.response);
+        if (error.response.status === 409) {
+          return Swal.fire({
+            icon: "error",
+            title: "Ops...",
+            text: "Este e-mail ja está cadastrado!",
+          });
+        }
+      });
+    } else {
+      return;
+    }
+  }
+
   return (
     <SignUpContainer>
       <DescriptionContainer>
@@ -46,30 +77,52 @@ export default function SignUp() {
       <DataContainer>
         <input
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="email"
+          name="email"
+          placeholder="e-mail"
+          onChange={(e) => handleInput(e)}
+          value={formData.email}
         />
-
+        {errorData?.email === "" && (
+          <p className="error-message">digite seu email</p>
+        )}
         <input
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          onChange={(e) => handleInput(e)}
+          value={formData.password}
           placeholder="password"
         />
+        {errorData?.password === "" && (
+          <p className="error-message">digite sua senha</p>
+        )}
         <input
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          name="name"
+          onChange={(e) => handleInput(e)}
+          value={formData.name}
           placeholder="username"
         />
+        {errorData?.name === "" && (
+          <p className="error-message">digite seu usuario</p>
+        )}
         <input
           type="text"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
+          name="image"
+          onChange={(e) => handleInput(e)}
+          value={formData.image}
           placeholder="picture url"
         />
-        <button onClick={() => handleSignUp()}>Sign Up</button>
+        {errorData?.image === "" && (
+          <p className="error-message">digite a url da imagem</p>
+        )}
+        <button
+          type="submit"
+          disabled={disabledButton}
+          onClick={(e) => handleSubmit(e)}
+        >
+          Sign Up
+        </button>
+
         <StyledLink to="/">Switch back to log in</StyledLink>
       </DataContainer>
     </SignUpContainer>

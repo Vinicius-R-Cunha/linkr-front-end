@@ -3,11 +3,11 @@ import Timeline from "../../components/Timeline";
 import HashtagBox from "../../components/HashtagBox";
 
 export default function Home() {
-    return (
-        <>
-            <Header />
-            <Timeline />
-            <HashtagBox />
-        </>
-    );
+  return (
+    <>
+      <Header />
+      <Timeline />
+      <HashtagBox />
+    </>
+  );
 }
