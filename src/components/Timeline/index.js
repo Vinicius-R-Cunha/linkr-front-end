@@ -7,6 +7,7 @@ import {
     ImageLikes,
     PostContent,
     Snippet,
+    StyledHashtag,
 } from "./style";
 import { FiHeart } from "react-icons/fi";
 import temp from "../../assets/perfil-temp.png";
@@ -15,9 +16,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ReactHashtag from "@mdnm/react-hashtag";
+import { useNavigate } from "react-router-dom";
 
 export default function Timeline() {
     const token = "meu-lindo-token";
+    const navigate = useNavigate();
 
     const [postsArray, setPostsArray] = useState([]);
     const [link, setLink] = useState("");
@@ -88,6 +92,11 @@ export default function Timeline() {
         }
     }
 
+    function handleHashtagClick(e) {
+        const hashtag = e.target.innerText;
+        navigate(`/hashtag/${hashtag.replace("#", "")}`);
+    }
+
     return (
         <>
             <Header />
@@ -156,7 +165,20 @@ export default function Timeline() {
                                             {post.name}
                                         </p>
                                         <p className="article-text">
-                                            {post.text}
+                                            <ReactHashtag
+                                                renderHashtag={(value) => (
+                                                    <StyledHashtag
+                                                        onClick={
+                                                            handleHashtagClick
+                                                        }
+                                                        key={post.id}
+                                                    >
+                                                        {value}
+                                                    </StyledHashtag>
+                                                )}
+                                            >
+                                                {post.text}
+                                            </ReactHashtag>
                                         </p>
                                         <Snippet
                                             onClick={() =>
