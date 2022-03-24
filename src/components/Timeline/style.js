@@ -7,6 +7,8 @@ const PostsContainer = styled.div`
     flex-direction: column;
     align-items: center;
 
+    margin-right: 25px;
+
     .timeline-title {
         width: 100%;
 
@@ -29,6 +31,10 @@ const PostsContainer = styled.div`
         text-align: center;
 
         color: #FFFFFF;
+    }
+
+    @media (max-width: 1200px) {
+        margin-right: 0;
     }
 
     @media (max-width: 630px) {
