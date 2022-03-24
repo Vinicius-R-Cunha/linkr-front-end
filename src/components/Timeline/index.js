@@ -1,6 +1,4 @@
-import Header from "../Header";
 import {
-    TimelineContainer,
     PostsContainer,
     Publish,
     Post,
@@ -20,7 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Timeline() {
     const token = "meu-lindo-token";
 
-    const [postsArray, setPostsArray] = useState([]);
+    const [postsArray, setPostsArray] = useState();
     const [link, setLink] = useState("");
     const [article, setArticle] = useState("");
     const [loadingPublish, setLoadingPublish] = useState(false);
@@ -37,7 +35,7 @@ export default function Timeline() {
 
             setPostsArray(posts.data);
 
-            if (posts.data.length === 0) {
+            if (posts?.data.length === 0) {
                 setPostsState('empty');
             } else {
                 setPostsState("full");
@@ -92,100 +90,92 @@ export default function Timeline() {
 
     return (
         <>
-            <Header />
-            <TimelineContainer>
-                <PostsContainer>
-                    <h1 className="timeline-title">timeline</h1>
+            <PostsContainer>
+                <h1 className="timeline-title">timeline</h1>
 
-                    <Publish>
-                        <ImageLikes className="image-likes-publish">
-                            <img className="profile-image" src={temp} alt="" />
-                        </ImageLikes>
-                        <ToastContainer />
-                        <form className="inputs">
-                            <p className="inputs-title">
-                                What are you going to share today?
+                <Publish>
+                    <ImageLikes className="image-likes-publish">
+                        <img className="profile-image" src={temp} alt="" />
+                    </ImageLikes>
+                    <ToastContainer />
+                    <form className="inputs">
+                        <p className="inputs-title">
+                            What are you going to share today?
+                        </p>
+                        <input
+                            disabled={loadingPublish}
+                            className="input-link"
+                            type="url"
+                            required
+                            placeholder="http://..."
+                            onChange={(e) => setLink(e.target.value)}
+                            value={link}
+                        />
+                        <textarea
+                            disabled={loadingPublish}
+                            id="story"
+                            name="story"
+                            className="input-article"
+                            placeholder="Awesome article about #javascript"
+                            onChange={(e) => setArticle(e.target.value)}
+                            value={article}
+                        ></textarea>
+                        {publishError && (
+                            <p className="error-message">
+                                Houve um erro ao publicar seu link
                             </p>
-                            <input
-                                disabled={loadingPublish}
-                                className="input-link"
-                                type="url"
-                                required
-                                placeholder="http://..."
-                                onChange={(e) => setLink(e.target.value)}
-                                value={link}
-                            />
-                            <textarea
-                                disabled={loadingPublish}
-                                id="story"
-                                name="story"
-                                className="input-article"
-                                placeholder="Awesome article about #javascript"
-                                onChange={(e) => setArticle(e.target.value)}
-                                value={article}
-                            ></textarea>
-                            {publishError && (
-                                <p className="error-message">
-                                    Houve um erro ao publicar seu link
-                                </p>
-                            )}
-                            <button
-                                disabled={loadingPublish}
-                                className={loadingPublish ? "disabled" : ""}
-                                onClick={(e) => handleSubmit(e)}
-                            >
-                                {loadingPublish ? "Publishing..." : "Publish"}
-                            </button>
-                        </form>
-                    </Publish>
+                        )}
+                        <button
+                            disabled={loadingPublish}
+                            className={loadingPublish ? "disabled" : ""}
+                            onClick={(e) => handleSubmit(e)}
+                        >
+                            {loadingPublish ? "Publishing..." : "Publish"}
+                        </button>
+                    </form>
+                </Publish>
 
-                    {
-                        postsState === 'full' && postsArray.map(post => {
-                            return (
-                                <Post key={post.id}>
-                                    <ImageLikes>
-                                        <img className="profile-image" src={post.image} alt="" />
-                                        <FiHeart className="like-icon" />
-                                        <p className="likes-quantity">13 likes</p>
-                                    </ImageLikes>
-                                    <PostContent>
-                                        <div className="profile-name">
-                                            {post.name}
-                                            <div className="remove-edit-icons">
-                                                <AiTwotoneEdit className="edit-icon" />
-                                                <FaTrashAlt className="remove-icon" />
-                                            </div>
+                {
+                    postsState === 'full' && postsArray.map(post => {
+                        return (
+                            <Post key={post.id}>
+                                <ImageLikes>
+                                    <img className="profile-image" src={post.image} alt="" />
+                                    <FiHeart className="like-icon" />
+                                    <p className="likes-quantity">13 likes</p>
+                                </ImageLikes>
+                                <PostContent>
+                                    <div className="profile-name">
+                                        {post.name}
+                                        <div className="remove-edit-icons">
+                                            <AiTwotoneEdit className="edit-icon" />
+                                            <FaTrashAlt className="remove-icon" />
                                         </div>
-                                        <p className="article-text">{post.text}</p>
-                                        <Snippet onClick={() => handleClick(post.url)}>
-                                            <div className="snippet-data">
-                                                <p className="title">{post.title}</p>
-                                                <p className="description">{post.description}</p>
-                                                <p className="link">{post.url}</p>
-                                            </div>
-                                            <img src={post.linkImage === '' ? temp : post.linkImage} alt="" />
-                                        </Snippet>
-                                    </PostContent>
-                                </Post>
-                            )
-                        })
-                    }
-                    {postsState === 'loading' && <p className="loading-message">Loading...</p>}
+                                    </div>
+                                    <p className="article-text">{post.text}</p>
+                                    <Snippet onClick={() => handleClick(post.url)}>
+                                        <div className="snippet-data">
+                                            <p className="title">{post.title}</p>
+                                            <p className="description">{post.description}</p>
+                                            <p className="link">{post.url}</p>
+                                        </div>
+                                        <img src={post.linkImage === '' ? temp : post.linkImage} alt="" />
+                                    </Snippet>
+                                </PostContent>
+                            </Post>
+                        )
+                    })
+                }
+                {postsState === 'loading' && <p className="loading-message">Loading...</p>}
 
-                    {postsState === 'empty' && <p className="get-error-message">There are no posts yet</p>}
+                {postsState === 'empty' && <p className="get-error-message">There are no posts yet</p>}
 
-                    {postsState === 'error' &&
-                        <p className="get-error-message">
-                            There are no posts yet
-                        </p>}
-
-                    {postsState === "error" &&
-                        <p className="get-error-message">
-                            An error occured while trying to fetch the posts,
-                            please refresh the page
-                        </p>}
-                </PostsContainer >
-            </TimelineContainer >
-        </>
+                {postsState === "error" &&
+                    <p className="get-error-message">
+                        An error occured while trying to fetch the posts,
+                        please refresh the page
+                    </p>}
+            </PostsContainer >
+        </ >
     );
 }

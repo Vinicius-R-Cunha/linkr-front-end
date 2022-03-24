@@ -1,20 +1,5 @@
 import styled from "styled-components";
 
-const TimelineContainer = styled.main`
-    width: 100%;
-
-    padding-top: 72px;
-    margin-top: 78px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    @media (max-width: 630px) {
-        margin-top: 22px;
-    }
-`
-
 const PostsContainer = styled.div`
     width: 611px;
 
@@ -466,4 +451,4 @@ const Snippet = styled.div`
     }
 `
 
-export { TimelineContainer, PostsContainer, Publish, Post, ImageLikes, PostContent, Snippet }
+export { PostsContainer, Publish, Post, ImageLikes, PostContent, Snippet }

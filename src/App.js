@@ -2,7 +2,7 @@ import "./styles/reset.css";
 import "./styles/style.css";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import Home from "./pages/Home/Home";
+import Home from "./pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserContext from "./contexts/UserContext";
 import { useState } from "react";
