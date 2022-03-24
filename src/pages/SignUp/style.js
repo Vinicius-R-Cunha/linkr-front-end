@@ -23,7 +23,7 @@ const DescriptionContainer = styled.div`
   background-color: #151515;
 
   h1 {
-    margin-top: 29%;
+    margin-top: 22%;
     font-family: "Passion One", cursive;
     font-size: 6.625rem;
     font-style: normal;
@@ -63,14 +63,14 @@ const DescriptionContainer = styled.div`
   }
 `;
 
-const DataContainer = styled.div`
+const DataContainer = styled.form`
   width: 45%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #333333;
-  padding-top: 13%;
+  padding-top: 9%;
   input {
     height: 9%;
     width: 80%;
@@ -105,6 +105,10 @@ const DataContainer = styled.div`
     letter-spacing: 0em;
     text-align: center;
     margin-bottom: 22px;
+  }
+  .error-message {
+    margin-bottom: 12px;
+    color: red;
   }
 
   @media (max-width: 630px) {
