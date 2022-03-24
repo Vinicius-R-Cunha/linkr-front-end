@@ -10,7 +10,6 @@ const Container = styled.aside`
     margin-top: 85px;
     position: sticky;
     top: 85px;
-    z-index: -1;
 
     border-radius: 16px;
     background-color: #171717;
