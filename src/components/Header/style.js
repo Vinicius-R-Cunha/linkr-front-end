@@ -70,7 +70,7 @@ const HeaderDiv = styled.div`
 
         z-index: 9;
 
-        ion-icon {
+        .chevron-icon{
             font-size: 27px;
             color: #FFFFFF;
 

@@ -1,5 +1,6 @@
 // import { useNavigate } from 'react-router-dom';
 import { HeaderDiv, OverLay } from "./style"
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import temp from "../../assets/perfil-temp.png"
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs'
@@ -7,15 +8,14 @@ import { HiOutlineSearch } from 'react-icons/hi'
 
 export default function Header() {
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [showLogout, setShowLogout] = useState(false);
 
     function signOut(){
-        alert('exit');
+        console.log('saiu')
         setShowLogout(false);
-        // localStorage?.removeItem('userInfos');
-        // navigate('/');
+        navigate('/');
     };
 
     return (
@@ -28,15 +28,14 @@ export default function Header() {
             <div className="icon-image">
                 {showLogout &&
                     <>
-                        <ion-icon onClick={() => setShowLogout(false)} name="chevron-up-outline"></ion-icon>
+
+                    <BsChevronUp className="chevron-icon" onClick={() => setShowLogout(false)} />
                         <div onClick={signOut} className="logout-button">Logout</div>
                         <OverLay onClick={() => setShowLogout(false)}/>
                     </>
                 }
                 {!showLogout &&
-                    <> 
-                        <ion-icon onClick={() => setShowLogout(true)} name="chevron-down-outline"></ion-icon>
-                    </>
+                   <BsChevronDown className="chevron-icon" onClick={() => setShowLogout(true)} />
                 }
                 
                 <img src={temp} alt="" />
