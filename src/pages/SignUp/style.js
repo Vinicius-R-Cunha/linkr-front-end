@@ -21,7 +21,7 @@ const DescriptionContainer = styled.div`
   padding-left: 10%;
 
   background-color: #151515;
-
+  box-sizing: border-box;
   h1 {
     margin-top: 22%;
     font-family: "Passion One", cursive;
@@ -66,10 +66,13 @@ const DescriptionContainer = styled.div`
 const DataContainer = styled.form`
   width: 45%;
   height: 100%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   background-color: #333333;
+
   padding-top: 9%;
   input {
     height: 9%;
@@ -105,6 +108,7 @@ const DataContainer = styled.form`
     letter-spacing: 0em;
     text-align: center;
     margin-bottom: 22px;
+    cursor: pointer;
   }
   .error-message {
     margin-bottom: 12px;
