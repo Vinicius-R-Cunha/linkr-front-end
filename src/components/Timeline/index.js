@@ -10,6 +10,7 @@ import {
     StyledHashtag,
 } from "./style";
 import { FiHeart } from "react-icons/fi";
+import temp2 from "../../assets/snippet-temp.png";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
 import temp from "../../assets/perfil-temp.png";
@@ -18,13 +19,16 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "../../contexts/UserContext";
+import api from "../../services/api";
 import ReactHashtag from "@mdnm/react-hashtag";
 import { useNavigate } from "react-router-dom";
 
-StyledModal.setAppElement(document.getElementById("#home"));
-
 export default function Timeline({ showPublish, route, mainTitle }) {
-    const { token } = useContext(UserContext);
+
+    const { token, setImage, setName, image } = useContext(UserContext);
+
+    StyledModal.setAppElement(document.getElementById("#home"));
+
     const navigate = useNavigate();
 
     const [postsArray, setPostsArray] = useState();
@@ -34,11 +38,25 @@ export default function Timeline({ showPublish, route, mainTitle }) {
     const [publishError, setPublishError] = useState(false);
     const [postsState, setPostsState] = useState("loading");
 
+    async function getUser(){
+        try{        
+            const response = await api.getUserInfos(token);
+
+            setImage(response?.data.image);
+            setName(response?.data.name);
+
+        } catch(error) {
+            console.log(error);
+        };
+    };
+
+    
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [postId, setPostId] = useState();
 
     useEffect(() => {
         if (token) {
+            getUser();
             renderPage(route);
         } else {
             navigate("/");
@@ -62,16 +80,17 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                 setPostsState("empty");
             } else {
                 setPostsState("full");
-            }
+            };
+
         } catch (error) {
             setPostsState("error");
             console.log(error.response);
-        }
-    }
-
+        };
+    };
+    
     function handleClick(url) {
         window.open(url);
-    }
+    };
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -109,15 +128,15 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                 progress: undefined,
             });
         }
-    }
+    };
 
     function openModal() {
         setModalIsOpen(true);
-    }
+    };
 
     function closeModal() {
         setModalIsOpen(false);
-    }
+    };
 
     async function handleDeletion() {
         setLoading(true);
@@ -185,7 +204,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                 {showPublish && (
                     <Publish>
                         <ImageLikes className="image-likes-publish">
-                            <img className="profile-image" src={temp} alt="" />
+                            <img className="profile-image" src={image} alt="loading..." />
                         </ImageLikes>
                         <ToastContainer />
                         <form className="inputs">
@@ -306,4 +325,4 @@ export default function Timeline({ showPublish, route, mainTitle }) {
             </PostsContainer>
         </>
     );
-}
+};
