@@ -333,6 +333,27 @@ const PostContent = styled.div`
     }
   }
 
+  .edit-input {
+    all: unset;
+
+    width: 503px;
+    height: 44px;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #4C4C4C;
+
+    background-color: #ffffff;
+
+    box-sizing: border-box;
+    padding: 3px 7px 3px 7px;
+
+    border-radius: 7px;
+    border: 1px solid #4d4d4d;
+  }
+
   .article-text {
     font-family: "Lato";
     font-style: normal;

@@ -13,7 +13,7 @@ import { FiHeart } from "react-icons/fi";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
 import temp from "../../assets/perfil-temp.png";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -29,6 +29,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
   StyledModal.setAppElement(document.getElementById("#home"));
 
   const navigate = useNavigate();
+  const inputRef = useRef(null);
 
   const [postsArray, setPostsArray] = useState();
   const [link, setLink] = useState("");
@@ -38,6 +39,10 @@ export default function Timeline({ showPublish, route, mainTitle }) {
   const [postsState, setPostsState] = useState("loading");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [postId, setPostId] = useState();
+  const [editingPost, setEditingPost] = useState();
+  const [editIsOpen, setEditIsOpen] = useState(false);
+  const [editText, setEditText] = useState();
+  const [editLoading, setEditLoading] = useState(false);
 
   const renderPage = useCallback(
     async (route) => {
@@ -164,6 +169,50 @@ export default function Timeline({ showPublish, route, mainTitle }) {
     navigate(`/hashtag/${hashtag.replace("#", "")}`);
   }
 
+  function handleEdit(post) {
+    setEditingPost(post);
+    setEditIsOpen(!editIsOpen);
+    setTimeout(() => inputRef.current?.focus(), 400);
+  }
+
+  function handleKeyDown(e) {
+    if (e.keyCode === 27) {
+      setEditIsOpen(false)
+    } else if (e.keyCode === 13 || e.keyCode === 10) {
+      e.preventDefault();
+      sendEdition(editingPost);
+    }
+  }
+
+  async function sendEdition(post) {
+    setEditLoading(true);
+    try {
+      await axios.put(
+        process.env.REACT_APP_BACK_URL + `posts/${post.id}`,
+        { link: post.url, text: editText },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setEditIsOpen(false);
+      renderPage(route);
+    } catch (error) {
+      toast.error("Could not save modifications", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.log(error.response);
+    }
+
+    setEditLoading(false);
+  }
+
   return (
     <>
       <PostsContainer>
@@ -245,7 +294,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                     {post.name}
                     {id === post.userId && (
                       <div className="remove-edit-icons">
-                        <AiTwotoneEdit className="edit-icon" />
+                        <AiTwotoneEdit onClick={() => handleEdit(post)} className="edit-icon" />
                         <FaTrashAlt
                           onClick={() => {
                             openModal();
@@ -256,20 +305,30 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                       </div>
                     )}
                   </div>
-                  <p className="article-text">
-                    <ReactHashtag
-                      renderHashtag={(value) => (
-                        <StyledHashtag
-                          onClick={handleHashtagClick}
-                          key={post.id}
-                        >
-                          {value}
-                        </StyledHashtag>
-                      )}
-                    >
-                      {post.text}
-                    </ReactHashtag>
-                  </p>
+                  {editIsOpen & editingPost === post ?
+                    <textarea
+                      disabled={editLoading}
+                      className="edit-input"
+                      ref={inputRef}
+                      defaultValue={post.text}
+                      onChange={e => setEditText(e.target.value)}
+                      onKeyDown={e => handleKeyDown(e)}
+                    ></textarea>
+                    :
+                    <p className="article-text">
+                      <ReactHashtag
+                        renderHashtag={(value) => (
+                          <StyledHashtag
+                            onClick={handleHashtagClick}
+                            key={post.id}
+                          >
+                            {value}
+                          </StyledHashtag>
+                        )}
+                      >
+                        {post.text}
+                      </ReactHashtag>
+                    </p>}
                   <Snippet onClick={() => handleClick(post.url)}>
                     <div className="snippet-data">
                       <p className="title">{post.title}</p>
