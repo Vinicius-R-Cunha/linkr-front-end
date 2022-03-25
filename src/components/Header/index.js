@@ -1,8 +1,9 @@
-import { HeaderDiv, Debounce } from "./style";
+import { HeaderDiv, Debounce, OverLay } from "./style";
 import { useState, useEffect } from "react";
-import temp from "../../assets/perfil-temp.png";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { HiOutlineSearch } from "react-icons/hi";
+import api from "../../services/api";
+import UserContext from "../../contexts/UserContext";
 import axios from "axios";
 
 export default function Header() {
@@ -10,6 +11,22 @@ export default function Header() {
   const [users, setUsers] = useState();
   const [search, setSearch] = useState();
   const token = localStorage.getItem("token");
+  const { image } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  const [showLogout, setShowLogout] = useState(false);
+
+  async function signOut() {
+    try {
+      await api.signOut(token);
+      localStorage.removeItem("token");
+      setShowLogout(false);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
   useEffect(() => {
     const promise = axios.get(process.env.REACT_APP_BACK_URL + "users", {
       headers: {
@@ -35,7 +52,9 @@ export default function Header() {
   console.log(filteredItems);
   return (
     <HeaderDiv>
-      <p className="logo-name">linkr</p>
+      <p onClick={() => navigate("/timeline")} className="logo-name">
+        linkr
+      </p>
       <div className="search">
         <div className="input-icon">
           <Debounce
@@ -57,7 +76,10 @@ export default function Header() {
               className="chevron-icon"
               onClick={() => setShowLogout(false)}
             />
-            <div className="logout-button">Logout</div>
+            <div onClick={signOut} className="logout-button">
+              Logout
+            </div>
+            <OverLay onClick={() => setShowLogout(false)} />
           </>
         )}
         {!showLogout && (
@@ -66,7 +88,8 @@ export default function Header() {
             onClick={() => setShowLogout(true)}
           />
         )}
-        <img src={temp} alt="" />
+
+        <img src={image} alt="loading..." />
       </div>
     </HeaderDiv>
   );

@@ -1,40 +1,47 @@
 import ReactHashtag from "@mdnm/react-hashtag";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 import { Container, HashtagList, Title, Divider } from "./style";
 
 export default function HashtagBox() {
-  const navigate = useNavigate();
-  const [hashtags, setHashtags] = useState([]);
-  const [isValidUser, setIsValidUser] = useState(false);
+    const { token } = useContext(UserContext);
 
-  useEffect(() => {
-    const promise = api.getHashtags("meu-lindo-token");
-    promise.then((response) => {
-      setHashtags([...response.data]);
-      setIsValidUser(true);
-    });
-    promise.catch((error) => console.log("Error"));
-  }, [isValidUser]);
+    const navigate = useNavigate();
+    const [hashtags, setHashtags] = useState([]);
+    const [isValidUser, setIsValidUser] = useState(false);
 
-  function handleHashtagClick(hashtag) {
-    navigate(`/hashtag/${hashtag.replace("#", "")}`);
-  }
+    useEffect(() => {
+        const promise = api.getHashtags(token);
+        promise.then((response) => {
+            setHashtags([...response.data]);
+            setIsValidUser(true);
+        });
+        promise.catch((error) => navigate("/"));
+    }, [navigate, token]);
 
-  return (
-    <Container none={isValidUser} className="sidebar">
-      <Title>trending</Title>
-      <Divider />
-      <HashtagList>
-        {hashtags.map((hashtag) => (
-          <li key={hashtag.id}>
-            <ReactHashtag onHashtagClick={(value) => handleHashtagClick(value)}>
-              {"#" + hashtag.name}
-            </ReactHashtag>
-          </li>
-        ))}
-      </HashtagList>
-    </Container>
-  );
-}
+    function handleHashtagClick(hashtag) {
+        navigate(`/hashtag/${hashtag.replace("#", "")}`);
+    }
+
+    return (
+        <Container none={isValidUser} className="sidebar">
+            <Title>trending</Title>
+            <Divider />
+            <HashtagList>
+                {hashtags.map((hashtag) => (
+                    <li key={hashtag.id}>
+                        <ReactHashtag
+                            onHashtagClick={(value) =>
+                                handleHashtagClick(value)
+                            }
+                        >
+                            {"#" + hashtag.name}
+                        </ReactHashtag>
+                    </li>
+                ))}
+            </HashtagList>
+        </Container>
+    );
+};
