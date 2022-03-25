@@ -9,15 +9,17 @@ import {
     Snippet,
 } from "./style";
 import { FiHeart } from "react-icons/fi";
-import temp from "../../assets/perfil-temp.png";
 import temp2 from "../../assets/snippet-temp.png";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserContext from "../../contexts/UserContext";
+import api from "../../services/api";
 
 export default function Timeline() {
-    const token = "meu-lindo-token";
+
+    const { token, setImage, setName, image, name} = useContext(UserContext);
 
     const [postsArray, setPostsArray] = useState([]);
     const [link, setLink] = useState("");
@@ -26,11 +28,24 @@ export default function Timeline() {
     const [publishError, setPublishError] = useState(false);
     const [postsState, setPostsState] = useState("loading");
 
+    async function getUser(){
+        try{        
+            const response = await api.getUserInfos(token);
+
+            setImage(response?.data.image);
+            setName(response?.data.name);
+
+        } catch(error) {
+            console.log(error);
+        };
+    };
+
     useEffect(() => {
+        getUser();
         renderPage();
     }, []);
 
-    function renderPage() {
+    function renderPage(){
         const promise = axios.get(process.env.REACT_APP_BACK_URL + "posts");
         promise.then((answer) => {
             setPostsArray(answer.data);
@@ -44,7 +59,7 @@ export default function Timeline() {
             setPostsState("error");
             console.log(error.response);
         });
-    }
+    };
 
     function handleClick(url) {
         window.open(url);
@@ -93,11 +108,11 @@ export default function Timeline() {
             <Header />
             <TimelineContainer>
                 <PostsContainer>
-                    <h1 className="timeline-title">timeline</h1>
+                    <h1 className="timeline-title">{name}</h1>
 
                     <Publish>
                         <ImageLikes className="image-likes-publish">
-                            <img className="profile-image" src={temp} alt="" />
+                            <img className="profile-image" src={image} alt="loading..." />
                         </ImageLikes>
                         <ToastContainer />
                         <form className="inputs">

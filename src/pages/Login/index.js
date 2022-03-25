@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import {
@@ -11,26 +11,50 @@ import UserContext from "../../contexts/UserContext";
 
 export default function Login() {
   const { setAndPersistToken } = useContext(UserContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(false);
   const navigate = useNavigate();
 
-  function handleLogin() {
-    const promise = axios.post(process.env.REACT_APP_BACK_URL + "sign-in", {
-      email,
-      password,
-    });
-
-    promise.then((response) => {
-      setAndPersistToken(response.data.token);
-      navigate("/timeline");
-    });
-    promise.catch((error) => {
-      console.log(error.response);
-      setEmail("");
-      setPassword("");
-    });
+  function handleInput(e) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
+
+  function handleSubmit(e) {
+
+    e.preventDefault();
+    
+    setDisabledButton(true);
+    
+    const emailNotEmpty = formData.email !== "";
+    const passwordNotEmpty = formData.password !== "";
+
+    if (emailNotEmpty && passwordNotEmpty) {
+      const promise = axios.post(
+        process.env.REACT_APP_BACK_URL + "sign-in",
+        formData
+      );
+      promise.then((response) => {
+        setAndPersistToken(response.data);
+        navigate("/timeline");
+      });
+      promise.catch(handleError);
+    } else {
+      
+      setError(true);
+      setTimeout(() => setError(false), 2500);
+      return;
+    }
+  }
+  
+  function handleError() {
+    setError(true);
+    setTimeout(() => setError(false), 2500);
+  }
+  
   return (
     <LoginContainer>
       <DescriptionContainer>
@@ -43,17 +67,29 @@ export default function Login() {
       <DataContainer>
         <input
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="email"
+          name="email"
+          placeholder="e-mail"
+          onChange={(e) => handleInput(e)}
+          value={formData.email}
         />
+
         <input
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          onChange={(e) => handleInput(e)}
+          value={formData.password}
           placeholder="password"
         />
-        <button onClick={() => handleLogin()}>Log In</button>
+        {error && (
+          <p className="error-message">Usuário e/ou senha incorretos</p>
+        )}
+        <button
+          type="submit"
+          disabled={disabledButton}
+          onClick={(e) => handleSubmit(e)}
+        >
+          Log In
+        </button>
         <StyledLink to="/sign-up">First time? Create an account!</StyledLink>
       </DataContainer>
     </LoginContainer>

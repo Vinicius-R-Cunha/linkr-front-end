@@ -1,21 +1,30 @@
-// import { useNavigate } from 'react-router-dom';
 import { HeaderDiv, OverLay } from "./style"
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import temp from "../../assets/perfil-temp.png"
+import { useState, useContext } from "react";
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs'
 import { HiOutlineSearch } from 'react-icons/hi'
+import api from "../../services/api";
+import UserContext from "../../contexts/UserContext";
 
 export default function Header() {
+
+    const { token, image } = useContext(UserContext);
 
     const navigate = useNavigate();
 
     const [showLogout, setShowLogout] = useState(false);
 
-    function signOut(){
-        console.log('saiu')
-        setShowLogout(false);
-        navigate('/');
+    async function signOut(){
+        try{ 
+        
+            await api.signOut(token);
+            localStorage.removeItem("token");
+            setShowLogout(false);
+            navigate('/');
+
+        } catch(error) {
+            console.log(error);
+        };
     };
 
     return (
@@ -38,7 +47,7 @@ export default function Header() {
                    <BsChevronDown className="chevron-icon" onClick={() => setShowLogout(true)} />
                 }
                 
-                <img src={temp} alt="" />
+                <img src={image} alt="loading..." />
                 
             </div>
         </HeaderDiv>
