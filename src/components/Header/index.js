@@ -15,8 +15,6 @@ export default function Header() {
 
   const navigate = useNavigate();
 
-  const [showLogout, setShowLogout] = useState(false);
-
   async function signOut() {
     try {
       await api.signOut(token);

@@ -178,4 +178,24 @@ const OverLay = styled.div`
   z-index: 7;
 `;
 
-export { HeaderDiv, OverLay };
+const Debounce = styled(DebounceInput)`
+  all: unset;
+
+  width: 563px;
+  height: 45px;
+
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 19px;
+  text-indent: 14px;
+
+  background: #ffffff;
+  border-radius: 8px;
+
+  ::placeholder {
+    color: #c6c6c6;
+  }
+`;
+
+export { HeaderDiv, OverLay, Debounce };
