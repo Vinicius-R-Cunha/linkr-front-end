@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserContext from "./contexts/UserContext";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { HashtagTimeline, Home } from "./pages";
 
 export default function App() {

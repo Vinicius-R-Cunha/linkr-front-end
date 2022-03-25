@@ -154,7 +154,6 @@ const HeaderDiv = styled.div`
                 }
             }   
         }
-    }
   }
 
   @media (max-width: 1200px) {
@@ -167,7 +166,7 @@ const HeaderDiv = styled.div`
 
       margin-left: 17px;
     }
-}
+  }
 `;
 const OverLay = styled.div`
   width: 100%;
@@ -206,10 +205,11 @@ const SearchBar = styled.div`
   display: flex;
   flex-direction: column;
   cursor: default;
-  width: 42.2vw;
+  width: 563px;
   max-height: 400px;
   position: absolute;
   top: 38px;
+  box-sizing: border-box;
   padding-top: 24px;
   padding-left: 17px;
   background-color: #e7e7e7;
