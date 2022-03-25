@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import Modal from "react-modal";
 
 const PostsContainer = styled.div`
@@ -13,17 +14,17 @@ const PostsContainer = styled.div`
     .timeline-title {
         width: 100%;
 
-        font-family: 'Oswald';
+        font-family: "Oswald";
         font-weight: 700;
         font-size: 43px;
-        color: #FFFFFF;
+        color: #ffffff;
 
         margin-bottom: 43px;
     }
 
     .loading-message {
         font-size: 30px;
-        color: #FFFFFF;
+        color: #ffffff;
     }
 
     .get-error-message {
@@ -31,7 +32,7 @@ const PostsContainer = styled.div`
         line-height: 45px;
         text-align: center;
 
-        color: #FFFFFF;
+        color: #ffffff;
     }
 
     @media (max-width: 1200px) {
@@ -53,7 +54,7 @@ const PostsContainer = styled.div`
             line-height: 25px;
         }
     }
-`
+`;
 
 const Publish = styled.div`
     width: 100%;
@@ -61,7 +62,7 @@ const Publish = styled.div`
 
     display: flex;
 
-    background-color: #FFFFFF;
+    background-color: #ffffff;
 
     padding-top: 16px;
     margin-bottom: 29px;
@@ -76,7 +77,7 @@ const Publish = styled.div`
         flex-direction: column;
 
         .inputs-title {
-            font-family: 'Lato';
+            font-family: "Lato";
             font-style: normal;
             font-weight: 300;
             font-size: 20px;
@@ -92,17 +93,17 @@ const Publish = styled.div`
             width: 503px;
             height: 30px;
 
-            font-family: 'Lato';
+            font-family: "Lato";
             font-style: normal;
             font-weight: 300;
             font-size: 15px;
             text-indent: 13px;
-            
+
             margin-bottom: 5px;
 
-            background-color: #EFEFEF;
+            background-color: #efefef;
             border-radius: 5px;
-            
+
             ::placeholder {
                 color: #949494;
             }
@@ -112,28 +113,28 @@ const Publish = styled.div`
             width: 502px;
             height: 66px;
 
-            font-family: 'Lato';
+            font-family: "Lato";
             font-style: normal;
             font-weight: 300;
             font-size: 15px;
 
             resize: none;
-            
+
             box-sizing: border-box;
             padding: 8px 13px 0 13px;
             margin-bottom: 8px;
-            
-            background-color: #EFEFEF;
+
+            background-color: #efefef;
             border-radius: 5px;
             border: hidden;
-            
+
             :focus {
                 outline: none;
             }
 
             ::placeholder {
                 color: #949494;
-            }   
+            }
         }
 
         .error-message {
@@ -144,30 +145,30 @@ const Publish = styled.div`
 
         button {
             all: unset;
-            
+
             width: 112px;
             height: 31px;
-            
-            font-family: 'Lato';
+
+            font-family: "Lato";
             font-style: normal;
             font-weight: 700;
             font-size: 14px;
-            color: #FFFFFF;
-            
-            background: #1877F2;
-            
+            color: #ffffff;
+
+            background: #1877f2;
+
             margin: 0 22px 0 0;
-            
+
             align-self: flex-end;
 
             display: flex;
             justify-content: center;
             align-items: center;
-            
+
             border-radius: 5px;
-            
+
             cursor: pointer;
-            
+
             :hover {
                 background-color: #3286f3;
             }
@@ -228,7 +229,7 @@ const Publish = styled.div`
             }
         }
     }
-`
+`;
 
 const Post = styled.div`
     width: 100%;
@@ -249,7 +250,7 @@ const Post = styled.div`
 
         border-radius: 0;
     }
-`
+`;
 
 const ImageLikes = styled.div`
     width: 86px;
@@ -270,15 +271,15 @@ const ImageLikes = styled.div`
 
     .like-icon {
         font-size: 20px;
-        color: #FFFFFF;
+        color: #ffffff;
     }
 
     .likes-quantity {
-        font-family: 'Lato';
+        font-family: "Lato";
         font-weight: 400;
         font-size: 11px;
         text-align: center;
-        color: #FFFFFF;
+        color: #ffffff;
 
         margin-top: 4px;
     }
@@ -289,7 +290,7 @@ const ImageLikes = styled.div`
             height: 40px;
         }
     }
-`
+`;
 
 const PostContent = styled.div`
     width: 525px;
@@ -299,11 +300,11 @@ const PostContent = styled.div`
     flex-direction: column;
 
     .profile-name {
-        font-family: 'Lato';
+        font-family: "Lato";
         font-style: normal;
         font-weight: 400;
         font-size: 19px;
-        color: #FFFFFF;
+        color: #ffffff;
 
         display: flex;
         align-items: center;
@@ -333,12 +334,12 @@ const PostContent = styled.div`
     }
 
     .article-text {
-        font-family: 'Lato';
+        font-family: "Lato";
         font-style: normal;
         font-weight: 400;
         font-size: 17px;
         line-height: 20px;
-        color: #B7B7B7;
+        color: #b7b7b7;
     }
 
     @media (max-width: 630px) {
@@ -359,7 +360,7 @@ const PostContent = styled.div`
             line-height: 18px;
         }
     }
-`
+`;
 
 const Snippet = styled.div`
     width: 503px;
@@ -371,7 +372,7 @@ const Snippet = styled.div`
 
     box-sizing: border-box;
     border-radius: 11px;
-    border: 1px solid #4D4D4D;
+    border: 1px solid #4d4d4d;
 
     cursor: pointer;
 
@@ -387,27 +388,27 @@ const Snippet = styled.div`
         padding: 23px 19px;
 
         .title {
-            font-family: 'Lato';
+            font-family: "Lato";
             font-style: normal;
             font-weight: 400;
             font-size: 16px;
             line-height: 19px;
 
-            color: #CECECE;
+            color: #cecece;
         }
 
         .description {
-            font-family: 'Lato';
+            font-family: "Lato";
             font-style: normal;
             font-weight: 400;
             font-size: 11px;
             line-height: 13px;
 
-            color: #9B9595;
+            color: #9b9595;
         }
 
         .link {
-            font-family: 'Lato';
+            font-family: "Lato";
             font-style: normal;
             font-weight: 400;
             font-size: 11px;
@@ -416,6 +417,7 @@ const Snippet = styled.div`
             color: #CECECE;
 
             word-break: break-all;
+
         }
     }
 
@@ -434,17 +436,17 @@ const Snippet = styled.div`
 
         .snippet-data {
             padding: 5px 9px;
-            
+
             .title {
                 font-size: 11px;
                 line-height: 13px;
             }
-            
+
             .description {
                 font-size: 9px;
                 line-height: 11px;
             }
-            
+
             .link {
                 font-size: 9px;
                 line-height: 11px;
@@ -456,7 +458,7 @@ const Snippet = styled.div`
             height: 113px;
         }
     }
-`
+`;
 
 const StyledModal = styled(Modal)`
     p {
@@ -532,4 +534,13 @@ const modalStyles = {
     }
 }
 
-export { PostsContainer, Publish, Post, ImageLikes, PostContent, Snippet, StyledModal, modalStyles }
+const StyledHashtag = styled.b`
+    font-weight: 700;
+    color: #ffffff;
+    &:hover {
+        cursor: pointer;
+    }
+`;
+
+export { PostsContainer, Publish, Post, ImageLikes, PostContent, Snippet, StyledHashtag,StyledModal, modalStyles }
+

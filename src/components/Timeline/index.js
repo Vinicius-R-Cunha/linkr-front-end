@@ -6,7 +6,8 @@ import {
     PostContent,
     Snippet,
     StyledModal,
-    modalStyles
+    modalStyles,
+    StyledHashtag
 } from "./style";
 import { FiHeart } from "react-icons/fi";
 import { AiTwotoneEdit } from "react-icons/ai";
@@ -17,10 +18,11 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "../../contexts/UserContext";
+import ReactHashtag from "@mdnm/react-hashtag";
 import { useNavigate } from "react-router-dom";
 
 StyledModal.setAppElement(document.getElementById('#home'));
-
+  
 export default function Timeline() {
     const { token } = useContext(UserContext);
     const navigate = useNavigate();
@@ -135,6 +137,10 @@ export default function Timeline() {
             closeModal();
         }
         setLoading(false);
+      
+    function handleHashtagClick(e) {
+        const hashtag = e.target.innerText;
+        navigate(`/hashtag/${hashtag.replace("#", "")}`);
     }
 
     return (
@@ -167,84 +173,115 @@ export default function Timeline() {
                     <form className="inputs">
                         <p className="inputs-title">
                             What are you going to share today?
-                        </p>
-                        <input
-                            disabled={loading}
-                            className="input-link"
-                            type="url"
-                            required
-                            placeholder="http://..."
-                            onChange={(e) => setLink(e.target.value)}
-                            value={link}
-                        />
-                        <textarea
-                            disabled={loading}
-                            id="story"
-                            name="story"
-                            className="input-article"
-                            placeholder="Awesome article about #javascript"
-                            onChange={(e) => setArticle(e.target.value)}
-                            value={article}
-                        ></textarea>
-                        {publishError && (
-                            <p className="error-message">
-                                Houve um erro ao publicar seu link
                             </p>
-                        )}
-                        <button
-                            disabled={loading}
-                            className={loading ? "disabled" : ""}
-                            onClick={(e) => handleSubmit(e)}
-                        >
-                            {loading ? "Publishing..." : "Publish"}
-                        </button>
-                    </form>
-                </Publish>
+                            <input
+                                disabled={loading}
+                                className="input-link"
+                                type="url"
+                                placeholder="http://..."
+                                onChange={(e) => setLink(e.target.value)}
+                                value={link}
+                            />
+                            <textarea
+                                disabled={loading}
+                                id="story"
+                                name="story"
+                                className="input-article"
+                                placeholder="Awesome article about #javascript"
+                                onChange={(e) => setArticle(e.target.value)}
+                                value={article}
+                            ></textarea>
+                            {publishError && (
+                                <p className="error-message">
+                                    Houve um erro ao publicar seu link
+                                </p>
+                            )}
+                            <button
+                                disabled={loading}
+                                className={loading ? "disabled" : ""}
+                                onClick={(e) => handleSubmit(e)}
+                            >
+                                {loading ? "Publishing..." : "Publish"}
+                            </button>
+                        </form>
+                    </Publish>
 
-                {postsState === 'full' && postsArray.map(post => {
-                    return (
-                        <Post key={post.id}>
-                            <ImageLikes>
-                                <img className="profile-image" src={post.image} alt="" />
-                                <FiHeart className="like-icon" />
-                                <p className="likes-quantity">13 likes</p>
-                            </ImageLikes>
-                            <PostContent>
-                                <div className="profile-name">
-                                    {post.name}
-                                    <div className="remove-edit-icons">
-                                        <AiTwotoneEdit className="edit-icon" />
-                                        <FaTrashAlt onClick={() => {
-                                            openModal()
-                                            setPostId(post.id)
-                                        }
-                                        } className="remove-icon" />
-                                    </div>
-                                </div>
-                                <p className="article-text">{post.text}</p>
-                                <Snippet onClick={() => handleClick(post.url)}>
-                                    <div className="snippet-data">
-                                        <p className="title">{post.title}</p>
-                                        <p className="description">{post.description}</p>
-                                        <p className="link">{post.url}</p>
-                                    </div>
-                                    <img src={post.linkImage === '' ? temp : post.linkImage} alt="" />
-                                </Snippet>
-                            </PostContent>
-                        </Post>
-                    )
-                })}
-
-                {postsState === 'loading' && <p className="loading-message">Loading...</p>}
-
-                {postsState === 'empty' && <p className="get-error-message">There are no posts yet</p>}
-
-                {postsState === "error" &&
-                    <p className="get-error-message">
-                        An error occured while trying to fetch the posts,
-                        please refresh the page
-                    </p>}
-            </PostsContainer >
-        </ >
-    );
-}
+                    {postsState === "full" &&
+                        postsArray.map((post) => {
+                            return (
+                                <Post key={post.id}>
+                                    <ImageLikes>
+                                        <img
+                                            className="profile-image"
+                                            src={post.image}
+                                            alt=""
+                                        />
+                                        <FiHeart className="like-icon" />
+                                        <p className="likes-quantity">
+                                            13 likes
+                                        </p>
+                                    </ImageLikes>
+                                    <PostContent>
+                                        <div className="profile-name">
+                                            {post.name}
+                                            <div className="remove-edit-icons">
+                                              <AiTwotoneEdit className="edit-icon" />
+                                              <FaTrashAlt onClick={() => {
+                                                  openModal()
+                                                  setPostId(post.id)
+                                              }
+                                              } className="remove-icon" />
+                                            </div>  
+                                        </div>
+                                        <p className="article-text">
+                                            <ReactHashtag
+                                                renderHashtag={(value) => (
+                                                    <StyledHashtag
+                                                        onClick={
+                                                            handleHashtagClick
+                                                        }
+                                                        key={post.id}
+                                                    >
+                                                        {value}
+                                                    </StyledHashtag>
+                                                )}
+                                            >
+                                                {post.text}
+                                            </ReactHashtag>
+                                        </p>
+                                        <Snippet
+                                            onClick={() =>
+                                                handleClick(post.url)
+                                            }
+                                        >
+                                            <div className="snippet-data">
+                                                <p className="title">{post.title}</p>
+                                                <p className="description">{post.description}</p>
+                                                <p className="link">
+                                                    {post.url}
+                                                </p>
+                                            </div>
+                                            <img src={post.linkImage === '' ? temp : post.linkImage} alt="" />
+                                        </Snippet>
+                                    </PostContent>
+                                </Post>
+                            );
+                        })}
+                    {postsState === "loading" && (
+                        <p className="loading-message">Loading...</p>
+                    )}
+                    {postsState === "empty" && (
+                        <p className="get-error-message">
+                            There are no posts yet
+                        </p>
+                    )}
+                    {postsState === "error" && (
+                        <p className="get-error-message">
+                            An error occured while trying to fetch the posts,
+                            please refresh the page
+                        </p>}
+                    </PostsContainer >
+                 </ >
+             );
+        }
+                        
