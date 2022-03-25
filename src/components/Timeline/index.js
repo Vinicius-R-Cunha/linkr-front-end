@@ -267,15 +267,15 @@ export default function Timeline() {
                                 </Post>
                             );
                         })}
-                    {postsState === "loading" && (
+                    {postsState === "loading" && 
                         <p className="loading-message">Loading...</p>
-                    )}
-                    {postsState === "empty" && (
+                    }
+                    {postsState === "empty" && 
                         <p className="get-error-message">
                             There are no posts yet
                         </p>
                     )}
-                    {postsState === "error" && (
+                    {postsState === "error" && 
                         <p className="get-error-message">
                             An error occured while trying to fetch the posts,
                             please refresh the page
