@@ -48,7 +48,12 @@ export default function Timeline({ showPublish, route, mainTitle }) {
     async function renderPage(route) {
         try {
             const posts = await axios.get(
-                process.env.REACT_APP_BACK_URL + route
+                process.env.REACT_APP_BACK_URL + route,
+                {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
+                }
             );
 
             setPostsArray(posts.data);
