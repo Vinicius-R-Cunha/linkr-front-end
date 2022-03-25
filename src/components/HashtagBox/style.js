@@ -1,15 +1,18 @@
 import styled from "styled-components";
 
 const Container = styled.aside`
-  display: ${(props) => (props.none ? "flex" : "none")};
-  flex-direction: column;
-  min-height: 400px;
-  width: 300px;
-  position: fixed;
-  left: 877px;
-  top: 232px;
-  border-radius: 16px;
-  background-color: #171717;
+    display: ${(props) => (props.none ? "flex" : "none")};
+    flex-direction: column;
+
+    height: 420px;
+    width: 300px;
+    
+    margin-top: 85px;
+    position: sticky;
+    top: 85px;
+
+    border-radius: 16px;
+    background-color: #171717;
 `;
 
 const Title = styled.h2`

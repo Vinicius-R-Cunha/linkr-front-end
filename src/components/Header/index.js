@@ -16,7 +16,6 @@ export default function Header() {
 
     async function signOut(){
         try{ 
-        
             await api.signOut(token);
             localStorage.removeItem("token");
             setShowLogout(false);

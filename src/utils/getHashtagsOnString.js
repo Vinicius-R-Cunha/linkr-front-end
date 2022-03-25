@@ -1,0 +1,1 @@
+function getHashtagsOnString(text) {}
