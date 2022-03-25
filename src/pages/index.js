@@ -1,3 +1,4 @@
-import Home from "./Home";
+import Home from "./Home/Home";
+import HashtagTimeline from "./HashtagTimeline";
 
-export { Home };
+export { Home, HashtagTimeline };
