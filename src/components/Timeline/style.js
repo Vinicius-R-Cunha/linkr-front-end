@@ -1,19 +1,6 @@
 import styled from "styled-components";
 
-const TimelineContainer = styled.main`
-    width: 100%;
-
-    padding-top: 72px;
-    margin-top: 78px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    @media (max-width: 630px) {
-        margin-top: 22px;
-    }
-`;
+import Modal from "react-modal";
 
 const PostsContainer = styled.div`
     width: 611px;
@@ -21,6 +8,8 @@ const PostsContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    margin-right: 25px;
 
     .timeline-title {
         width: 100%;
@@ -44,6 +33,10 @@ const PostsContainer = styled.div`
         text-align: center;
 
         color: #ffffff;
+    }
+
+    @media (max-width: 1200px) {
+        margin-right: 0;
     }
 
     @media (max-width: 630px) {
@@ -248,7 +241,7 @@ const Post = styled.div`
     margin-bottom: 16px;
 
     background: #171717;
-
+    
     border-radius: 16px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
@@ -313,7 +306,31 @@ const PostContent = styled.div`
         font-size: 19px;
         color: #ffffff;
 
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
         margin-bottom: 9px;
+
+        .remove-edit-icons {
+            display: flex;
+            align-items: center;
+            
+            padding-right: 22px;
+            
+            .edit-icon {
+                font-size: 18px;
+
+                cursor: pointer;
+            }
+            
+            .remove-icon {
+                font-size: 16px;
+                margin-left: 8px;
+                
+                cursor: pointer;
+            }
+        }
     }
 
     .article-text {
@@ -332,6 +349,10 @@ const PostContent = styled.div`
 
         .profile-name {
             font-size: 17px;
+
+            .remove-edit-icons {
+                padding-right: 0;
+            }
         }
 
         .article-text {
@@ -393,15 +414,20 @@ const Snippet = styled.div`
             font-size: 11px;
             line-height: 13px;
 
-            color: #cecece;
+            color: #CECECE;
+
+            word-break: break-all;
+
         }
     }
 
     img {
         width: 153.44px;
-        height: 155px;
+        height: 153px;
 
         border-radius: 0px 12px 13px 0px;
+
+        object-fit: cover;
     }
 
     @media (max-width: 630px) {
@@ -429,10 +455,84 @@ const Snippet = styled.div`
 
         img {
             width: 95px;
-            height: 115px;
+            height: 113px;
         }
     }
 `;
+
+const StyledModal = styled(Modal)`
+    p {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 34px;
+        line-height: 41px;
+        text-align: center;
+        color: #FFFFFF;
+
+        margin: 39px 0;
+    }
+
+    div {
+        display: flex;
+        gap: 25px;
+
+        button {
+            all: unset;
+
+            width: 134px;
+            height: 37px;
+
+            font-family: 'Lato';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 18px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            :first-child {
+                color: #1877F2;
+                background: #FFFFFF;
+            }
+
+            :last-child {
+                color: #FFFFFF;
+                background: #1877F2;
+            }
+        }
+    }
+`
+
+const modalStyles = {
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.9)'
+    },
+    content: {
+        width: '597px',
+        height: '262px',
+        position: "fixed",
+        margin: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        background: '#333333',
+        borderRadius: '50px'
+    }
+}
 
 const StyledHashtag = styled.b`
     font-weight: 700;
@@ -442,13 +542,5 @@ const StyledHashtag = styled.b`
     }
 `;
 
-export {
-    TimelineContainer,
-    PostsContainer,
-    Publish,
-    Post,
-    ImageLikes,
-    PostContent,
-    Snippet,
-    StyledHashtag,
-};
+export { PostsContainer, Publish, Post, ImageLikes, PostContent, Snippet, StyledHashtag,StyledModal, modalStyles }
+
