@@ -1,10 +1,20 @@
-import { HeaderDiv, Debounce, OverLay } from "./style";
-import { useState, useEffect } from "react";
+import {
+  HeaderDiv,
+  OverLay,
+  Debounce,
+  Img,
+  SearchedUser,
+  SearchBar,
+  LinkStyle,
+} from "./style";
+import { useState, useEffect, useContext } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { HiOutlineSearch } from "react-icons/hi";
 import api from "../../services/api";
+import { useNavigate } from "react-router";
 import UserContext from "../../contexts/UserContext";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [showLogout, setShowLogout] = useState(false);
@@ -64,8 +74,35 @@ export default function Header() {
           />
           <HiOutlineSearch className="search-icon" />
         </div>
-
-        <div className="searchContainer"></div>
+        {filteredItems === undefined || search.length <= 2 ? null : (
+          <SearchBar>
+            {filteredItems.length === 0 ? (
+              <h2>Nenhum usuário encontrado</h2>
+            ) : (
+              filteredItems
+                .sort(function (x, y) {
+                  return x.isFollowingLoggedUser === y.isFollowingLoggedUser
+                    ? 0
+                    : x.isFollowingLoggedUser
+                    ? -1
+                    : 1;
+                })
+                .map((user) => (
+                  <LinkStyle
+                    onClick={() => setSearch("")}
+                    to={`/users/${user.id}`}
+                  >
+                    <SearchedUser>
+                      <Img src={user.image} alt="" key={user.id} />
+                      <h3>{user.name}</h3>{" "}
+                      {user.isFollowingLoggedUser ? <h4>• following</h4> : null}
+                    </SearchedUser>
+                  </LinkStyle>
+                ))
+            )}
+          </SearchBar>
+        )}
+        {/* <div className="searchContainer"></div> */}
       </div>
       <div className="icon-image">
         {showLogout && (

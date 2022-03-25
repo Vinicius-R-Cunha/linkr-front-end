@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { DebounceInput } from "react-debounce-input";
+import { Link } from "react-router-dom";
 
+const LinkStyle = styled(Link)`
+  all: unset;
+`;
 const HeaderDiv = styled.div`
   width: 100%;
   height: 72px;
@@ -10,10 +14,10 @@ const HeaderDiv = styled.div`
   align-items: center;
 
   background-color: #151515;
-
+  z-index:10;
   position: fixed;
   top: 0;
-  z-index: 10;
+
 
   .logo-name {
     font-family: "Passion One", cursive;
@@ -35,7 +39,7 @@ const HeaderDiv = styled.div`
       display: flex;
       align-items: center;
 
-      z-index: 1;
+      z-index: 10;
 
       input {
         all: unset;
@@ -198,4 +202,78 @@ const Debounce = styled(DebounceInput)`
   }
 `;
 
-export { HeaderDiv, OverLay, Debounce };
+const SearchBar = styled.div`
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+  width: 42.2vw;
+  max-height: 400px;
+  position: absolute;
+  top: 38px;
+  padding-top: 24px;
+  padding-left: 17px;
+  background-color: #e7e7e7;
+  border-radius: 0 0 8px 8px;
+  overflow-y: auto;
+  overflow-x: auto;
+  @media (max-width: 620px) {
+    width: 95vw;
+    position: absolute;
+    margin-top: -10px;
+    top: 147px;
+    z-index: 5;
+  }
+
+  &::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    border: 2px solid #8f96a3;
+    background-color: #2f3237;
+  }
+  h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    padding: 20px 20px 25px 3px;
+    color: #515151;
+  }
+  h3 {
+    padding-top: 14px;
+    padding-left: 12px;
+    color: #515151;
+    font-weight: 400;
+    font-size: 19px;
+  }
+  h4 {
+    padding-top: 14px;
+    padding-left: 8px;
+    color: #c5c5c5;
+    font-weight: 400;
+    font-size: 19px;
+  }
+`;
+
+const SearchedUser = styled.div`
+  display: flex;
+  padding-bottom: 10px;
+`;
+const Img = styled.img`
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+`;
+
+export {
+  HeaderDiv,
+  OverLay,
+  Debounce,
+  Img,
+  SearchedUser,
+  SearchBar,
+  LinkStyle,
+};
