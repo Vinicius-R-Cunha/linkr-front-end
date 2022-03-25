@@ -14,7 +14,6 @@ import api from "../../services/api";
 import { useNavigate } from "react-router";
 import UserContext from "../../contexts/UserContext";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 export default function Header() {
   const [showLogout, setShowLogout] = useState(false);
@@ -47,7 +46,7 @@ export default function Header() {
     promise.catch((error) => {
       console.log(error);
     });
-  }, []);
+  }, [token]);
 
   const getFilteredItems = (query, users) => {
     if (!query) {
@@ -57,7 +56,6 @@ export default function Header() {
   };
 
   const filteredItems = getFilteredItems(search, users);
-  console.log(filteredItems);
   return (
     <HeaderDiv>
       <p onClick={() => navigate("/timeline")} className="logo-name">
@@ -84,8 +82,8 @@ export default function Header() {
                   return x.isFollowingLoggedUser === y.isFollowingLoggedUser
                     ? 0
                     : x.isFollowingLoggedUser
-                    ? -1
-                    : 1;
+                      ? -1
+                      : 1;
                 })
                 .map((user) => (
                   <LinkStyle
@@ -102,7 +100,6 @@ export default function Header() {
             )}
           </SearchBar>
         )}
-        {/* <div className="searchContainer"></div> */}
       </div>
       <div className="icon-image">
         {showLogout && (

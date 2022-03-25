@@ -10,11 +10,10 @@ import {
   StyledHashtag,
 } from "./style";
 import { FiHeart } from "react-icons/fi";
-import temp2 from "../../assets/snippet-temp.png";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
 import temp from "../../assets/perfil-temp.png";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -37,21 +36,45 @@ export default function Timeline({ showPublish, route, mainTitle }) {
   const [loading, setLoading] = useState(false);
   const [publishError, setPublishError] = useState(false);
   const [postsState, setPostsState] = useState("loading");
-
-  async function getUser() {
-    try {
-      const response = await api.getUserInfos(token);
-
-      setImage(response?.data.image);
-      setName(response?.data.name);
-      setId(response?.data.id);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [postId, setPostId] = useState();
+
+  const renderPage = useCallback(
+    async (route) => {
+      try {
+        const posts = await axios.get(process.env.REACT_APP_BACK_URL + route, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+
+        setPostsArray(posts.data);
+
+        if (posts?.data.length === 0) {
+          setPostsState("empty");
+        } else {
+          setPostsState("full");
+        }
+      } catch (error) {
+        setPostsState("error");
+        console.log(error.response);
+      }
+    }, [token]
+  );
+
+  const getUser = useCallback(
+    async () => {
+      try {
+        const response = await api.getUserInfos(token);
+
+        setImage(response?.data.image);
+        setName(response?.data.name);
+        setId(response?.data.id);
+      } catch (error) {
+        console.log(error);
+      }
+    }, [setId, setImage, setName, token]
+  );
 
   useEffect(() => {
     if (token) {
@@ -60,28 +83,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
     } else {
       navigate("/");
     }
-  }, [navigate, token, route]);
-
-  async function renderPage(route) {
-    try {
-      const posts = await axios.get(process.env.REACT_APP_BACK_URL + route, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
-
-      setPostsArray(posts.data);
-
-      if (posts?.data.length === 0) {
-        setPostsState("empty");
-      } else {
-        setPostsState("full");
-      }
-    } catch (error) {
-      setPostsState("error");
-      console.log(error.response);
-    }
-  }
+  }, [navigate, renderPage, token, route, getUser]);
 
   function handleClick(url) {
     window.open(url);
