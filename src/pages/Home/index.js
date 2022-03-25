@@ -5,9 +5,9 @@ import { HomeContainer } from "./style";
 
 export default function Home() {
     return (
-        <HomeContainer id="home">
+        <HomeContainer>
             <Header />
-            <Timeline />
+            <Timeline showPublish={true} route="posts" mainTitle="timeline" />
             <HashtagBox />
         </HomeContainer>
     );

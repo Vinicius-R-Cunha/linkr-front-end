@@ -7,7 +7,7 @@ import {
     Snippet,
     StyledModal,
     modalStyles,
-    StyledHashtag
+    StyledHashtag,
 } from "./style";
 import { FiHeart } from "react-icons/fi";
 import { AiTwotoneEdit } from "react-icons/ai";
@@ -21,9 +21,9 @@ import UserContext from "../../contexts/UserContext";
 import ReactHashtag from "@mdnm/react-hashtag";
 import { useNavigate } from "react-router-dom";
 
-StyledModal.setAppElement(document.getElementById('#home'));
+StyledModal.setAppElement(document.getElementById("#home"));
 
-export default function Timeline() {
+export default function Timeline({ showPublish, route, mainTitle }) {
     const { token } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -39,25 +39,27 @@ export default function Timeline() {
 
     useEffect(() => {
         if (token) {
-            renderPage();
+            renderPage(route);
         } else {
-            navigate('/');
+            navigate("/");
         }
-    }, [navigate, token]);
+    }, [navigate, token, route]);
 
-    async function renderPage() {
+    async function renderPage(route) {
         try {
-            const posts = await axios.get(process.env.REACT_APP_BACK_URL + 'posts');
+            const posts = await axios.get(
+                process.env.REACT_APP_BACK_URL + route
+            );
 
             setPostsArray(posts.data);
 
             if (posts?.data.length === 0) {
-                setPostsState('empty');
+                setPostsState("empty");
             } else {
                 setPostsState("full");
             }
         } catch (error) {
-            setPostsState('error');
+            setPostsState("error");
             console.log(error.response);
         }
     }
@@ -82,7 +84,7 @@ export default function Timeline() {
                         },
                     }
                 );
-                renderPage();
+                renderPage(route);
                 setLink("");
                 setArticle("");
             } catch (error) {
@@ -124,7 +126,7 @@ export default function Timeline() {
                 }
             );
             closeModal();
-            renderPage();
+            renderPage(route);
         } catch (error) {
             toast.error("Could not delete this post", {
                 position: "top-center",
@@ -147,7 +149,7 @@ export default function Timeline() {
     return (
         <>
             <PostsContainer>
-                <h1 className="timeline-title">timeline</h1>
+                <h1 className="timeline-title">{mainTitle}</h1>
 
                 <StyledModal
                     isOpen={modalIsOpen}
@@ -155,57 +157,68 @@ export default function Timeline() {
                     onRequestClose={closeModal}
                     style={modalStyles}
                 >
-                    {loading ? <p>Loading...</p> :
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : (
                         <>
-                            <p>Are you sure you want <br /> to delete this post?</p>
+                            <p>
+                                Are you sure you want <br /> to delete this
+                                post?
+                            </p>
                             <div>
-                                <button onClick={closeModal}>No, go back</button>
-                                <button onClick={handleDeletion}>Yes, delete it</button>
+                                <button onClick={closeModal}>
+                                    No, go back
+                                </button>
+                                <button onClick={handleDeletion}>
+                                    Yes, delete it
+                                </button>
                             </div>
                         </>
-                    }
+                    )}
                 </StyledModal>
 
-                <Publish>
-                    <ImageLikes className="image-likes-publish">
-                        <img className="profile-image" src={temp} alt="" />
-                    </ImageLikes>
-                    <ToastContainer />
-                    <form className="inputs">
-                        <p className="inputs-title">
-                            What are you going to share today?
-                        </p>
-                        <input
-                            disabled={loading}
-                            className="input-link"
-                            type="url"
-                            placeholder="http://..."
-                            onChange={(e) => setLink(e.target.value)}
-                            value={link}
-                        />
-                        <textarea
-                            disabled={loading}
-                            id="story"
-                            name="story"
-                            className="input-article"
-                            placeholder="Awesome article about #javascript"
-                            onChange={(e) => setArticle(e.target.value)}
-                            value={article}
-                        ></textarea>
-                        {publishError && (
-                            <p className="error-message">
-                                Houve um erro ao publicar seu link
+                {showPublish && (
+                    <Publish>
+                        <ImageLikes className="image-likes-publish">
+                            <img className="profile-image" src={temp} alt="" />
+                        </ImageLikes>
+                        <ToastContainer />
+                        <form className="inputs">
+                            <p className="inputs-title">
+                                What are you going to share today?
                             </p>
-                        )}
-                        <button
-                            disabled={loading}
-                            className={loading ? "disabled" : ""}
-                            onClick={(e) => handleSubmit(e)}
-                        >
-                            {loading ? "Publishing..." : "Publish"}
-                        </button>
-                    </form>
-                </Publish>
+                            <input
+                                disabled={loading}
+                                className="input-link"
+                                type="url"
+                                placeholder="http://..."
+                                onChange={(e) => setLink(e.target.value)}
+                                value={link}
+                            />
+                            <textarea
+                                disabled={loading}
+                                id="story"
+                                name="story"
+                                className="input-article"
+                                placeholder="Awesome article about #javascript"
+                                onChange={(e) => setArticle(e.target.value)}
+                                value={article}
+                            ></textarea>
+                            {publishError && (
+                                <p className="error-message">
+                                    Houve um erro ao publicar seu link
+                                </p>
+                            )}
+                            <button
+                                disabled={loading}
+                                className={loading ? "disabled" : ""}
+                                onClick={(e) => handleSubmit(e)}
+                            >
+                                {loading ? "Publishing..." : "Publish"}
+                            </button>
+                        </form>
+                    </Publish>
+                )}
 
                 {postsState === "full" &&
                     postsArray.map((post) => {
@@ -218,29 +231,27 @@ export default function Timeline() {
                                         alt=""
                                     />
                                     <FiHeart className="like-icon" />
-                                    <p className="likes-quantity">
-                                        13 likes
-                                    </p>
+                                    <p className="likes-quantity">13 likes</p>
                                 </ImageLikes>
                                 <PostContent>
                                     <div className="profile-name">
                                         {post.name}
                                         <div className="remove-edit-icons">
                                             <AiTwotoneEdit className="edit-icon" />
-                                            <FaTrashAlt onClick={() => {
-                                                openModal()
-                                                setPostId(post.id)
-                                            }
-                                            } className="remove-icon" />
+                                            <FaTrashAlt
+                                                onClick={() => {
+                                                    openModal();
+                                                    setPostId(post.id);
+                                                }}
+                                                className="remove-icon"
+                                            />
                                         </div>
                                     </div>
                                     <p className="article-text">
                                         <ReactHashtag
                                             renderHashtag={(value) => (
                                                 <StyledHashtag
-                                                    onClick={
-                                                        handleHashtagClick
-                                                    }
+                                                    onClick={handleHashtagClick}
                                                     key={post.id}
                                                 >
                                                     {value}
@@ -251,38 +262,43 @@ export default function Timeline() {
                                         </ReactHashtag>
                                     </p>
                                     <Snippet
-                                        onClick={() =>
-                                            handleClick(post.url)
-                                        }
+                                        onClick={() => handleClick(post.url)}
                                     >
                                         <div className="snippet-data">
-                                            <p className="title">{post.title}</p>
-                                            <p className="description">{post.description}</p>
-                                            <p className="link">
-                                                {post.url}
+                                            <p className="title">
+                                                {post.title}
                                             </p>
+                                            <p className="description">
+                                                {post.description}
+                                            </p>
+                                            <p className="link">{post.url}</p>
                                         </div>
-                                        <img src={post.linkImage === '' ? temp : post.linkImage} alt="" />
+                                        <img
+                                            src={
+                                                post.linkImage === ""
+                                                    ? temp
+                                                    : post.linkImage
+                                            }
+                                            alt=""
+                                        />
                                     </Snippet>
                                 </PostContent>
                             </Post>
                         );
                     })}
-                {postsState === "loading" &&
+                {postsState === "loading" && (
                     <p className="loading-message">Loading...</p>
-                }
-                {postsState === "empty" &&
+                )}
+                {postsState === "empty" && (
+                    <p className="get-error-message">There are no posts yet</p>
+                )}
+                {postsState === "error" && (
                     <p className="get-error-message">
-                        There are no posts yet
+                        An error occured while trying to fetch the posts, please
+                        refresh the page
                     </p>
-                }
-                {postsState === "error" &&
-                    <p className="get-error-message">
-                        An error occured while trying to fetch the posts,
-                        please refresh the page
-                    </p>}
-            </PostsContainer >
-        </ >
+                )}
+            </PostsContainer>
+        </>
     );
 }
-
