@@ -10,7 +10,11 @@ export default function HashtagTimeline() {
     return (
         <Container>
             <Header />
-            <Timeline showPublish={false} route={"posts"} mainTitle={hashtag} />
+            <Timeline
+                showPublish={false}
+                route={`hashtag/${hashtag}`}
+                mainTitle={hashtag}
+            />
             <HashtagBox />
         </Container>
     );
