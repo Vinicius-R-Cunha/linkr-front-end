@@ -72,8 +72,8 @@ const DataContainer = styled.form`
   align-items: center;
 
   background-color: #333333;
-
   padding-top: 9%;
+  box-sizing: border-box;
   input {
     height: 9%;
     width: 80%;
