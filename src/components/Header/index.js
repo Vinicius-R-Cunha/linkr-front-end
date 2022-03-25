@@ -14,13 +14,13 @@ import api from "../../services/api";
 import { useNavigate } from "react-router";
 import UserContext from "../../contexts/UserContext";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [showLogout, setShowLogout] = useState(false);
   const [users, setUsers] = useState();
   const [search, setSearch] = useState();
-  const token = localStorage.getItem("token");
-  const { image } = useContext(UserContext);
+  const { token, image } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -56,6 +56,7 @@ export default function Header() {
   };
 
   const filteredItems = getFilteredItems(search, users);
+
   return (
     <HeaderDiv>
       <p onClick={() => navigate("/timeline")} className="logo-name">
@@ -82,8 +83,8 @@ export default function Header() {
                   return x.isFollowingLoggedUser === y.isFollowingLoggedUser
                     ? 0
                     : x.isFollowingLoggedUser
-                      ? -1
-                      : 1;
+                    ? -1
+                    : 1;
                 })
                 .map((user) => (
                   <LinkStyle

@@ -47,7 +47,8 @@ export default function Timeline({ showPublish, route, mainTitle }) {
             authorization: `Bearer ${token}`,
           },
         });
-
+        console.log(route);
+        console.log(posts.data);
         setPostsArray(posts.data);
 
         if (posts?.data.length === 0) {
@@ -59,22 +60,21 @@ export default function Timeline({ showPublish, route, mainTitle }) {
         setPostsState("error");
         console.log(error.response);
       }
-    }, [token]
+    },
+    [token]
   );
 
-  const getUser = useCallback(
-    async () => {
-      try {
-        const response = await api.getUserInfos(token);
+  const getUser = useCallback(async () => {
+    try {
+      const response = await api.getUserInfos(token);
 
-        setImage(response?.data.image);
-        setName(response?.data.name);
-        setId(response?.data.id);
-      } catch (error) {
-        console.log(error);
-      }
-    }, [setId, setImage, setName, token]
-  );
+      setImage(response?.data.image);
+      setName(response?.data.name);
+      setId(response?.data.id);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [setId, setImage, setName, token]);
 
   useEffect(() => {
     if (token) {
