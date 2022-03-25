@@ -14,21 +14,21 @@ export default function Header() {
 
     const [showLogout, setShowLogout] = useState(false);
 
-    async function signOut(){
-        try{ 
+    async function signOut() {
+        try {
             await api.signOut(token);
             localStorage.removeItem("token");
             setShowLogout(false);
             navigate('/');
 
-        } catch(error) {
+        } catch (error) {
             console.log(error);
         };
     };
 
     return (
         <HeaderDiv>
-            <p className="logo-name">linkr</p>
+            <p onClick={() => navigate('/timeline')} className="logo-name">linkr</p>
             <div className="input-icon">
                 <input type="text" placeholder="Search for people" />
                 <HiOutlineSearch className="search-icon" />
@@ -37,17 +37,17 @@ export default function Header() {
                 {showLogout &&
                     <>
 
-                    <BsChevronUp className="chevron-icon" onClick={() => setShowLogout(false)} />
+                        <BsChevronUp className="chevron-icon" onClick={() => setShowLogout(false)} />
                         <div onClick={signOut} className="logout-button">Logout</div>
-                        <OverLay onClick={() => setShowLogout(false)}/>
+                        <OverLay onClick={() => setShowLogout(false)} />
                     </>
                 }
                 {!showLogout &&
-                   <BsChevronDown className="chevron-icon" onClick={() => setShowLogout(true)} />
+                    <BsChevronDown className="chevron-icon" onClick={() => setShowLogout(true)} />
                 }
-                
+
                 <img src={image} alt="loading..." />
-                
+
             </div>
         </HeaderDiv>
     );

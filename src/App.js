@@ -13,13 +13,14 @@ export default function App() {
     const [token, setToken] = useState(tokenOnLocalStorage);
     const [image, setImage] = useState('');
     const [name, setName] = useState('');
+    const [id, setId] = useState(0);
 
     function setAndPersistToken(token) {
         setToken(token);
         localStorage.setItem("token", token);
     }
     return (
-        <UserContext.Provider value={{ token, setToken, setAndPersistToken, name, setName, image, setImage }}>
+        <UserContext.Provider value={{ token, setToken, setAndPersistToken, name, setName, image, setImage, id, setId }}>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Login />} />
