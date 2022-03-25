@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Timeline({ showPublish, route, mainTitle }) {
 
-    const { token, setImage, setName, image } = useContext(UserContext);
+    const { token, setImage, setName, image, id, setId } = useContext(UserContext);
 
     StyledModal.setAppElement(document.getElementById("#home"));
 
@@ -38,19 +38,20 @@ export default function Timeline({ showPublish, route, mainTitle }) {
     const [publishError, setPublishError] = useState(false);
     const [postsState, setPostsState] = useState("loading");
 
-    async function getUser(){
-        try{        
+    async function getUser() {
+        try {
             const response = await api.getUserInfos(token);
 
             setImage(response?.data.image);
             setName(response?.data.name);
+            setId(response?.data.id);
 
-        } catch(error) {
+        } catch (error) {
             console.log(error);
         };
     };
 
-    
+
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [postId, setPostId] = useState();
 
@@ -87,7 +88,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
             console.log(error.response);
         };
     };
-    
+
     function handleClick(url) {
         window.open(url);
     };
@@ -260,16 +261,17 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                                 <PostContent>
                                     <div className="profile-name">
                                         {post.name}
-                                        <div className="remove-edit-icons">
-                                            <AiTwotoneEdit className="edit-icon" />
-                                            <FaTrashAlt
-                                                onClick={() => {
-                                                    openModal();
-                                                    setPostId(post.id);
-                                                }}
-                                                className="remove-icon"
-                                            />
-                                        </div>
+                                        {id === post.userId &&
+                                            <div className="remove-edit-icons">
+                                                <AiTwotoneEdit className="edit-icon" />
+                                                <FaTrashAlt
+                                                    onClick={() => {
+                                                        openModal();
+                                                        setPostId(post.id);
+                                                    }}
+                                                    className="remove-icon"
+                                                />
+                                            </div>}
                                     </div>
                                     <p className="article-text">
                                         <ReactHashtag
