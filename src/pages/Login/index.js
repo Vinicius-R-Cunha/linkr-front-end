@@ -26,9 +26,9 @@ export default function Login() {
   function handleSubmit(e) {
 
     e.preventDefault();
-    
+
     setDisabledButton(true);
-    
+
     const emailNotEmpty = formData.email !== "";
     const passwordNotEmpty = formData.password !== "";
 
@@ -43,18 +43,18 @@ export default function Login() {
       });
       promise.catch(handleError);
     } else {
-      
+
       setError(true);
       setTimeout(() => setError(false), 2500);
       return;
     }
   }
-  
+
   function handleError() {
     setError(true);
     setTimeout(() => setError(false), 2500);
   }
-  
+
   return (
     <LoginContainer>
       <DescriptionContainer>
