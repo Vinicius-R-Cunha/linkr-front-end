@@ -274,7 +274,7 @@ export default function Timeline() {
                         <p className="get-error-message">
                             There are no posts yet
                         </p>
-                    )}
+                    }
                     {postsState === "error" && 
                         <p className="get-error-message">
                             An error occured while trying to fetch the posts,
