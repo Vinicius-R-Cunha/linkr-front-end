@@ -6,7 +6,6 @@ import api from "../../services/api";
 import { Container, HashtagList, Title, Divider } from "./style";
 
 export default function HashtagBox() {
-
     const { token } = useContext(UserContext);
 
     const navigate = useNavigate();
@@ -19,8 +18,8 @@ export default function HashtagBox() {
             setHashtags([...response.data]);
             setIsValidUser(true);
         });
-        promise.catch((error) => navigate('/'));
-    }, [isValidUser]);
+        promise.catch((error) => navigate("/"));
+    }, [navigate, token]);
 
     function handleHashtagClick(hashtag) {
         navigate(`/hashtag/${hashtag.replace("#", "")}`);
@@ -33,7 +32,11 @@ export default function HashtagBox() {
             <HashtagList>
                 {hashtags.map((hashtag) => (
                     <li key={hashtag.id}>
-                        <ReactHashtag onHashtagClick={(value) => handleHashtagClick(value)}>
+                        <ReactHashtag
+                            onHashtagClick={(value) =>
+                                handleHashtagClick(value)
+                            }
+                        >
                             {"#" + hashtag.name}
                         </ReactHashtag>
                     </li>
