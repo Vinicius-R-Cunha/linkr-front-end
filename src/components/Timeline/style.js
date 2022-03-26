@@ -120,7 +120,7 @@ const SearchBar = styled.div`
   width: 592.67px;
   max-height: 400px;
   position: absolute;
-  top: 188px;
+  top: 120px;
   box-sizing: border-box;
   padding-top: 24px;
   padding-left: 17px;
@@ -135,11 +135,10 @@ const SearchBar = styled.div`
     display: flex;
   }
 
-  @media (max-width: 620px) {
+  @media (max-width: 630px) {
     width: 97%;
     position: absolute;
     margin-top: -10px;
-    top: 143px;
     z-index: 1;
   }
 
@@ -684,29 +683,29 @@ const StyledModal = styled(Modal)`
 `;
 
 const modalStyles = {
-    overlay: {
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 100,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(255, 255, 255, 0.9)",
-    },
-    content: {
-        width: "597px",
-        height: "262px",
-        position: "fixed",
-        margin: "auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        background: "#333333",
-        borderRadius: "50px",
-    },
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 100,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+  },
+  content: {
+    width: "597px",
+    height: "262px",
+    position: "fixed",
+    margin: "auto",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    background: "#333333",
+    borderRadius: "50px",
+  },
 };
 
 const StyledHashtag = styled.b`
