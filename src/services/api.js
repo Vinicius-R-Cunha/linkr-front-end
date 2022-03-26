@@ -56,6 +56,18 @@ async function editOnePost(postId, body, token) {
     return promise;
 }
 
+async function publishPost(body, token) {
+    const config = createConfig(token);
+    const promise = await axios.post(`${BASE_URL}posts`, body, config);
+    return promise;
+}
+
+async function getUsers(token) {
+    const config = createConfig(token);
+    const promise = await axios.get(`${BASE_URL}users`, config);
+    return promise;
+}
+
 const api = {
     getHashtags,
     getUserInfos,
@@ -63,7 +75,9 @@ const api = {
     toggleLike,
     postHashtags,
     getPosts,
-    editOnePost
+    editOnePost,
+    publishPost,
+    getUsers
 };
 
 export default api;

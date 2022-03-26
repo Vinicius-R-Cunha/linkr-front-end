@@ -74,10 +74,15 @@ export default function PostContent({ post, renderPage, route, openModal, setPos
 
     return (
         <PostContentDiv>
+
             <div className="profile-name">
+
                 <p name={post?.userId}
-                    onClick={e => navigate(`/users/${e.target.attributes.name.value}`)}
-                >{post?.name} </p>
+                    onClick={e => {
+                        navigate(`/users/${e.target.attributes.name.value}`)
+                    }}
+                >{post?.name}</p>
+
                 {id === post?.userId && (
                     <div className="remove-edit-icons">
                         <AiTwotoneEdit
@@ -127,9 +132,7 @@ export default function PostContent({ post, renderPage, route, openModal, setPos
                 </p>
             )}
 
-            <Snippet
-                post={post}
-            />
+            <Snippet post={post} />
 
         </PostContentDiv>
     );
