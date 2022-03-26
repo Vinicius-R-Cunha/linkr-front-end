@@ -18,6 +18,7 @@ const HeaderDiv = styled.div`
   position: fixed;
   top: 0;
 
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   .logo-name {
     font-family: "Passion One", cursive;
@@ -40,27 +41,7 @@ const HeaderDiv = styled.div`
       align-items: center;
 
       z-index: 10;
-
-      input {
-        all: unset;
-
-        width: 563px;
-        height: 45px;
-
-        font-family: "Lato";
-        font-style: normal;
-        font-weight: 400;
-        font-size: 19px;
-        text-indent: 14px;
-
-        background: #ffffff;
-        border-radius: 8px;
-
-        ::placeholder {
-          color: #c6c6c6;
-        }
-      }
-
+  
       .search-icon {
         font-size: 23px;
         color: #c6c6c6;
@@ -156,7 +137,7 @@ const HeaderDiv = styled.div`
         }
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 960px) {
     .search {
       display: none;
     }

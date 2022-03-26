@@ -1,6 +1,7 @@
 import styled from "styled-components";
-
+import { DebounceInput } from "react-debounce-input";
 import Modal from "react-modal";
+import { Link } from "react-router-dom";
 
 const PostsContainer = styled.div`
   width: 611px;
@@ -10,6 +11,31 @@ const PostsContainer = styled.div`
   align-items: center;
 
   margin-right: 25px;
+
+  .input-icon-mobile {
+    width: 100%;
+    position: relative;
+
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 22px;
+
+    .search-icon-mobile {
+      font-size: 23px;
+      color: #c6c6c6;
+
+      position: absolute;
+      right: 20px;
+      z-index: 3;
+    }
+  }
 
   .timeline-title {
     width: 100%;
@@ -35,8 +61,12 @@ const PostsContainer = styled.div`
     color: #ffffff;
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 960px) {
     margin-right: 0;
+
+    .input-icon-mobile {
+      display: flex;
+    }
   }
 
   @media (max-width: 630px) {
@@ -54,6 +84,111 @@ const PostsContainer = styled.div`
       line-height: 25px;
     }
   }
+`;
+
+const Debounce = styled(DebounceInput)`
+  all: unset;
+
+  width: 97%;
+  height: 45px;
+
+  display: none;
+
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 19px;
+  text-indent: 14px;
+
+  background: #ffffff;
+  border-radius: 8px;
+  
+  z-index: 2;
+  ::placeholder {
+    color: #c6c6c6;
+  }
+
+  @media (max-width: 960px) {
+    display: flex;
+  }
+`;
+
+const SearchBar = styled.div`
+  display: none;
+  flex-direction: column;
+  width: 592.67px;
+  max-height: 400px;
+  position: absolute;
+  top: 188px;
+  box-sizing: border-box;
+  padding-top: 24px;
+  padding-left: 17px;
+  background-color: #e7e7e7;
+  border-radius: 0 0 8px 8px;
+  overflow-y: auto;
+  overflow-x: auto;
+  
+  cursor: default;
+
+  @media (max-width: 960px) {
+    display: flex;
+  }
+
+  @media (max-width: 620px) {
+    width: 97%;
+    position: absolute;
+    margin-top: -10px;
+    top: 143px;
+    z-index: 1;
+  }
+
+  &::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    border: 2px solid #8f96a3;
+    background-color: #2f3237;
+  }
+  h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    padding: 20px 20px 25px 3px;
+    color: #515151;
+  }
+  h3 {
+    padding-top: 14px;
+    padding-left: 12px;
+    color: #515151;
+    font-weight: 400;
+    font-size: 19px;
+  }
+  h4 {
+    padding-top: 14px;
+    padding-left: 8px;
+    color: #c5c5c5;
+    font-weight: 400;
+    font-size: 19px;
+  }
+`;
+
+const LinkStyle = styled(Link)`
+  all: unset;
+`;
+
+const SearchedUser = styled.div`
+  display: flex;
+  padding-bottom: 10px;
+`;
+
+const Img = styled.img`
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 `;
 
 const Publish = styled.div`
@@ -334,9 +469,7 @@ const PostContent = styled.div`
   }
 
   .edit-input {
-    all: unset;
-
-    width: 503px;
+    width: 502px;
     height: 44px;
 
     font-family: 'Lato';
@@ -345,13 +478,18 @@ const PostContent = styled.div`
     font-size: 14px;
     color: #4C4C4C;
 
-    background-color: #ffffff;
-
+    resize: none;
+    
     box-sizing: border-box;
     padding: 3px 7px 3px 7px;
-
-    border-radius: 7px;
+    
     border: 1px solid #4d4d4d;
+    background-color: #ffffff;
+    border-radius: 7px;
+
+    :focus {
+      outline: none;
+    }
   }
 
   .article-text {
@@ -374,6 +512,15 @@ const PostContent = styled.div`
       .remove-edit-icons {
         padding-right: 0;
       }
+    }
+
+    .edit-input {
+      width: 100%;
+      height: 47px;
+
+      font-size: 13px;
+    
+      padding: 10px;
     }
 
     .article-text {
@@ -573,4 +720,9 @@ export {
   StyledHashtag,
   StyledModal,
   modalStyles,
+  Debounce,
+  SearchBar,
+  LinkStyle,
+  SearchedUser,
+  Img
 };

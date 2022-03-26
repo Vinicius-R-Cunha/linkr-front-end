@@ -15,6 +15,7 @@ export default function App() {
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [id, setId] = useState(0);
+  const [users, setUsers] = useState();
 
   function setAndPersistToken(token) {
     setToken(token);
@@ -32,6 +33,8 @@ export default function App() {
         setImage,
         id,
         setId,
+        users,
+        setUsers
       }}
     >
       <BrowserRouter>
