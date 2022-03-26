@@ -37,69 +37,69 @@ export default function Timeline({ showPublish, route, mainTitle }) {
 
   StyledModal.setAppElement(document.getElementById("#home"));
 
-    const navigate = useNavigate();
-    const inputRef = useRef(null);
+  const navigate = useNavigate();
+  const inputRef = useRef(null);
 
-    const [search, setSearch] = useState();
-    const [postsArray, setPostsArray] = useState();
-    const [link, setLink] = useState("");
-    const [article, setArticle] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [publishError, setPublishError] = useState(false);
-    const [postsState, setPostsState] = useState("loading");
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [postId, setPostId] = useState();
-    const [editingPost, setEditingPost] = useState();
-    const [editIsOpen, setEditIsOpen] = useState(false);
-    const [editText, setEditText] = useState();
-    const [editLoading, setEditLoading] = useState(false);
+  const [search, setSearch] = useState();
+  const [postsArray, setPostsArray] = useState();
+  const [link, setLink] = useState("");
+  const [article, setArticle] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [publishError, setPublishError] = useState(false);
+  const [postsState, setPostsState] = useState("loading");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [postId, setPostId] = useState();
+  const [editingPost, setEditingPost] = useState();
+  const [editIsOpen, setEditIsOpen] = useState(false);
+  const [editText, setEditText] = useState();
+  const [editLoading, setEditLoading] = useState(false);
 
-    const renderPage = useCallback(
-        async (route) => {
-            try {
-                const posts = await axios.get(
-                    process.env.REACT_APP_BACK_URL + route,
-                    {
-                        headers: {
-                            authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+  const renderPage = useCallback(
+    async (route) => {
+      try {
+        const posts = await axios.get(
+          process.env.REACT_APP_BACK_URL + route,
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-                setPostsArray(posts.data);
+        setPostsArray(posts.data);
 
-                if (posts?.data.length === 0) {
-                    setPostsState("empty");
-                } else {
-                    setPostsState("full");
-                }
-            } catch (error) {
-                setPostsState("error");
-                console.log(error.response);
-            }
-        },
-        [token]
-    );
-
-    const getUser = useCallback(async () => {
-        try {
-            const response = await api.getUserInfos(token);
-            setImage(response?.data.image);
-            setName(response?.data.name);
-            setId(response?.data.id);
-        } catch (error) {
-            console.log(error);
-        }
-    }, [setId, setImage, setName, token]);
-
-    useEffect(() => {
-        if (token) {
-            getUser();
-            renderPage(route);
+        if (posts?.data.length === 0) {
+          setPostsState("empty");
         } else {
-            navigate("/");
+          setPostsState("full");
         }
-    }, [navigate, renderPage, token, route, getUser]);
+      } catch (error) {
+        setPostsState("error");
+        console.log(error.response);
+      }
+    },
+    [token]
+  );
+
+  const getUser = useCallback(async () => {
+    try {
+      const response = await api.getUserInfos(token);
+      setImage(response?.data.image);
+      setName(response?.data.name);
+      setId(response?.data.id);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [setId, setImage, setName, token]);
+
+  useEffect(() => {
+    if (token) {
+      getUser();
+      renderPage(route);
+    } else {
+      navigate("/");
+    }
+  }, [navigate, renderPage, token, route, getUser]);
 
   function handleClick(url) {
     window.open(url);
@@ -184,46 +184,47 @@ export default function Timeline({ showPublish, route, mainTitle }) {
     navigate(`/hashtag/${hashtag.replace("#", "")}`);
   }
 
-    function handleEdit(post) {
-        setEditingPost(post);
-        setEditIsOpen(!editIsOpen);
-        setTimeout(() => inputRef.current?.focus(), 400);
-    }
+  function handleEdit(post) {
+    setEditingPost(post);
+    setEditIsOpen(!editIsOpen);
+    setTimeout(() => inputRef.current?.focus(), 400);
+  }
 
-    function handleKeyDown(e) {
-        if (e.keyCode === 27) {
-            setEditIsOpen(false);
-        } else if (e.keyCode === 13 || e.keyCode === 10) {
-            e.preventDefault();
-            sendEdition(editingPost);
-        }
+  function handleKeyDown(e) {
+    if (e.keyCode === 27) {
+      setEditIsOpen(false);
+    } else if (e.keyCode === 13 || e.keyCode === 10) {
+      e.preventDefault();
+      sendEdition(editingPost);
     }
+  }
 
-    async function sendEdition(post) {
-        setEditLoading(true);
-        try {
-            await axios.put(
-                process.env.REACT_APP_BACK_URL + `posts/${post.id}`,
-                { link: post.url, text: editText },
-                {
-                    headers: {
-                        authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            setEditIsOpen(false);
-            renderPage(route);
-        } catch (error) {
-            toast.error("Could not save modifications", {
-                position: "top-center",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                draggable: true,
-                progress: undefined,
-            });
-            console.log(error.response);
+  async function sendEdition(post) {
+    setEditLoading(true);
+    try {
+      await axios.put(
+        process.env.REACT_APP_BACK_URL + `posts/${post.id}`,
+        { link: post.url, text: editText },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
         }
+      );
+      setEditIsOpen(false);
+      renderPage(route);
+    } catch (error) {
+      toast.error("Could not save modifications", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+      });
+      console.log(error.response);
+    }
+  }
 
   const getFilteredItems = (query, users) => {
     if (!query) {
@@ -352,120 +353,120 @@ export default function Timeline({ showPublish, route, mainTitle }) {
           </Publish>
         )}
 
-                {postsState === "full" &&
-                    postsArray.map((post) => {
-                        return (
-                            <Post key={post.id}>
-                                <ImageLikes>
-                                    <img
-                                        name={post.userId}
-                                        className="profile-image"
-                                        src={post.image}
-                                        alt="Profile picture"
-                                        onClick={(e) =>
-                                            navigate(`/users/${e.target.name}`)
-                                        }
-                                    />
-                                    <FiHeart className="like-icon" />
-                                    <p className="likes-quantity">13 likes</p>
-                                </ImageLikes>
-                                <PostContent>
-                                    <div
-                                        name={post.userId}
-                                        onClick={(e) =>
-                                            navigate(
-                                                `/users/${e.target.attributes.name.value}`
-                                            )
-                                        }
-                                        className="profile-name"
-                                    >
-                                        {post.name}
-                                        {id === post.userId && (
-                                            <div className="remove-edit-icons">
-                                                <AiTwotoneEdit
-                                                    onClick={() =>
-                                                        handleEdit(post)
-                                                    }
-                                                    className="edit-icon"
-                                                />
-                                                <FaTrashAlt
-                                                    onClick={() => {
-                                                        openModal();
-                                                        setPostId(post.id);
-                                                    }}
-                                                    className="remove-icon"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                    {editIsOpen & (editingPost === post) ? (
-                                        <textarea
-                                            disabled={editLoading}
-                                            className="edit-input"
-                                            ref={inputRef}
-                                            defaultValue={post.text}
-                                            onChange={(e) =>
-                                                setEditText(e.target.value)
-                                            }
-                                            onKeyDown={(e) => handleKeyDown(e)}
-                                        ></textarea>
-                                    ) : (
-                                        <p className="article-text">
-                                            <ReactHashtag
-                                                renderHashtag={(value) => (
-                                                    <StyledHashtag
-                                                        onClick={
-                                                            handleHashtagClick
-                                                        }
-                                                        key={uuid()}
-                                                    >
-                                                        {value}
-                                                    </StyledHashtag>
-                                                )}
-                                            >
-                                                {post.text}
-                                            </ReactHashtag>
-                                        </p>
-                                    )}
-                                    <Snippet
-                                        onClick={() => handleClick(post.url)}
-                                    >
-                                        <div className="snippet-data">
-                                            <p className="title">
-                                                {post.title}
-                                            </p>
-                                            <p className="description">
-                                                {post.description}
-                                            </p>
-                                            <p className="link">{post.url}</p>
-                                        </div>
-                                        <img
-                                            src={
-                                                post.linkImage === ""
-                                                    ? temp
-                                                    : post.linkImage
-                                            }
-                                            alt=""
-                                        />
-                                    </Snippet>
-                                </PostContent>
-                            </Post>
-                        );
-                    })}
-                {postsState === "loading" && (
-                    <p className="loading-message">Loading...</p>
-                )}
-                {postsState === "empty" && (
-                    <p className="get-error-message">There are no posts yet</p>
-                )}
-                {postsState === "error" && (
-                    <p className="get-error-message">
-                        An error occured while trying to fetch the posts, please
-                        refresh the page
+        {postsState === "full" &&
+          postsArray.map((post) => {
+            return (
+              <Post key={post.id}>
+                <ImageLikes>
+                  <img
+                    name={post.userId}
+                    className="profile-image"
+                    src={post.image}
+                    alt="Profile picture"
+                    onClick={(e) =>
+                      navigate(`/users/${e.target.name}`)
+                    }
+                  />
+                  <FiHeart className="like-icon" />
+                  <p className="likes-quantity">13 likes</p>
+                </ImageLikes>
+                <PostContent>
+                  <div
+                    name={post.userId}
+                    onClick={(e) =>
+                      navigate(
+                        `/users/${e.target.attributes.name.value}`
+                      )
+                    }
+                    className="profile-name"
+                  >
+                    {post.name}
+                    {id === post.userId && (
+                      <div className="remove-edit-icons">
+                        <AiTwotoneEdit
+                          onClick={() =>
+                            handleEdit(post)
+                          }
+                          className="edit-icon"
+                        />
+                        <FaTrashAlt
+                          onClick={() => {
+                            openModal();
+                            setPostId(post.id);
+                          }}
+                          className="remove-icon"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  {editIsOpen & (editingPost === post) ? (
+                    <textarea
+                      disabled={editLoading}
+                      className="edit-input"
+                      ref={inputRef}
+                      defaultValue={post.text}
+                      onChange={(e) =>
+                        setEditText(e.target.value)
+                      }
+                      onKeyDown={(e) => handleKeyDown(e)}
+                    ></textarea>
+                  ) : (
+                    <p className="article-text">
+                      <ReactHashtag
+                        renderHashtag={(value) => (
+                          <StyledHashtag
+                            onClick={
+                              handleHashtagClick
+                            }
+                            key={uuid()}
+                          >
+                            {value}
+                          </StyledHashtag>
+                        )}
+                      >
+                        {post.text}
+                      </ReactHashtag>
                     </p>
-                )}
-            </PostsContainer>
-        </>
-    );
+                  )}
+                  <Snippet
+                    onClick={() => handleClick(post.url)}
+                  >
+                    <div className="snippet-data">
+                      <p className="title">
+                        {post.title}
+                      </p>
+                      <p className="description">
+                        {post.description}
+                      </p>
+                      <p className="link">{post.url}</p>
+                    </div>
+                    <img
+                      src={
+                        post.linkImage === ""
+                          ? temp
+                          : post.linkImage
+                      }
+                      alt=""
+                    />
+                  </Snippet>
+                </PostContent>
+              </Post>
+            );
+          })}
+        {postsState === "loading" && (
+          <p className="loading-message">Loading...</p>
+        )}
+        {postsState === "empty" && (
+          <p className="get-error-message">There are no posts yet</p>
+        )}
+        {postsState === "error" && (
+          <p className="get-error-message">
+            An error occured while trying to fetch the posts, please
+            refresh the page
+          </p>
+        )}
+      </PostsContainer>
+    </>
+  );
 }
-}
+
