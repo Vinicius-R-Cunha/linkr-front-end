@@ -6,7 +6,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import UserContext from '../../contexts/UserContext';
 import api from '../../services/api';
 
-export default function Likes({ id, image, likeQuantity, renderPage, route, isLiked }) {
+export default function Likes({ post, renderPage, route }) {
 
     const { token } = useContext(UserContext);
 
@@ -23,24 +23,24 @@ export default function Likes({ id, image, likeQuantity, renderPage, route, isLi
         <ImageLikes>
             <img
                 className="profile-image"
-                src={image}
+                src={post.image}
                 alt=""
             />
-            {isLiked === true ?
+            {post.isLiked === true ?
                 <FaHeart
                     className="like-icon"
                     style={{ color: '#ac0000' }}
-                    onClick={() => toggleLike(id)}
+                    onClick={() => toggleLike(post.id)}
                 />
                 :
                 <FaRegHeart
                     className="like-icon"
                     style={{ color: '#ffffff' }}
-                    onClick={() => toggleLike(id)}
+                    onClick={() => toggleLike(post.id)}
                 />
             }
-            <p onClick={() => toggleLike(id)} className="likes-quantity">
-                {likeQuantity} {likeQuantity <= 1 ? 'like' : 'likes'}
+            <p onClick={() => toggleLike(post.id)} className="likes-quantity">
+                {post.likeQuantity} {post.likeQuantity <= 1 ? 'like' : 'likes'}
             </p>
         </ImageLikes>
     );
