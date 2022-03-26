@@ -9,8 +9,8 @@ const HomeContainer = styled.main`
     display: flex;
     justify-content: center;
 
-    @media (max-width: 630px) {
-        margin-top: 22px;
+    @media (max-width: 960px) {
+        margin-top: 10px;
     }
 `
 

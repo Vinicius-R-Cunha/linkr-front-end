@@ -8,25 +8,35 @@ function createConfig(token) {
             Authorization: `Bearer ${token}`,
         },
     };
-};
+}
 
 async function getHashtags(token) {
     const config = createConfig(token);
     const hashtags = await axios.get(`${BASE_URL}hashtags`, config);
     return hashtags;
-};
+}
 
-async function getUserInfos(token){
+async function getUserInfos(token) {
     const config = createConfig(token);
     const promise = await axios.get(`${BASE_URL}user`, config);
     return promise;
-};
+}
 
-async function signOut(token){
+async function signOut(token) {
     const config = createConfig(token);
     const user = await axios.delete(`${BASE_URL}sign-out`, config);
     return user;
-};
+}
+
+async function postHashtags(token, hashtags) {
+    const config = createConfig(token);
+    const promise = await axios.post(
+        `${BASE_URL}hashtags`,
+        { hashtags },
+        config
+    );
+    return promise;
+}
 
 async function toggleLike(postId, token){
     const config = createConfig(token);
@@ -40,6 +50,7 @@ const api = {
     getUserInfos,
     signOut,
     toggleLike
+    postHashtags
 };
 
 export default api;

@@ -13,6 +13,12 @@ const Container = styled.aside`
 
     border-radius: 16px;
     background-color: #171717;
+
+
+  @media (max-width: 960px) {
+      display: none;
+  }
+
 `;
 
 const Title = styled.h2`

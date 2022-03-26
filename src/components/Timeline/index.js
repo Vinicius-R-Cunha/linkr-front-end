@@ -8,12 +8,19 @@ import {
     StyledModal,
     modalStyles,
     StyledHashtag,
+    Debounce,
+    SearchBar,
+    LinkStyle,
+    SearchedUser,
+    Img
 } from "./style";
+
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import { AiTwotoneEdit } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
+import { HiOutlineSearch } from "react-icons/hi";
 import temp from "../../assets/perfil-temp.png";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,15 +28,21 @@ import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 import ReactHashtag from "@mdnm/react-hashtag";
 import { useNavigate } from "react-router-dom";
+import createHashtagsFromString from "../../utils/createHashtagsFromString";
+import { v4 as uuid } from "uuid";
 
 export default function Timeline({ showPublish, route, mainTitle }) {
+    const { token, setImage, setName, image, id, setId, users } =
+        useContext(UserContext);
 
-    const { token, setImage, setName, image, id, setId } = useContext(UserContext);
 
     StyledModal.setAppElement(document.getElementById("#home"));
 
     const navigate = useNavigate();
+    const inputRef = useRef(null);
 
+
+    const [search, setSearch] = useState();
     const [postsArray, setPostsArray] = useState();
     const [link, setLink] = useState("");
     const [article, setArticle] = useState("");
@@ -38,19 +51,49 @@ export default function Timeline({ showPublish, route, mainTitle }) {
     const [postsState, setPostsState] = useState("loading");
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [postId, setPostId] = useState();
+    const [editingPost, setEditingPost] = useState();
+    const [editIsOpen, setEditIsOpen] = useState(false);
+    const [editText, setEditText] = useState();
+    const [editLoading, setEditLoading] = useState(false);
 
-    async function getUser() {
+    const renderPage = useCallback(
+        async (route) => {
+            try {
+                const posts = await axios.get(
+                    process.env.REACT_APP_BACK_URL + route,
+                    {
+                        headers: {
+                            authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                setPostsArray(posts.data);
+
+                if (posts?.data.length === 0) {
+                    setPostsState("empty");
+
+                } else {
+                    setPostsState("full");
+                }
+            } catch (error) {
+                setPostsState("error");
+                console.log(error.response);
+            }
+        },
+        [token]
+    );
+
+    const getUser = useCallback(async () => {
         try {
             const response = await api.getUserInfos(token);
-
             setImage(response?.data.image);
             setName(response?.data.name);
             setId(response?.data.id);
-
         } catch (error) {
             console.log(error);
-        };
-    };
+        }
+    }, [setId, setImage, setName, token]);
 
     useEffect(() => {
         if (token) {
@@ -59,38 +102,11 @@ export default function Timeline({ showPublish, route, mainTitle }) {
         } else {
             navigate("/");
         }
-        // eslint-disable-next-line
-    }, [navigate, token, route]);
-
-    async function renderPage(route) {
-        try {
-            const posts = await axios.get(
-                process.env.REACT_APP_BACK_URL + route,
-                {
-                    headers: {
-                        authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            setPostsArray(posts.data);
-            console.log(posts.data)
-
-            if (posts?.data?.length === 0) {
-                setPostsState("empty");
-            } else {
-                setPostsState("full");
-            };
-
-        } catch (error) {
-            setPostsState("error");
-            console.log(error.response);
-        };
-    };
+    }, [navigate, renderPage, token, route, getUser]);
 
     function handleClick(url) {
         window.open(url);
-    };
+    }
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -108,6 +124,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                         },
                     }
                 );
+                createHashtagsFromString(article, token);
                 renderPage(route);
                 setLink("");
                 setArticle("");
@@ -128,15 +145,15 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                 progress: undefined,
             });
         }
-    };
+    }
 
     function openModal() {
         setModalIsOpen(true);
-    };
+    }
 
     function closeModal() {
         setModalIsOpen(false);
-    };
+    }
 
     async function handleDeletion() {
         setLoading(true);
@@ -163,28 +180,110 @@ export default function Timeline({ showPublish, route, mainTitle }) {
             closeModal();
         }
         setLoading(false);
-    };
+    }
 
     function handleHashtagClick(e) {
         const hashtag = e.target.innerText;
         navigate(`/hashtag/${hashtag.replace("#", "")}`);
+    }
+
+    function handleEdit(post) {
+        setEditingPost(post);
+        setEditIsOpen(!editIsOpen);
+        setTimeout(() => inputRef.current?.focus(), 400);
+    }
+
+    function handleKeyDown(e) {
+        if (e.keyCode === 27) {
+            setEditIsOpen(false);
+        } else if (e.keyCode === 13 || e.keyCode === 10) {
+            e.preventDefault();
+            sendEdition(editingPost);
+        }
+    }
+
+    async function sendEdition(post) {
+        setEditLoading(true);
+        try {
+            await axios.put(
+                process.env.REACT_APP_BACK_URL + `posts/${post.id}`,
+                { link: post.url, text: editText },
+                {
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            createHashtagsFromString(editText, token);
+            setEditIsOpen(false);
+            renderPage(route);
+        } catch (error) {
+            toast.error("Could not save modifications", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                draggable: true,
+                progress: undefined,
+            });
+            console.log(error.response);
+        }
+    }
+
+    const getFilteredItems = (query, users) => {
+        if (!query) {
+            return;
+        }
+        return users.filter((user) => user.name.includes(query));
     };
 
-    async function toggleLike(postId){
-        try{
-                           
-            await api.toggleLike(postId, token);
-            renderPage(route);
-        }catch(error){
-            console.log(error);
-        };
-    };
+    const filteredItems = getFilteredItems(search, users);
 
     return (
         <>
             <PostsContainer>
-                <h1 className="timeline-title">{mainTitle}</h1>
+                <div className="input-icon-mobile">
+                    <Debounce
+                        minLength={3}
+                        debounceTimeout={300}
+                        type="text"
+                        onChange={(event) => setSearch(event.target.value)}
+                        placeholder="Search for people and friends"
+                    />
+                    <HiOutlineSearch className="search-icon-mobile" />
+                </div>
+                {filteredItems === undefined || search.length <= 2 ? null : (
+                    <SearchBar>
+                        {filteredItems.length === 0 ? (
+                            <h2>Nenhum usuário encontrado</h2>
+                        ) : (
+                            filteredItems
+                                .sort(function (x, y) {
+                                    return x.isFollowingLoggedUser === y.isFollowingLoggedUser
+                                        ? 0
+                                        : x.isFollowingLoggedUser
+                                            ? -1
+                                            : 1;
+                                })
+                                .map((user) => (
+                                    <LinkStyle
+                                        key={uuid()}
+                                        onClick={() => setSearch("")}
+                                        to={`/users/${user.id}`}
+                                    >
+                                        <SearchedUser>
+                                            <Img src={user.image} alt="" />
+                                            <h3>{user.name}</h3>{" "}
+                                            {user.isFollowingLoggedUser ? <h4>• following</h4> : null}
+                                        </SearchedUser>
+                                    </LinkStyle>
+                                ))
+                        )}
+                    </SearchBar>
+                )}
 
+
+                <h1 className="timeline-title">{mainTitle}</h1>
                 <StyledModal
                     isOpen={modalIsOpen}
                     ariaHideApp={false}
@@ -214,7 +313,11 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                 {showPublish && (
                     <Publish>
                         <ImageLikes className="image-likes-publish">
-                            <img className="profile-image" src={image} alt="loading..." />
+                            <img
+                                className="profile-image"
+                                src={image}
+                                alt="loading..."
+                            />
                         </ImageLikes>
                         <ToastContainer />
                         <form className="inputs">
@@ -264,29 +367,36 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                                         src={post.image}
                                         alt=""
                                     />
-                                    {post.likeQuantity !== "0" ? 
-                                            <FaHeart
-                                                className="like-icon"
-                                                style={{color: '#ac0000'}} 
-                                                onClick={() => toggleLike(post.id)} 
-                                            /> 
-                                            : 
-                                            <FaRegHeart 
-                                                className="like-icon"
-                                                style={{color: '#ffffff'}} 
-                                                onClick={() => toggleLike(post.id)}
-                                            />
+                                    {post.likeQuantity !== "0" ?
+                                        <FaHeart
+                                            className="like-icon"
+                                            style={{ color: '#ac0000' }}
+                                            onClick={() => toggleLike(post.id)}
+                                        />
+                                        :
+                                        <FaRegHeart
+                                            className="like-icon"
+                                            style={{ color: '#ffffff' }}
+                                            onClick={() => toggleLike(post.id)}
+                                        />
                                     }
-                                    <p onClick={() => toggleLike(post.id)} className="likes-quantity"> 
-                                        {post?.likeQuantity} {post?.likeQuantity <= 1? 'like' : 'likes'} 
+                                    <p onClick={() => toggleLike(post.id)} className="likes-quantity">
+                                        {post?.likeQuantity} {post?.likeQuantity <= 1 ? 'like' : 'likes'}
                                     </p>
                                 </ImageLikes>
                                 <PostContent>
                                     <div className="profile-name">
-                                        {post.name}
-                                        {id === post.userId &&
+                                        <p name={post.userId}
+                                            onClick={e => navigate(`/users/${e.target.attributes.name.value}`)}
+                                        >{post.name} </p>
+                                        {id === post.userId && (
                                             <div className="remove-edit-icons">
-                                                <AiTwotoneEdit className="edit-icon" />
+                                                <AiTwotoneEdit
+                                                    onClick={() =>
+                                                        handleEdit(post)
+                                                    }
+                                                    className="edit-icon"
+                                                />
                                                 <FaTrashAlt
                                                     onClick={() => {
                                                         openModal();
@@ -294,22 +404,38 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                                                     }}
                                                     className="remove-icon"
                                                 />
-                                            </div>}
+                                            </div>
+                                        )}
                                     </div>
-                                    <p className="article-text">
-                                        <ReactHashtag
-                                            renderHashtag={(value) => (
-                                                <StyledHashtag
-                                                    onClick={handleHashtagClick}
-                                                    key={post.id}
-                                                >
-                                                    {value}
-                                                </StyledHashtag>
-                                            )}
-                                        >
-                                            testando
-                                        </ReactHashtag>
-                                    </p>
+                                    {editIsOpen & (editingPost === post) ? (
+                                        <textarea
+                                            disabled={editLoading}
+                                            className="edit-input"
+                                            ref={inputRef}
+                                            defaultValue={post.text}
+                                            onChange={(e) =>
+                                                setEditText(e.target.value)
+                                            }
+                                            onKeyDown={(e) => handleKeyDown(e)}
+                                        ></textarea>
+                                    ) : (
+                                        <p className="article-text">
+                                            <ReactHashtag
+                                                renderHashtag={(value) => (
+                                                    <StyledHashtag
+                                                        onClick={
+                                                            handleHashtagClick
+                                                        }
+                                                        key={uuid()}
+                                                    >
+                                                        {value}
+                                                    </StyledHashtag>
+                                                )}
+                                            >
+                                                {post.text ? post.text : ""}
+                                            </ReactHashtag>
+                                        </p>
+                                    )}
                                     <Snippet
                                         onClick={() => handleClick(post.url)}
                                     >
@@ -350,4 +476,5 @@ export default function Timeline({ showPublish, route, mainTitle }) {
             </PostsContainer>
         </>
     );
-};
+}
+

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const LoginContainer = styled.main`
   width: 100%;
   height: 100vh;
+  background-color: green;
 
   display: flex;
   flex-direction: row;
@@ -71,6 +72,7 @@ const DataContainer = styled.form`
   align-items: center;
   background-color: #333333;
   padding-top: 13%;
+  box-sizing: border-box;
   input {
     height: 9%;
     width: 80%;
@@ -105,6 +107,7 @@ const DataContainer = styled.form`
     letter-spacing: 0em;
     text-align: center;
     margin-bottom: 22px;
+    cursor: pointer;
   }
   .error-message {
     margin-bottom: 12px;
