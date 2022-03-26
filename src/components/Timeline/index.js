@@ -16,7 +16,6 @@ import { AiTwotoneEdit } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
 import temp from "../../assets/perfil-temp.png";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "../../contexts/UserContext";
@@ -45,20 +44,11 @@ export default function Timeline({ showPublish, route, mainTitle }) {
   const renderPage = useCallback(
     async (route) => {
       try {
-        const posts = await axios.get(
-          process.env.REACT_APP_BACK_URL + route,
-          {
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+        const posts = await api.getPosts(route, token);
         setPostsArray(posts.data);
 
         if (posts?.data.length === 0) {
           setPostsState("empty");
-
         } else {
           setPostsState("full");
         }
@@ -135,15 +125,9 @@ export default function Timeline({ showPublish, route, mainTitle }) {
   async function sendEdition(post) {
     setEditLoading(true);
     try {
-      await axios.put(
-        process.env.REACT_APP_BACK_URL + `posts/${post.id}`,
-        { link: post.url, text: editText },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const body = { link: post.url, text: editText }
+      await api.editOnePost(post.id, body, token);
+
       createHashtagsFromString(editText, token);
       setEditIsOpen(false);
       renderPage(route);
