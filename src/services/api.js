@@ -38,19 +38,32 @@ async function postHashtags(token, hashtags) {
     return promise;
 }
 
-async function toggleLike(postId, token){
+async function toggleLike(postId, token) {
     const config = createConfig(token);
-    const promise = await axios.post(`${BASE_URL}like/${postId}`,{}, config);
+    const promise = await axios.post(`${BASE_URL}like/${postId}`, {}, config);
     return promise;
 };
 
+async function getPosts(route, token) {
+    const config = createConfig(token);
+    const promise = await axios.get(`${BASE_URL}${route}`, config);
+    return promise;
+}
+
+async function editOnePost(postId, body, token) {
+    const config = createConfig(token);
+    const promise = await axios.put(`${BASE_URL}posts/${postId}`, body, config);
+    return promise;
+}
 
 const api = {
     getHashtags,
     getUserInfos,
     signOut,
     toggleLike,
-    postHashtags
+    postHashtags,
+    getPosts,
+    editOnePost
 };
 
 export default api;
