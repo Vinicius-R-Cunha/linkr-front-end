@@ -211,6 +211,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
           },
         }
       );
+      createHashtagsFromString(editText, token);
       setEditIsOpen(false);
       renderPage(route);
     } catch (error) {
