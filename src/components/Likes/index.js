@@ -6,7 +6,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import UserContext from '../../contexts/UserContext';
 import api from '../../services/api';
 
-export default function Likes({ id, image, likeQuantity, renderPage, route }) {
+export default function Likes({ id, image, likeQuantity, renderPage, route, isLiked }) {
 
     const { token } = useContext(UserContext);
 
@@ -26,7 +26,7 @@ export default function Likes({ id, image, likeQuantity, renderPage, route }) {
                 src={image}
                 alt=""
             />
-            {likeQuantity !== "0" ?
+            {isLiked === true ?
                 <FaHeart
                     className="like-icon"
                     style={{ color: '#ac0000' }}

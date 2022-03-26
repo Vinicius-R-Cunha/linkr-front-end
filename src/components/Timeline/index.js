@@ -151,22 +151,23 @@ export default function Timeline({ showPublish, route, mainTitle }) {
         {postsState === "full" &&
           postsArray.map((post) => {
             return (
-              <Post key={post.id}>
+              <Post key={post?.id}>
 
                 <Likes
-                  id={post.id}
-                  image={post.image}
+                  id={post?.id}
+                  image={post?.image}
                   likeQuantity={post?.likeQuantity}
                   renderPage={renderPage}
                   route={route}
+                  isLiked={post?.isLiked}
                 />
 
                 <PostContent>
                   <div className="profile-name">
-                    <p name={post.userId}
+                    <p name={post?.userId}
                       onClick={e => navigate(`/users/${e.target.attributes.name.value}`)}
-                    >{post.name} </p>
-                    {id === post.userId && (
+                    >{post?.name} </p>
+                    {id === post?.userId && (
                       <div className="remove-edit-icons">
                         <AiTwotoneEdit
                           onClick={() =>
@@ -189,7 +190,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                       disabled={editLoading}
                       className="edit-input"
                       ref={inputRef}
-                      defaultValue={post.text}
+                      defaultValue={post?.text}
                       onChange={(e) =>
                         setEditText(e.target.value)
                       }
@@ -209,15 +210,15 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                           </StyledHashtag>
                         )}
                       >
-                        {post.text ? post.text : ""}
+                        {post?.text ? post?.text : ""}
                       </ReactHashtag>
                     </p>
                   )}
                   <Snippet
-                    url={post.url}
-                    description={post.description}
-                    title={post.title}
-                    linkImage={post.linkImage}
+                    url={post?.url}
+                    description={post?.description}
+                    title={post?.title}
+                    linkImage={post?.linkImage}
                   />
                   {/* <Snippet
                     onClick={() => handleClick(post.url)}
