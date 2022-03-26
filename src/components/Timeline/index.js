@@ -1,20 +1,19 @@
 import {
   PostsContainer,
   Post,
-  ImageLikes,
   PostContent,
-  Snippet,
   StyledHashtag
 } from "./style";
 
 import Publish from "../Publish";
 import SearchBarMobile from "../SearchBarMobile";
 import ConfirmationModal from "../ConfirmationModal";
+import Likes from "../Likes";
+import Snippet from "../Snippet";
 
-import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import { AiTwotoneEdit } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
-import temp from "../../assets/perfil-temp.png";
+
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -80,10 +79,6 @@ export default function Timeline({ showPublish, route, mainTitle }) {
     }
   }, [navigate, renderPage, token, route, getUser]);
 
-  function handleClick(url) {
-    window.open(url);
-  }
-
   function openModal() {
     setModalIsOpen(true);
   }
@@ -111,16 +106,6 @@ export default function Timeline({ showPublish, route, mainTitle }) {
       sendEdition(editingPost);
     }
   }
-
-  async function toggleLike(postId) {
-    try {
-
-      await api.toggleLike(postId, token);
-      renderPage(route);
-    } catch (error) {
-      console.log(error);
-    };
-  };
 
   async function sendEdition(post) {
     setEditLoading(true);
@@ -167,29 +152,15 @@ export default function Timeline({ showPublish, route, mainTitle }) {
           postsArray.map((post) => {
             return (
               <Post key={post.id}>
-                <ImageLikes>
-                  <img
-                    className="profile-image"
-                    src={post.image}
-                    alt=""
-                  />
-                  {post.likeQuantity !== "0" ?
-                    <FaHeart
-                      className="like-icon"
-                      style={{ color: '#ac0000' }}
-                      onClick={() => toggleLike(post.id)}
-                    />
-                    :
-                    <FaRegHeart
-                      className="like-icon"
-                      style={{ color: '#ffffff' }}
-                      onClick={() => toggleLike(post.id)}
-                    />
-                  }
-                  <p onClick={() => toggleLike(post.id)} className="likes-quantity">
-                    {post?.likeQuantity} {post?.likeQuantity <= 1 ? 'like' : 'likes'}
-                  </p>
-                </ImageLikes>
+
+                <Likes
+                  id={post.id}
+                  image={post.image}
+                  likeQuantity={post?.likeQuantity}
+                  renderPage={renderPage}
+                  route={route}
+                />
+
                 <PostContent>
                   <div className="profile-name">
                     <p name={post.userId}
@@ -243,6 +214,12 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                     </p>
                   )}
                   <Snippet
+                    url={post.url}
+                    description={post.description}
+                    title={post.title}
+                    linkImage={post.linkImage}
+                  />
+                  {/* <Snippet
                     onClick={() => handleClick(post.url)}
                   >
                     <div className="snippet-data">
@@ -262,7 +239,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                       }
                       alt=""
                     />
-                  </Snippet>
+                  </Snippet> */}
                 </PostContent>
               </Post>
             );

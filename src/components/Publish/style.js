@@ -130,10 +130,6 @@ const PublishContainer = styled.div`
 
         margin-bottom: 16px;
 
-        .image-likes-publish {
-            display: none;
-        }
-
         .inputs {
             width: 100%;
 
@@ -175,7 +171,7 @@ const PublishContainer = styled.div`
     }
 `;
 
-const ImageLikes = styled.div`
+const ImageDiv = styled.div`
     width: 86px;
     height: 100%;
 
@@ -212,6 +208,8 @@ const ImageLikes = styled.div`
     }
 
     @media (max-width: 630px) {
+        display: none;
+        
         .profile-image {
             width: 40px;
             height: 40px;
@@ -219,4 +217,4 @@ const ImageLikes = styled.div`
     }
 `;
 
-export { PublishContainer, ImageLikes }
+export { PublishContainer, ImageDiv }

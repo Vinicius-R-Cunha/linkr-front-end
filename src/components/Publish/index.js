@@ -1,4 +1,4 @@
-import { PublishContainer, ImageLikes } from './style';
+import { PublishContainer, ImageDiv } from './style';
 
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -58,13 +58,13 @@ export default function Publish({ renderPage, route }) {
 
     return (
         <PublishContainer>
-            <ImageLikes className="image-likes-publish">
+            <ImageDiv>
                 <img
                     className="profile-image"
                     src={image}
                     alt="loading..."
                 />
-            </ImageLikes>
+            </ImageDiv>
             <form className="inputs">
                 <p className="inputs-title">
                     What are you going to share today?

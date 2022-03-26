@@ -105,50 +105,6 @@ const Post = styled.div`
     }
 `;
 
-const ImageLikes = styled.div`
-    width: 86px;
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    .profile-image {
-        width: 50px;
-        height: 50px;
-
-        border-radius: 26.5px;
-
-        margin-bottom: 18px;
-
-        &:hover {
-            cursor: pointer;
-        }
-    }
-
-    .like-icon {
-        font-size: 25px;
-        cursor: pointer;
-    }
-
-    .likes-quantity {
-        font-family: "Lato";
-        font-weight: 400;
-        font-size: 11px;
-        text-align: center;
-        color: #ffffff;
-        cursor: pointer;
-        margin-top: 4px;
-    }
-
-    @media (max-width: 630px) {
-        .profile-image {
-            width: 40px;
-            height: 40px;
-        }
-    }
-`;
-
 const PostContent = styled.div`
     width: 525px;
     height: 100%;
@@ -258,104 +214,6 @@ const PostContent = styled.div`
     }
 `;
 
-const Snippet = styled.div`
-    width: 503px;
-    height: 155px;
-
-    display: flex;
-
-    margin-top: 13px;
-
-    box-sizing: border-box;
-    border-radius: 11px;
-    border: 1px solid #4d4d4d;
-
-    cursor: pointer;
-
-    .snippet-data {
-        width: 100%;
-        height: 100%;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        box-sizing: border-box;
-        padding: 23px 19px;
-
-        .title {
-            font-family: "Lato";
-            font-style: normal;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 19px;
-
-            color: #cecece;
-        }
-
-        .description {
-            font-family: "Lato";
-            font-style: normal;
-            font-weight: 400;
-            font-size: 11px;
-            line-height: 13px;
-
-            color: #9b9595;
-        }
-
-        .link {
-            font-family: "Lato";
-            font-style: normal;
-            font-weight: 400;
-            font-size: 11px;
-            line-height: 13px;
-
-            color: #cecece;
-
-            word-break: break-all;
-        }
-    }
-
-    img {
-        width: 153.44px;
-        height: 153px;
-
-        border-radius: 0px 12px 13px 0px;
-
-        object-fit: cover;
-    }
-
-    @media (max-width: 630px) {
-        width: 100%;
-        height: 115px;
-
-        .snippet-data {
-            padding: 5px 9px;
-
-            .title {
-                font-size: 11px;
-                line-height: 13px;
-            }
-
-            .description {
-                font-size: 9px;
-                line-height: 11px;
-            }
-
-            .link {
-                font-size: 9px;
-                line-height: 11px;
-            }
-        }
-
-        img {
-            width: 95px;
-            height: 113px;
-        }
-    }
-`;
-
-
 const StyledHashtag = styled.b`
     font-weight: 700;
     color: #ffffff;
@@ -367,8 +225,6 @@ const StyledHashtag = styled.b`
 export {
     PostsContainer,
     Post,
-    ImageLikes,
     PostContent,
-    Snippet,
     StyledHashtag
 };
