@@ -439,20 +439,24 @@ const PostContent = styled.div`
     flex-direction: column;
 
     .profile-name {
-        font-family: "Lato";
-        font-style: normal;
-        font-weight: 400;
-        font-size: 19px;
-        color: #ffffff;
-
         display: flex;
         align-items: center;
         justify-content: space-between;
 
         margin-bottom: 9px;
 
+        font-size: 19px;
+        color: #ffffff;
+
         &:hover {
             cursor: pointer;
+        }
+
+        p {
+          font-family: "Lato";
+          font-style: normal;
+          font-weight: 400;
+          font-size: 19px;
         }
 
         .remove-edit-icons {

@@ -363,24 +363,16 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                     className="profile-image"
                     src={post.image}
                     alt="Profile picture"
-                    onClick={(e) =>
-                      navigate(`/users/${e.target.name}`)
-                    }
+                    onClick={(e) => navigate(`/users/${e.target.name}`)}
                   />
                   <FiHeart className="like-icon" />
                   <p className="likes-quantity">13 likes</p>
                 </ImageLikes>
                 <PostContent>
-                  <div
-                    name={post.userId}
-                    onClick={(e) =>
-                      navigate(
-                        `/users/${e.target.attributes.name.value}`
-                      )
-                    }
-                    className="profile-name"
-                  >
-                    {post.name}
+                  <div className="profile-name">
+                    <p name={post.userId}
+                      onClick={e => navigate(`/users/${e.target.attributes.name.value}`)}
+                    >{post.name} </p>
                     {id === post.userId && (
                       <div className="remove-edit-icons">
                         <AiTwotoneEdit
