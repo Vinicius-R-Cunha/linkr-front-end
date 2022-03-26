@@ -38,11 +38,19 @@ async function postHashtags(token, hashtags) {
     return promise;
 }
 
+async function toggleLike(postId, token){
+    const config = createConfig(token);
+    const promise = await axios.post(`${BASE_URL}like/${postId}`,{}, config);
+    return promise;
+};
+
+
 const api = {
     getHashtags,
     getUserInfos,
     signOut,
-    postHashtags,
+    toggleLike,
+    postHashtags
 };
 
 export default api;
