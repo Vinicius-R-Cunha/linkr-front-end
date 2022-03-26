@@ -4,8 +4,9 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import UserContext from "./contexts/UserContext";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { HashtagTimeline, Home } from "./pages";
+import UserTimeline from "./pages/UserTimeline";
 
 export default function App() {
   const tokenOnLocalStorage = localStorage.getItem("token");
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/timeline" element={<Home />} />
           <Route path="/hashtag/:hashtag" element={<HashtagTimeline />} />
+          <Route path="/users/:id" element={<UserTimeline />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

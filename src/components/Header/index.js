@@ -20,8 +20,7 @@ export default function Header() {
   const [showLogout, setShowLogout] = useState(false);
   const [users, setUsers] = useState();
   const [search, setSearch] = useState();
-  const token = localStorage.getItem("token");
-  const { image } = useContext(UserContext);
+  const { token, image } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -47,7 +46,7 @@ export default function Header() {
     promise.catch((error) => {
       console.log(error);
     });
-  }, []);
+  }, [token]);
 
   const getFilteredItems = (query, users) => {
     if (!query) {
@@ -57,7 +56,7 @@ export default function Header() {
   };
 
   const filteredItems = getFilteredItems(search, users);
-  console.log(filteredItems);
+
   return (
     <HeaderDiv>
       <p onClick={() => navigate("/timeline")} className="logo-name">
@@ -102,7 +101,6 @@ export default function Header() {
             )}
           </SearchBar>
         )}
-        {/* <div className="searchContainer"></div> */}
       </div>
       <div className="icon-image">
         {showLogout && (
