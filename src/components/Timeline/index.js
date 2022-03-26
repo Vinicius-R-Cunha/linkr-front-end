@@ -201,6 +201,16 @@ export default function Timeline({ showPublish, route, mainTitle }) {
             sendEdition(editingPost);
         }
     }
+    
+    async function toggleLike(postId){
+        try{
+
+            await api.toggleLike(postId, token);
+            renderPage(route);
+        }catch(error){
+            console.log(error);
+        };
+    };
 
     async function sendEdition(post) {
         setEditLoading(true);
