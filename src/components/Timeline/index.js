@@ -416,7 +416,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                           </StyledHashtag>
                         )}
                       >
-                        {post.text}
+                        {post.text ? post.text : ""}
                       </ReactHashtag>
                     </p>
                   )}
