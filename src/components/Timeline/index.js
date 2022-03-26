@@ -362,7 +362,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                     name={post.userId}
                     className="profile-image"
                     src={post.image}
-                    alt="Profile picture"
+                    alt=""
                     onClick={(e) => navigate(`/users/${e.target.name}`)}
                   />
                   <FiHeart className="like-icon" />

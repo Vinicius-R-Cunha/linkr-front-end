@@ -46,7 +46,7 @@ export default function Header() {
     promise.catch((error) => {
       console.log(error);
     });
-  }, [token]);
+  }, [token, setUsers]);
 
   const getFilteredItems = (query, users) => {
     if (!query) {
