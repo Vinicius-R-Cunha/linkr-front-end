@@ -9,8 +9,7 @@ import {
     modalStyles,
     StyledHashtag,
 } from "./style";
-import { FiHeart } from "react-icons/fi";
-import temp2 from "../../assets/snippet-temp.png";
+import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import { AiTwotoneEdit } from "react-icons/ai";
 import { FaTrashAlt } from "react-icons/fa";
 import temp from "../../assets/perfil-temp.png";
@@ -37,6 +36,8 @@ export default function Timeline({ showPublish, route, mainTitle }) {
     const [loading, setLoading] = useState(false);
     const [publishError, setPublishError] = useState(false);
     const [postsState, setPostsState] = useState("loading");
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [postId, setPostId] = useState();
 
     async function getUser() {
         try {
@@ -51,10 +52,6 @@ export default function Timeline({ showPublish, route, mainTitle }) {
         };
     };
 
-
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [postId, setPostId] = useState();
-
     useEffect(() => {
         if (token) {
             getUser();
@@ -62,6 +59,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
         } else {
             navigate("/");
         }
+        // eslint-disable-next-line
     }, [navigate, token, route]);
 
     async function renderPage(route) {
@@ -76,8 +74,9 @@ export default function Timeline({ showPublish, route, mainTitle }) {
             );
 
             setPostsArray(posts.data);
+            console.log(posts.data)
 
-            if (posts?.data.length === 0) {
+            if (posts?.data?.length === 0) {
                 setPostsState("empty");
             } else {
                 setPostsState("full");
@@ -164,12 +163,22 @@ export default function Timeline({ showPublish, route, mainTitle }) {
             closeModal();
         }
         setLoading(false);
-    }
+    };
 
     function handleHashtagClick(e) {
         const hashtag = e.target.innerText;
         navigate(`/hashtag/${hashtag.replace("#", "")}`);
-    }
+    };
+
+    async function toggleLike(postId){
+        try{
+                           
+            await api.toggleLike(postId, token);
+            renderPage(route);
+        }catch(error){
+            console.log(error);
+        };
+    };
 
     return (
         <>
@@ -255,8 +264,22 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                                         src={post.image}
                                         alt=""
                                     />
-                                    <FiHeart className="like-icon" />
-                                    <p className="likes-quantity">13 likes</p>
+                                    {post.likeQuantity !== "0" ? 
+                                            <FaHeart
+                                                className="like-icon"
+                                                style={{color: '#ac0000'}} 
+                                                onClick={() => toggleLike(post.id)} 
+                                            /> 
+                                            : 
+                                            <FaRegHeart 
+                                                className="like-icon"
+                                                style={{color: '#ffffff'}} 
+                                                onClick={() => toggleLike(post.id)}
+                                            />
+                                    }
+                                    <p onClick={() => toggleLike(post.id)} className="likes-quantity"> 
+                                        {post?.likeQuantity} {post?.likeQuantity <= 1? 'like' : 'likes'} 
+                                    </p>
                                 </ImageLikes>
                                 <PostContent>
                                     <div className="profile-name">
@@ -284,7 +307,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                                                 </StyledHashtag>
                                             )}
                                         >
-                                            {post.text}
+                                            testando
                                         </ReactHashtag>
                                     </p>
                                     <Snippet

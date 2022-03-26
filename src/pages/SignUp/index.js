@@ -5,7 +5,7 @@ import {
   StyledLink,
 } from "./style";
 import Swal from "sweetalert2";
-import { useEffect, useState, useContext } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 
@@ -18,7 +18,6 @@ export default function SignUp() {
   });
   const [errorData, setErrorData] = useState();
   const [disabledButton, setDisabledButton] = useState(false);
-  const [emailExists, setEmailExists] = useState(false);
 
   const navigate = useNavigate();
   function handleInput(e) {

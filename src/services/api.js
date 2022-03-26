@@ -28,10 +28,18 @@ async function signOut(token){
     return user;
 };
 
+async function toggleLike(postId, token){
+    const config = createConfig(token);
+    const promise = await axios.post(`${BASE_URL}like/${postId}`,{}, config);
+    return promise;
+};
+
+
 const api = {
     getHashtags,
     getUserInfos,
-    signOut
+    signOut,
+    toggleLike
 };
 
 export default api;

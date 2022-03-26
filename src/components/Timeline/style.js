@@ -270,8 +270,8 @@ const ImageLikes = styled.div`
     }
 
     .like-icon {
-        font-size: 20px;
-        color: #ffffff;
+        font-size: 25px;
+        cursor: pointer;
     }
 
     .likes-quantity {
@@ -280,7 +280,7 @@ const ImageLikes = styled.div`
         font-size: 11px;
         text-align: center;
         color: #ffffff;
-
+        cursor: pointer;
         margin-top: 4px;
     }
 
