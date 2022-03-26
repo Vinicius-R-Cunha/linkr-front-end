@@ -49,7 +49,7 @@ const api = {
     getHashtags,
     getUserInfos,
     signOut,
-    toggleLike
+    toggleLike,
     postHashtags
 };
 
