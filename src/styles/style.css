@@ -2,9 +2,3 @@ body {
   background-color: #333333;
   font-family: "Lato", sans-serif;
 }
-
-@media (max-width: 1200px) {
-  body .sidebar {
-    display: none !important;
-  }
-}

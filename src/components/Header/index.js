@@ -14,13 +14,13 @@ import api from "../../services/api";
 import { useNavigate } from "react-router";
 import UserContext from "../../contexts/UserContext";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { v4 as uuid } from "uuid";
 
 export default function Header() {
+
   const [showLogout, setShowLogout] = useState(false);
-  const [users, setUsers] = useState();
   const [search, setSearch] = useState();
-  const { token, image } = useContext(UserContext);
+  const { token, image, users, setUsers } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -83,16 +83,17 @@ export default function Header() {
                   return x.isFollowingLoggedUser === y.isFollowingLoggedUser
                     ? 0
                     : x.isFollowingLoggedUser
-                    ? -1
-                    : 1;
+                      ? -1
+                      : 1;
                 })
                 .map((user) => (
                   <LinkStyle
+                    key={uuid()}
                     onClick={() => setSearch("")}
                     to={`/users/${user.id}`}
                   >
                     <SearchedUser>
-                      <Img src={user.image} alt="" key={user.id} />
+                      <Img src={user.image} alt="" />
                       <h3>{user.name}</h3>{" "}
                       {user.isFollowingLoggedUser ? <h4>• following</h4> : null}
                     </SearchedUser>

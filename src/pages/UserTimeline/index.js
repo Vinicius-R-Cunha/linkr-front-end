@@ -23,7 +23,7 @@ export default function UserTimeline() {
     promise.catch((error) => {
       console.log(error);
     });
-  }, [id]);
+  }, [id, token]);
 
   return (
     <Container>
