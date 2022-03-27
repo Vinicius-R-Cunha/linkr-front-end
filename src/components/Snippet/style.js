@@ -50,7 +50,7 @@ const SnippetContainer = styled.div`
             font-style: normal;
             font-weight: 400;
             font-size: 11px;
-            line-height: 13px;
+            line-height: 15px;
 
             color: #cecece;
 
@@ -75,6 +75,31 @@ const SnippetContainer = styled.div`
             padding: 0 7px;
 
             .title {
+                font-size: 11px;
+                line-height: 13px;
+            }
+
+            .description {
+                font-size: 9px;
+                line-height: 11px;
+            }
+
+            .link {
+                font-size: 9px;
+                line-height: 11px;
+            }
+        }
+
+        img {
+            width: 95px;
+            height: 113px;
+        }
+    }
+
+    @media (max-width: 330px) {
+        .snippet-data {
+
+            .title {
                 font-size: 10px;
                 line-height: 13px;
             }
@@ -88,11 +113,6 @@ const SnippetContainer = styled.div`
                 font-size: 8px;
                 line-height: 11px;
             }
-        }
-
-        img {
-            width: 95px;
-            height: 113px;
         }
     }
 `;
