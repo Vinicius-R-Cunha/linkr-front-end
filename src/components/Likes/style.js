@@ -36,6 +36,13 @@ const ImageLikes = styled.div`
         margin-top: 4px;
     }
 
+    .tooltip-style{
+        font-family: 'Lato';
+        font-weight: 700;
+        font-size: 11px;
+        line-height: 13px;
+    }
+
     @media (max-width: 630px) {
         .profile-image {
             width: 40px;
