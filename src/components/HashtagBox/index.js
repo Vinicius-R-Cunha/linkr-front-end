@@ -1,16 +1,14 @@
 import ReactHashtag from "@mdnm/react-hashtag";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 import { Container, HashtagList, Title, Divider } from "./style";
 
-export default function HashtagBox() {
+export default function HashtagBox({ hashtags, setHashtags, isValidUser, setIsValidUser }) {
     const { token } = useContext(UserContext);
 
     const navigate = useNavigate();
-    const [hashtags, setHashtags] = useState([]);
-    const [isValidUser, setIsValidUser] = useState(false);
 
     useEffect(() => {
         const promise = api.getHashtags(token);
@@ -19,7 +17,7 @@ export default function HashtagBox() {
             setIsValidUser(true);
         });
         promise.catch((error) => navigate("/"));
-    }, [navigate, token]);
+    }, [navigate, token, setHashtags, setIsValidUser]);
 
     function handleHashtagClick(hashtag) {
         navigate(`/hashtag/${hashtag.replace("#", "")}`);
@@ -30,7 +28,7 @@ export default function HashtagBox() {
             <Title>trending</Title>
             <Divider />
             <HashtagList>
-                {hashtags.map((hashtag) => (
+                {hashtags?.map((hashtag) => (
                     <li key={hashtag.id}>
                         <ReactHashtag
                             onHashtagClick={(value) =>

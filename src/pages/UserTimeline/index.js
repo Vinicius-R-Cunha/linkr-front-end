@@ -9,6 +9,9 @@ import axios from "axios";
 export default function UserTimeline() {
   const { token } = useContext(UserContext);
 
+  const [hashtags, setHashtags] = useState([]);
+  const [isValidUser, setIsValidUser] = useState(false);
+
   const [user, setUser] = useState();
   const { id } = useParams();
   useEffect(() => {
@@ -28,14 +31,19 @@ export default function UserTimeline() {
   return (
     <Container>
       <Header />
-      {user && (
-        <Timeline
-          showPublish={false}
-          route={`users/${id}`}
-          mainTitle={`${user.name} posts`}
-        />
-      )}
-      <HashtagBox />
+      <Timeline
+        showPublish={false}
+        route={`users/${id}`}
+        mainTitle={`${user?.name} posts`}
+        setHashtags={setHashtags}
+        setIsValidUser={setIsValidUser}
+      />
+      <HashtagBox
+        hashtags={hashtags}
+        setHashtags={setHashtags}
+        isValidUser={isValidUser}
+        setIsValidUser={setIsValidUser}
+      />
     </Container>
   );
 }
