@@ -69,10 +69,8 @@ export default function SignUp() {
           });
         }
       });
-      setDisabledButton(false);
-    } else {
-      return;
     }
+    setDisabledButton(false);
   }
 
   return (
