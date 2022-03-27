@@ -49,7 +49,9 @@ export default function Header() {
   );
 
   useEffect(() => {
-    renderHeader();
+    if (token) {
+      renderHeader();
+    }
   }, [renderHeader]);
 
 
