@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import {
@@ -18,6 +18,14 @@ export default function Login() {
   const [error, setError] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
   const navigate = useNavigate();
+
+  const { token } = useContext(UserContext);
+
+  useEffect(() => {
+    if (token) {
+      navigate('/timeline');
+    }
+  }, [token, navigate])
 
   function handleInput(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
