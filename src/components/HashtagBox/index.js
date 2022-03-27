@@ -11,12 +11,14 @@ export default function HashtagBox({ hashtags, setHashtags, isValidUser, setIsVa
     const navigate = useNavigate();
 
     useEffect(() => {
-        const promise = api.getHashtags(token);
-        promise.then((response) => {
-            setHashtags([...response.data]);
-            setIsValidUser(true);
-        });
-        promise.catch((error) => navigate("/"));
+        if (token) {
+            const promise = api.getHashtags(token);
+            promise.then((response) => {
+                setHashtags([...response.data]);
+                setIsValidUser(true);
+            });
+            promise.catch((error) => navigate("/"));
+        }
     }, [navigate, token, setHashtags, setIsValidUser]);
 
     function handleHashtagClick(hashtag) {
