@@ -1,44 +1,32 @@
 import {
   PostsContainer,
-  Post,
-  PostContent,
-  StyledHashtag
+  Post
 } from "./style";
 
 import Publish from "../Publish";
 import SearchBarMobile from "../SearchBarMobile";
 import ConfirmationModal from "../ConfirmationModal";
 import Likes from "../Likes";
-import Snippet from "../Snippet";
+import PostContent from "../PostContent";
 
-import { AiTwotoneEdit } from "react-icons/ai";
-import { FaTrashAlt } from "react-icons/fa";
-
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
-import ReactHashtag from "@mdnm/react-hashtag";
 import { useNavigate } from "react-router-dom";
-import createHashtagsFromString from "../../utils/createHashtagsFromString";
-import { v4 as uuid } from "uuid";
+
 
 export default function Timeline({ showPublish, route, mainTitle }) {
-  const { token, setImage, setName, id, setId } =
+  const { token, setImage, setName, setId } =
     useContext(UserContext);
 
   const navigate = useNavigate();
-  const inputRef = useRef(null);
 
   const [postsArray, setPostsArray] = useState();
   const [postsState, setPostsState] = useState("loading");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [postId, setPostId] = useState();
-  const [editingPost, setEditingPost] = useState();
-  const [editIsOpen, setEditIsOpen] = useState(false);
-  const [editText, setEditText] = useState();
-  const [editLoading, setEditLoading] = useState(false);
 
   const renderPage = useCallback(
     async (route) => {
@@ -87,48 +75,6 @@ export default function Timeline({ showPublish, route, mainTitle }) {
     setModalIsOpen(false);
   }
 
-  function handleHashtagClick(e) {
-    const hashtag = e.target.innerText;
-    navigate(`/hashtag/${hashtag.replace("#", "")}`);
-  }
-
-  function handleEdit(post) {
-    setEditingPost(post);
-    setEditIsOpen(!editIsOpen);
-    setTimeout(() => inputRef.current?.focus(), 400);
-  }
-
-  function handleKeyDown(e) {
-    if (e.keyCode === 27) {
-      setEditIsOpen(false);
-    } else if (e.keyCode === 13 || e.keyCode === 10) {
-      e.preventDefault();
-      sendEdition(editingPost);
-    }
-  }
-
-  async function sendEdition(post) {
-    setEditLoading(true);
-    try {
-      const body = { link: post.url, text: editText }
-      await api.editOnePost(post.id, body, token);
-
-      createHashtagsFromString(editText, token);
-      setEditIsOpen(false);
-      renderPage(route);
-    } catch (error) {
-      toast.error("Could not save modifications", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        draggable: true,
-        progress: undefined,
-      });
-      console.log(error.response);
-    }
-  }
-
   return (
     <>
       <PostsContainer>
@@ -139,9 +85,9 @@ export default function Timeline({ showPublish, route, mainTitle }) {
           postId={postId}
           openModal={openModal}
           closeModal={closeModal}
+          modalIsOpen={modalIsOpen}
           renderPage={renderPage}
           route={route}
-          modalIsOpen={modalIsOpen}
         />
 
         <h1 className="timeline-title">{mainTitle}</h1>
@@ -154,94 +100,19 @@ export default function Timeline({ showPublish, route, mainTitle }) {
               <Post key={post?.id}>
 
                 <Likes
-                  id={post?.id}
-                  image={post?.image}
-                  likeQuantity={post?.likeQuantity}
+                  post={post}
                   renderPage={renderPage}
                   route={route}
-                  isLiked={post?.isLiked}
                 />
 
-                <PostContent>
-                  <div className="profile-name">
-                    <p name={post?.userId}
-                      onClick={e => navigate(`/users/${e.target.attributes.name.value}`)}
-                    >{post?.name} </p>
-                    {id === post?.userId && (
-                      <div className="remove-edit-icons">
-                        <AiTwotoneEdit
-                          onClick={() =>
-                            handleEdit(post)
-                          }
-                          className="edit-icon"
-                        />
-                        <FaTrashAlt
-                          onClick={() => {
-                            openModal();
-                            setPostId(post.id);
-                          }}
-                          className="remove-icon"
-                        />
-                      </div>
-                    )}
-                  </div>
-                  {editIsOpen & (editingPost === post) ? (
-                    <textarea
-                      disabled={editLoading}
-                      className="edit-input"
-                      ref={inputRef}
-                      defaultValue={post?.text}
-                      onChange={(e) =>
-                        setEditText(e.target.value)
-                      }
-                      onKeyDown={(e) => handleKeyDown(e)}
-                    ></textarea>
-                  ) : (
-                    <p className="article-text">
-                      <ReactHashtag
-                        renderHashtag={(value) => (
-                          <StyledHashtag
-                            onClick={
-                              handleHashtagClick
-                            }
-                            key={uuid()}
-                          >
-                            {value}
-                          </StyledHashtag>
-                        )}
-                      >
-                        {post?.text ? post?.text : ""}
-                      </ReactHashtag>
-                    </p>
-                  )}
-                  <Snippet
-                    url={post?.url}
-                    description={post?.description}
-                    title={post?.title}
-                    linkImage={post?.linkImage}
-                  />
-                  {/* <Snippet
-                    onClick={() => handleClick(post.url)}
-                  >
-                    <div className="snippet-data">
-                      <p className="title">
-                        {post.title}
-                      </p>
-                      <p className="description">
-                        {post.description}
-                      </p>
-                      <p className="link">{post.url}</p>
-                    </div>
-                    <img
-                      src={
-                        post.linkImage === ""
-                          ? temp
-                          : post.linkImage
-                      }
-                      alt=""
-                    />
-                  </Snippet> */}
-                </PostContent>
+                <PostContent
+                  post={post}
+                  renderPage={renderPage}
+                  route={route}
+                  openModal={openModal}
+                  setPostId={setPostId}
+                />
+
               </Post>
             );
           })}

@@ -3,7 +3,7 @@ import {
 } from "./style";
 import emptyImg from "../../assets/perfil-temp.png";
 
-export default function Snippet({ url, title, description, linkImage }) {
+export default function Snippet({ post }) {
 
     function handleClick(url) {
         window.open(url);
@@ -11,22 +11,22 @@ export default function Snippet({ url, title, description, linkImage }) {
 
     return (
         <SnippetContainer
-            onClick={() => handleClick(url)}
+            onClick={() => handleClick(post.url)}
         >
             <div className="snippet-data">
                 <p className="title">
-                    {title}
+                    {post.title}
                 </p>
                 <p className="description">
-                    {description}
+                    {post.description}
                 </p>
-                <p className="link">{url}</p>
+                <p className="link">{post.url}</p>
             </div>
             <img
                 src={
-                    linkImage === ""
+                    post.linkImage === ""
                         ? emptyImg
-                        : linkImage
+                        : post.linkImage
                 }
                 alt=""
             />
