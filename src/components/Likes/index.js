@@ -26,35 +26,51 @@ export default function Likes({ renderPage, route, post }) {
     };
 
     function renderTooltip() {
+
         if (post?.likeQuantity === "0") {
             setTooltipMessage('Ninguém curtiu')
-        }
+        };
 
-        if (post?.isLiked && post?.likeQuantity === "2") {
-            setTooltipMessage(`${'Você e ' + post.userLiked[0] + ' curtiram'}`)
+        if (post?.isLiked) {
+            if(post?.likeQuantity === "1"){
+                setTooltipMessage('Você curtiu');
 
-        } else if (!post?.isLiked && post?.likeQuantity === "2") {
-            setTooltipMessage(`${post.userLiked[0] + ' e ' + post.userLiked[1] + ' curtiram'}`)
+            } else if(post?.likeQuantity === "2") {
+                setTooltipMessage(`${'Você e ' + post.userLiked[0]}`);
 
-        } else if (!post?.isLiked && post?.likeQuantity > 2) {
-            setTooltipMessage(`${post.userLiked[0] + ', ' + post.userLiked[1] + ' e outras ' + numberLikeQuantityMinusTwo + ' pessoas'}`)
+            } else if(post?.likeQuantity === "3" && name !== post.userLiked[1]) {
+                setTooltipMessage(`${'Você, ' + post.userLiked[1] + ' e outra pessoa'}`)
 
-        } else if (post?.isLiked && post?.likeQuantity === "1") {
-            setTooltipMessage('Você curtiu')
+            } else if(post?.likeQuantity === "3" && name !== post.userLiked[0]) {
+                setTooltipMessage(`${'Você, ' + post.userLiked[0] + ' e outra pessoa'}`)
+            
+            } else if (post?.likeQuantity > 3 && name !== post.userLiked[0]) {
+                setTooltipMessage(`${'Você, ' + post.userLiked[0] + ' e outras ' + numberLikeQuantityMinusTwo +  ' pessoas'}`)
 
-        } else if (!post?.isLiked && post?.likeQuantity === "1") {
-            setTooltipMessage(`${post.userLiked[0] + ' curtiu '}`)
+            } else if (post?.likeQuantity > 3 && name !== post.userLiked[1]) {
+                setTooltipMessage(`${'Você, ' + post.userLiked[1] + ' e outras ' + numberLikeQuantityMinusTwo +  ' pessoas'}`)
+            } 
 
-        } else if (post?.isLiked && post?.likeQuantity > 2 && name !== post.userLiked[0]) {
-            setTooltipMessage(`${'Você, ' + post.userLiked[0] + ' e outras ' + numberLikeQuantityMinusTwo + ' pessoas'}`)
+        } else {
 
-        } else if (post?.isLiked && post?.likeQuantity > 2 && name !== post.userLiked[1]) {
-            setTooltipMessage(`${'Você, ' + post.userLiked[0] + ' e outras ' + numberLikeQuantityMinusTwo + ' pessoas'}`)
-        }
+            if(post?.likeQuantity === "1") {
+                setTooltipMessage(`${post.userLiked[0] + ' curtiu '}`)
+
+            } else if (post?.likeQuantity === "2") {
+                setTooltipMessage(`${post.userLiked[0] + ' e ' + post.userLiked[1] + ' curtiram'}`)
+            
+            } else if (post?.likeQuantity === "3") {
+                setTooltipMessage(`${post.userLiked[0] +', ' + post.userLiked[1] + ' e outra pessoa'}`)
+            
+            } else if (post?.likeQuantity > 3) {
+                setTooltipMessage(`${post.userLiked[0] + ', ' + post.userLiked[1] + ' e outras ' + numberLikeQuantityMinusTwo + ' pessoas'}`)
+            };
+        
+        };
     };
 
     // eslint-disable-next-line
-    useEffect((renderTooltip), [effectTooltip])
+    useEffect((renderTooltip), [effectTooltip]);
 
     return (
         <ImageLikes>
