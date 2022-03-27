@@ -9,18 +9,26 @@ export default function Snippet({ post }) {
         window.open(url);
     }
 
+    function truncateString(str, num) {
+        if (str.length > num) {
+            return str.slice(0, num) + "...";
+        } else {
+            return str;
+        }
+    }
+
     return (
         <SnippetContainer
             onClick={() => handleClick(post.url)}
         >
             <div className="snippet-data">
                 <p className="title">
-                    {post.title}
+                    {truncateString(post.title, 45)}
                 </p>
                 <p className="description">
-                    {post.description}
+                    {truncateString(post.description, 109)}
                 </p>
-                <p className="link">{post.url}</p>
+                <p className="link">{truncateString(post.url, 50)}</p>
             </div>
             <img
                 src={

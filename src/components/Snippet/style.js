@@ -20,10 +20,10 @@ const SnippetContainer = styled.div`
 
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: space-around;
 
         box-sizing: border-box;
-        padding: 23px 19px;
+        padding: 0 19px;
 
         .title {
             font-family: "Lato";
@@ -72,20 +72,20 @@ const SnippetContainer = styled.div`
         height: 115px;
 
         .snippet-data {
-            padding: 5px 9px;
+            padding: 0 7px;
 
             .title {
-                font-size: 11px;
+                font-size: 10px;
                 line-height: 13px;
             }
 
             .description {
-                font-size: 9px;
+                font-size: 8px;
                 line-height: 11px;
             }
 
             .link {
-                font-size: 9px;
+                font-size: 8px;
                 line-height: 11px;
             }
         }
