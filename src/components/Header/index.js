@@ -19,7 +19,7 @@ export default function Header() {
 
   const [showLogout, setShowLogout] = useState(false);
   const [search, setSearch] = useState();
-  const { token, image, users, setUsers } = useContext(UserContext);
+  const { token, image, users, setUsers, setToken } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -27,6 +27,7 @@ export default function Header() {
     try {
       await api.signOut(token);
       localStorage.removeItem("token");
+      setToken(localStorage.getItem("token"));
       setShowLogout(false);
       navigate("/");
     } catch (error) {
