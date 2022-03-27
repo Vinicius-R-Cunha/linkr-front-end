@@ -25,8 +25,7 @@ import createHashtagsFromString from "../../utils/createHashtagsFromString";
 import { v4 as uuid } from "uuid";
 
 export default function Timeline({ showPublish, route, mainTitle }) {
-  const { token, setImage, setName, id, setId } =
-    useContext(UserContext);
+  const { token, setImage, setName, id, setId } = useContext(UserContext);
 
   const navigate = useNavigate();
   const inputRef = useRef(null);
@@ -127,7 +126,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
       });
       console.log(error.response);
     }
-  }
+  };
 
   return (
     <>
@@ -160,6 +159,7 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                   renderPage={renderPage}
                   route={route}
                   isLiked={post?.isLiked}
+                  post={post}
                 />
 
                 <PostContent>
