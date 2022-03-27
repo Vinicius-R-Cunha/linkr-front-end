@@ -7,6 +7,7 @@ import UserContext from '../../contexts/UserContext';
 import api from '../../services/api';
 import ReactTooltip from 'react-tooltip';
 
+
 export default function Likes({ id, image, likeQuantity, renderPage, route, isLiked, post }) {
     const { token , name} = useContext(UserContext);
     
@@ -60,9 +61,10 @@ export default function Likes({ id, image, likeQuantity, renderPage, route, isLi
                         
             <img
                 className="profile-image"
-                src={image}
+                src={post.image}
                 alt=""
             />
+
             <ReactTooltip 
             className="tooltip-style"
             effect="float" 
@@ -72,15 +74,16 @@ export default function Likes({ id, image, likeQuantity, renderPage, route, isLi
             />
             {isLiked === true ?
                 <FaHeart 
+
                     className="like-icon"
                     style={{ color: '#ac0000' }}
-                    onClick={() => toggleLike(id)}
+                    onClick={() => toggleLike(post.id)}
                 />
                 :
                 <FaRegHeart 
                     className="like-icon"
                     style={{ color: '#ffffff' }}
-                    onClick={() => toggleLike(id)}
+                    onClick={() => toggleLike(post.id)}
                 />
             }
             <p data-tip={tooltipMessage} onClick={() => toggleLike(id)} className="likes-quantity">

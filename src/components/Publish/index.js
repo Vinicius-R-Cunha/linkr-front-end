@@ -1,12 +1,11 @@
 import { PublishContainer, ImageDiv } from './style';
 
-import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import createHashtagsFromString from "../../utils/createHashtagsFromString";
 import { useContext, useState } from 'react';
 import UserContext from '../../contexts/UserContext';
-
+import api from '../../services/api';
 
 export default function Publish({ renderPage, route }) {
 
@@ -24,15 +23,9 @@ export default function Publish({ renderPage, route }) {
             setLoading(true);
 
             try {
-                await axios.post(
-                    process.env.REACT_APP_BACK_URL + "posts",
-                    { link, text: article },
-                    {
-                        headers: {
-                            authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+                const body = { link, text: article }
+                await api.publishPost(body, token);
+
                 createHashtagsFromString(article, token);
                 renderPage(route);
                 setLink("");

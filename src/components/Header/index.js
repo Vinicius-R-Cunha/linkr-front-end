@@ -7,13 +7,12 @@ import {
   SearchBar,
   LinkStyle,
 } from "./style";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { HiOutlineSearch } from "react-icons/hi";
 import api from "../../services/api";
 import { useNavigate } from "react-router";
 import UserContext from "../../contexts/UserContext";
-import axios from "axios";
 import { v4 as uuid } from "uuid";
 
 export default function Header() {
@@ -34,19 +33,25 @@ export default function Header() {
       console.log(error);
     }
   }
+
+  const renderHeader = useCallback(
+    async () => {
+      try {
+        const users = await api.getUsers(token);
+        setUsers(users.data);
+
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [token, setUsers]
+  );
+
   useEffect(() => {
-    const promise = axios.get(process.env.REACT_APP_BACK_URL + "users", {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    promise.then((response) => {
-      setUsers(response.data);
-    });
-    promise.catch((error) => {
-      console.log(error);
-    });
-  }, [token, setUsers]);
+    renderHeader();
+  }, [renderHeader]);
+
+
 
   const getFilteredItems = (query, users) => {
     if (!query) {
