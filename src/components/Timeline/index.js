@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Timeline({ showPublish, route, mainTitle }) {
 
-  const { token, setImage, setName, id, setId } = useContext(UserContext);
+  const { token, setImage, setName, setId } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -109,7 +109,6 @@ export default function Timeline({ showPublish, route, mainTitle }) {
                   post={post}
                   renderPage={renderPage}
                   route={route}
-                  isLiked={post?.isLiked}
                   openModal={openModal}
                   setPostId={setPostId}
                 />
