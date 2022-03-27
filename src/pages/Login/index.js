@@ -51,11 +51,11 @@ export default function Login() {
       });
       promise.catch(handleError);
     } else {
-
       setError(true);
       setTimeout(() => setError(false), 2500);
-      return;
     }
+    setDisabledButton(false);
+    return;
   }
 
   function handleError() {
