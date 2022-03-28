@@ -52,7 +52,7 @@ export default function Header() {
     if (token) {
       renderHeader();
     }
-  }, [token,renderHeader]);
+  }, [token, renderHeader]);
 
 
 
