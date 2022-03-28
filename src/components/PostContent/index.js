@@ -69,6 +69,7 @@ export default function PostContent({ post, renderPage, route, openModal, setPos
             });
             console.log(error.response);
         }
+        setEditLoading(false);
     }
 
     return (
