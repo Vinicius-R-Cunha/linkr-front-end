@@ -15,17 +15,19 @@ export default function UserTimeline() {
   const [user, setUser] = useState();
   const { id } = useParams();
   useEffect(() => {
-    const promise = axios.get(process.env.REACT_APP_BACK_URL + "user/" + id, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    promise.then((response) => {
-      setUser(response.data);
-    });
-    promise.catch((error) => {
-      console.log(error);
-    });
+    if (token) {
+      const promise = axios.get(process.env.REACT_APP_BACK_URL + "user/" + id, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      promise.then((response) => {
+        setUser(response.data);
+      });
+      promise.catch((error) => {
+        console.log(error);
+      });
+    }
   }, [id, token]);
 
   return (
