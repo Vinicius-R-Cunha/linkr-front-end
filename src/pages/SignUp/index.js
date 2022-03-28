@@ -5,9 +5,10 @@ import {
   StyledLink,
 } from "./style";
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import UserContext from "../../contexts/UserContext";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -19,7 +20,16 @@ export default function SignUp() {
   const [errorData, setErrorData] = useState();
   const [disabledButton, setDisabledButton] = useState(false);
 
+  const { token } = useContext(UserContext);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      navigate('/timeline');
+    }
+  }, [token, navigate])
+
   function handleInput(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
@@ -59,9 +69,8 @@ export default function SignUp() {
           });
         }
       });
-    } else {
-      return;
     }
+    setDisabledButton(false);
   }
 
   return (

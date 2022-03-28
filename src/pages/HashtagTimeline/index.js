@@ -3,9 +3,13 @@ import Timeline from "../../components/Timeline";
 import HashtagBox from "../../components/HashtagBox";
 import { Container } from "./style";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 export default function HashtagTimeline() {
     const { hashtag } = useParams();
+
+    const [hashtags, setHashtags] = useState([]);
+    const [isValidUser, setIsValidUser] = useState(false);
 
     return (
         <Container>
@@ -14,8 +18,15 @@ export default function HashtagTimeline() {
                 showPublish={false}
                 route={`hashtag/${hashtag}`}
                 mainTitle={hashtag}
+                setHashtags={setHashtags}
+                setIsValidUser={setIsValidUser}
             />
-            <HashtagBox />
+            <HashtagBox
+                hashtags={hashtags}
+                setHashtags={setHashtags}
+                isValidUser={isValidUser}
+                setIsValidUser={setIsValidUser}
+            />
         </Container>
     );
 }

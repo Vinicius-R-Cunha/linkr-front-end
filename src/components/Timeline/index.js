@@ -17,7 +17,7 @@ import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Timeline({ showPublish, route, mainTitle }) {
+export default function Timeline({ showPublish, route, mainTitle, setHashtags, setIsValidUser }) {
 
   const { token, setImage, setName, setId } = useContext(UserContext);
 
@@ -32,6 +32,8 @@ export default function Timeline({ showPublish, route, mainTitle }) {
     async (route) => {
       try {
         const posts = await api.getPosts(route, token);
+        const hashtags = await api.getHashtags(token);
+
         setPostsArray(posts.data);
 
         if (posts?.data.length === 0) {
@@ -39,12 +41,15 @@ export default function Timeline({ showPublish, route, mainTitle }) {
         } else {
           setPostsState("full");
         }
+
+        setHashtags([...hashtags.data]);
+        setIsValidUser(true);
       } catch (error) {
         setPostsState("error");
         console.log(error.response);
       }
     },
-    [token]
+    [token, setHashtags, setIsValidUser]
   );
 
   const getUser = useCallback(async () => {
