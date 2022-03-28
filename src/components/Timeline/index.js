@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Timeline({ showPublish, route, mainTitle, hashtags, setHashtags, setIsValidUser }) {
 
-  const { token, setImage, setName, setId } = useContext(UserContext);
+  const { token, setToken, setImage, setName, setId } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -49,6 +49,7 @@ export default function Timeline({ showPublish, route, mainTitle, hashtags, setH
         console.log(error.response);
       }
     },
+    // eslint-disable-next-line
     [token, setHashtags, setIsValidUser, hashtags]
   );
 
@@ -68,9 +69,12 @@ export default function Timeline({ showPublish, route, mainTitle, hashtags, setH
       getUser();
       renderPage(route);
     } else {
+      localStorage.removeItem("token");
+      setToken(localStorage.getItem("token"));
       navigate("/");
     }
-  }, [navigate, renderPage, token, route, getUser]);
+    // eslint-disable-next-line
+  }, [navigate, token, route, getUser]);
 
   function openModal() {
     setModalIsOpen(true);

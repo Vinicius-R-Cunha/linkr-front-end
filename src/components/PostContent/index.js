@@ -29,7 +29,6 @@ export default function PostContent({ post, renderPage, route, openModal, setPos
     const inputRef = useRef(null);
 
     const navigate = useNavigate();
-
     function handleHashtagClick(e) {
         const hashtag = e.target.innerText;
         navigate(`/hashtag/${hashtag.replace("#", "")}`);
@@ -86,9 +85,9 @@ export default function PostContent({ post, renderPage, route, openModal, setPos
                 {id === post?.userId && (
                     <div className="remove-edit-icons">
                         <AiTwotoneEdit
-                            onClick={() =>
+                            onClick={() => {
                                 handleEdit(post)
-                            }
+                            }}
                             className="edit-icon"
                         />
                         <FaTrashAlt
@@ -102,15 +101,15 @@ export default function PostContent({ post, renderPage, route, openModal, setPos
                 )}
             </div>
 
-            {editIsOpen & (editingPost === post) ? (
+            {(editIsOpen && (editingPost === post)) ? (
                 <textarea
                     disabled={editLoading}
                     className="edit-input"
                     ref={inputRef}
                     defaultValue={post?.text}
-                    onChange={(e) =>
+                    onChange={(e) => {
                         setEditText(e.target.value)
-                    }
+                    }}
                     onKeyDown={(e) => handleKeyDown(e)}
                 ></textarea>
             ) : (
