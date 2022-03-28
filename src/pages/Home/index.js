@@ -15,6 +15,7 @@ export default function Home() {
                 showPublish={true}
                 route="posts"
                 mainTitle="timeline"
+                hashtags={hashtags}
                 setHashtags={setHashtags}
                 setIsValidUser={setIsValidUser}
             />
