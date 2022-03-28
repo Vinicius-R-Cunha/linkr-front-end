@@ -26,9 +26,9 @@ export default function SignUp() {
 
   useEffect(() => {
     if (token) {
-      navigate('/timeline');
+      navigate("/timeline");
     }
-  }, [token, navigate])
+  }, [token, navigate]);
 
   function handleInput(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -66,6 +66,13 @@ export default function SignUp() {
             icon: "error",
             title: "Ops...",
             text: "Este e-mail ja está cadastrado!",
+          });
+        }
+        if (error.response.status === 410) {
+          return Swal.fire({
+            icon: "error",
+            title: "Ops...",
+            text: "Este usuario ja está cadastrado!",
           });
         }
       });
