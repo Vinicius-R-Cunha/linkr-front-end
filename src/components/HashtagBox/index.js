@@ -19,7 +19,8 @@ export default function HashtagBox({ hashtags, setHashtags, isValidUser, setIsVa
             });
             promise.catch((error) => navigate("/"));
         }
-    }, [navigate, token, setHashtags, setIsValidUser]);
+        // eslint-disable-next-line
+    }, [token, setHashtags, setIsValidUser]);
 
     function handleHashtagClick(hashtag) {
         navigate(`/hashtag/${hashtag.replace("#", "")}`);

@@ -28,7 +28,8 @@ export default function SignUp() {
     if (token) {
       navigate("/timeline");
     }
-  }, [token, navigate]);
+    // eslint-disable-next-line
+  }, [token]);
 
   function handleInput(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });

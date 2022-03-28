@@ -21,11 +21,12 @@ export default function Login() {
 
   const { token } = useContext(UserContext);
 
-  useEffect(() => {
-    if (token) {
-      navigate('/timeline');
-    }
-  }, [token, navigate])
+  // useEffect(() => {
+  //   if (token) {
+  //     navigate('/timeline');
+  //   }
+  //   // eslint-disable-next-line
+  // }, [token])
 
   function handleInput(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
