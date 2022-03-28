@@ -32,40 +32,40 @@ export default function Likes({ renderPage, route, post }) {
         };
 
         if (post?.isLiked) {
-            if(post?.likeQuantity === "1"){
+            if (post?.likeQuantity === "1") {
                 setTooltipMessage('Você curtiu');
 
-            } else if(post?.likeQuantity === "2") {
+            } else if (post?.likeQuantity === "2") {
                 setTooltipMessage(`${'Você e ' + post.userLiked[0]}`);
 
-            } else if(post?.likeQuantity === "3" && name !== post.userLiked[1]) {
+            } else if (post?.likeQuantity === "3" && name !== post.userLiked[1]) {
                 setTooltipMessage(`${'Você, ' + post.userLiked[1] + ' e outra pessoa'}`)
 
-            } else if(post?.likeQuantity === "3" && name !== post.userLiked[0]) {
+            } else if (post?.likeQuantity === "3" && name !== post.userLiked[0]) {
                 setTooltipMessage(`${'Você, ' + post.userLiked[0] + ' e outra pessoa'}`)
-            
+
             } else if (post?.likeQuantity > 3 && name !== post.userLiked[0]) {
-                setTooltipMessage(`${'Você, ' + post.userLiked[0] + ' e outras ' + numberLikeQuantityMinusTwo +  ' pessoas'}`)
+                setTooltipMessage(`${'Você, ' + post.userLiked[0] + ' e outras ' + numberLikeQuantityMinusTwo + ' pessoas'}`)
 
             } else if (post?.likeQuantity > 3 && name !== post.userLiked[1]) {
-                setTooltipMessage(`${'Você, ' + post.userLiked[1] + ' e outras ' + numberLikeQuantityMinusTwo +  ' pessoas'}`)
-            } 
+                setTooltipMessage(`${'Você, ' + post.userLiked[1] + ' e outras ' + numberLikeQuantityMinusTwo + ' pessoas'}`)
+            }
 
         } else {
 
-            if(post?.likeQuantity === "1") {
+            if (post?.likeQuantity === "1") {
                 setTooltipMessage(`${post.userLiked[0] + ' curtiu '}`)
 
             } else if (post?.likeQuantity === "2") {
                 setTooltipMessage(`${post.userLiked[0] + ' e ' + post.userLiked[1] + ' curtiram'}`)
-            
+
             } else if (post?.likeQuantity === "3") {
-                setTooltipMessage(`${post.userLiked[0] +', ' + post.userLiked[1] + ' e outra pessoa'}`)
-            
+                setTooltipMessage(`${post.userLiked[0] + ', ' + post.userLiked[1] + ' e outra pessoa'}`)
+
             } else if (post?.likeQuantity > 3) {
                 setTooltipMessage(`${post.userLiked[0] + ', ' + post.userLiked[1] + ' e outras ' + numberLikeQuantityMinusTwo + ' pessoas'}`)
             };
-        
+
         };
     };
 

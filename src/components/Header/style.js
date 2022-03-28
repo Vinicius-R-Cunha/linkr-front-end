@@ -241,6 +241,8 @@ const SearchBar = styled.div`
 const SearchedUser = styled.div`
   display: flex;
   padding-bottom: 10px;
+
+  cursor: pointer;
 `;
 const Img = styled.img`
   object-fit: cover;

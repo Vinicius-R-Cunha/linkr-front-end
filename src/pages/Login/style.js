@@ -4,12 +4,11 @@ import { Link } from "react-router-dom";
 const LoginContainer = styled.main`
   width: 100%;
   height: 100vh;
-  background-color: green;
 
   display: flex;
   flex-direction: row;
 
-  @media (max-width: 630px) {
+  @media (max-width: 1000px) {
     flex-direction: column;
   }
 `;
@@ -22,6 +21,8 @@ const DescriptionContainer = styled.div`
   padding-left: 10%;
 
   background-color: #151515;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   h1 {
     margin-top: 22%;
@@ -44,7 +45,7 @@ const DescriptionContainer = styled.div`
     text-align: left;
     color: #ffffff;
   }
-  @media (max-width: 630px) {
+  @media (max-width: 1000px) {
     width: 100%;
     height: 30%;
 
@@ -52,6 +53,9 @@ const DescriptionContainer = styled.div`
     flex-direction: column;
     align-items: center;
     padding-left: 0;
+    padding-top: 10px;
+
+    z-index: 1;
     h1 {
       margin-top: 4%;
       font-size: 4.75rem;
@@ -74,27 +78,30 @@ const DataContainer = styled.form`
   padding-top: 13%;
   box-sizing: border-box;
   input {
-    height: 9%;
+    height: 65px;
     width: 80%;
     border: none;
     border-radius: 6px;
     background-color: #ffffff;
-    margin-bottom: 1.4%;
+    margin-bottom: 13px;
     text-indent: 10px;
     font-family: "Oswald", sans-serif;
     font-style: normal;
     font-weight: 700;
     font-size: 1.688rem;
+    box-sizing: border-box;
     ::placeholder {
       color: #9f9f9f;
     }
   }
 
   button {
+    all: unset;
+
     box-sizing: border-box;
     padding: 0;
-    height: 9%;
-    width: 81%;
+    height: 65px;
+    width: 80%;
     border: none;
     border-radius: 6px;
     background-color: #1877f2;
@@ -114,9 +121,9 @@ const DataContainer = styled.form`
     color: red;
   }
 
-  @media (max-width: 630px) {
+  @media (max-width: 1000px) {
     width: 100%;
-    height: 73.76%;
+    height: 86%;
 
     display: flex;
     flex-direction: column;
@@ -124,13 +131,15 @@ const DataContainer = styled.form`
     padding-top: 40px;
 
     input {
-      height: 8.3%;
+      width: 88%;
+      height: 55px;
       font-size: 1.375rem;
+      margin-bottom: 11px;
     }
 
     button {
-      height: 9%;
-      width: 82%;
+      width: 88%;
+      height: 55px;
       font-size: 1.375rem;
       margin-bottom: 21px;
     }

@@ -97,6 +97,8 @@ const LinkStyle = styled(Link)`
 const SearchedUser = styled.div`
   display: flex;
   padding-bottom: 10px;
+
+  cursor: pointer;
 `;
 
 const Img = styled.img`
@@ -107,9 +109,9 @@ const Img = styled.img`
 `;
 
 export {
-    Debounce,
-    SearchBar,
-    LinkStyle,
-    SearchedUser,
-    Img
+  Debounce,
+  SearchBar,
+  LinkStyle,
+  SearchedUser,
+  Img
 }
