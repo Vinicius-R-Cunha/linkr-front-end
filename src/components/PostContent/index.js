@@ -87,6 +87,7 @@ export default function PostContent({ post, renderPage, route, openModal, setPos
                     <div className="remove-edit-icons">
                         <AiTwotoneEdit
                             onClick={() => {
+                                setEditText(post?.text)
                                 handleEdit(post)
                             }}
                             className="edit-icon"

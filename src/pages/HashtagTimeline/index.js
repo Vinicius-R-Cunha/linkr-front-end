@@ -17,7 +17,7 @@ export default function HashtagTimeline() {
             <Timeline
                 showPublish={false}
                 route={`hashtag/${hashtag}`}
-                mainTitle={hashtag}
+                mainTitle={`#${hashtag}`}
                 setHashtags={setHashtags}
                 setIsValidUser={setIsValidUser}
             />
