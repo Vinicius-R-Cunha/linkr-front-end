@@ -7,7 +7,7 @@ export default function Repost({ post, renderPage, route }) {
         <RepostContainer>
             <TiArrowSync
                 className='repost-icon'
-                onClick={handleModal}
+            // onClick={handleModal}
             />
             <p className='repost-quantity'>0 re-posts</p>
         </RepostContainer>

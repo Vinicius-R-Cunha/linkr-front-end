@@ -1,11 +1,11 @@
 import { ImageLikes } from "./style";
 import { useContext, useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { AiOutlineComment } from "react-icons/ai";
 import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 import ReactTooltip from "react-tooltip";
 import Repost from "../Repost";
+import Comments from "../Comments";
 
 export default function Likes({ renderPage, route, post }) {
     const { token, name } = useContext(UserContext);
@@ -118,17 +118,12 @@ export default function Likes({ renderPage, route, post }) {
                 onClick={() => toggleLike(post.id)}
                 className="likes-quantity"
             >
-                {post?.likeQuantity} {post?.likeQuantity == 1 ? "like" : "likes"}
+                {post?.likeQuantity} {post?.likeQuantity === 1 ? "like" : "likes"}
             </p>
-            <AiOutlineComment
-                className="like-icon"
-                style={{ color: "#ffffff" }}
-            // onClick={() => addComments(post.id)}
+
+            <Comments
+                post={post}
             />
-            <p className="likes-quantity">
-                {post?.commentQuantity}{" "}
-                {post?.commentQuantity == 1 ? "comment" : "comments"}
-            </p>
 
             <Repost
                 post={post}
