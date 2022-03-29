@@ -24,12 +24,12 @@ export default function SignUp() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (token) {
-      navigate("/timeline");
-    }
-    // eslint-disable-next-line
-  }, [token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     navigate("/timeline");
+  //   }
+  //   // eslint-disable-next-line
+  // }, [token]);
 
   function handleInput(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
