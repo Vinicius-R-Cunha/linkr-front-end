@@ -14,15 +14,14 @@ const LeftContentContainer = styled.div`
 
     border-radius: 26.5px;
 
-    margin-bottom: 18px;
-
     &:hover {
       cursor: pointer;
     }
   }
 
   .left-icon {
-    font-size: 25px;
+    font-size: 20px;
+    color: #ffffff;
     cursor: pointer;
   }
 
@@ -41,6 +40,14 @@ const LeftContentContainer = styled.div`
     .profile-image {
       width: 40px;
       height: 40px;
+    }
+
+    .left-icon {
+      font-size: 15px;
+    }
+
+    .left-quantity {
+      font-size: 9px;
     }
   }
 `;

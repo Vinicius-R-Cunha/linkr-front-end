@@ -106,7 +106,6 @@ export default function Likes({ post, renderPage, route }) {
                 ) : (
                     <FaRegHeart
                         className="left-icon"
-                        style={{ color: "#ffffff" }}
                         onClick={() => toggleLike(post.id)}
                     />
                 )

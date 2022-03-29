@@ -7,22 +7,8 @@ const RepostsContainer = styled.div`
 
     margin-top: 10px;
 
-    .repost-icon {
-        font-size: 25px;
-        color: #FFFFFF;
-        margin-bottom: 3px;
-
-        cursor: pointer;
-    }
-
-    .repost-quantity {
-        font-family: 'Lato';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 11px;
-        text-align: center;
-
-        color: #FFFFFF;
+    @media (max-width: 630px) {
+        margin-top: 6px;
     }
 `
 

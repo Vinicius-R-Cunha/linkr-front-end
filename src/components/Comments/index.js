@@ -6,7 +6,6 @@ export default function Comments({ post }) {
         <CommentsContainer>
             <AiOutlineComment
                 className="left-icon"
-                style={{ color: "#ffffff" }}
             // onClick={() => addComments(post.id)}
             />
             <p className="left-quantity">

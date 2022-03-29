@@ -6,6 +6,10 @@ const CommentsContainer = styled.div`
     align-items: center;
 
     margin-top: 10px;
+
+    @media (max-width: 630px) {
+        margin-top: 6px;
+    }
 `
 
 export { CommentsContainer };
