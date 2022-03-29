@@ -71,66 +71,66 @@ export default function PostContent({
       });
       console.log(error.response);
     }
-    setEditLoading(false);
-  }
 
-  return (
-    <PostContentDiv>
-      <div className="profile-name">
-        <p
-          name={post?.userId}
-          onClick={(e) => {
-            navigate(`/users/${e.target.attributes.name.value}`);
-          }}
-        >
-          {post?.name}
-        </p>
-
-        {id === post?.userId && (
-          <div className="remove-edit-icons">
-            <AiTwotoneEdit
-              onClick={() => {
-                handleEdit(post);
-              }}
-              className="edit-icon"
-            />
-            <FaTrashAlt
-              onClick={() => {
-                openModal();
-                setPostId(post.id);
-              }}
-              className="remove-icon"
-            />
-          </div>
-        )}
-      </div>
-
-      {editIsOpen && editingPost === post ? (
-        <textarea
-          disabled={editLoading}
-          className="edit-input"
-          ref={inputRef}
-          defaultValue={post?.text}
-          onChange={(e) => {
-            setEditText(e.target.value);
-          }}
-          onKeyDown={(e) => handleKeyDown(e)}
-        ></textarea>
-      ) : (
-        <p className="article-text">
-          <ReactHashtag
-            renderHashtag={(value) => (
-              <StyledHashtag onClick={handleHashtagClick} key={uuid()}>
-                {value}
-              </StyledHashtag>
-            )}
+    return (
+      <PostContentDiv>
+        <div className="profile-name">
+          <p
+            name={post?.userId}
+            onClick={(e) => {
+              navigate(`/users/${e.target.attributes.name.value}`);
+            }}
           >
-            {post?.text ? post?.text : ""}
-          </ReactHashtag>
-        </p>
-      )}
+            {post?.name}
+          </p>
 
-      <Snippet post={post} />
-    </PostContentDiv>
-  );
+          {id === post?.userId && (
+            <div className="remove-edit-icons">
+              <AiTwotoneEdit
+                onClick={() => {
+                  setEditText(post?.text);
+                  handleEdit(post);
+                }}
+                className="edit-icon"
+              />
+              <FaTrashAlt
+                onClick={() => {
+                  openModal();
+                  setPostId(post.id);
+                }}
+                className="remove-icon"
+              />
+            </div>
+          )}
+        </div>
+
+        {editIsOpen && editingPost === post ? (
+          <textarea
+            disabled={editLoading}
+            className="edit-input"
+            ref={inputRef}
+            defaultValue={post?.text}
+            onChange={(e) => {
+              setEditText(e.target.value);
+            }}
+            onKeyDown={(e) => handleKeyDown(e)}
+          ></textarea>
+        ) : (
+          <p className="article-text">
+            <ReactHashtag
+              renderHashtag={(value) => (
+                <StyledHashtag onClick={handleHashtagClick} key={uuid()}>
+                  {value}
+                </StyledHashtag>
+              )}
+            >
+              {post?.text ? post?.text : ""}
+            </ReactHashtag>
+          </p>
+        )}
+
+        <Snippet post={post} />
+      </PostContentDiv>
+    );
+  }
 }

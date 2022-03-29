@@ -5,7 +5,7 @@ export default async function createHashtagsFromString(text, token) {
   if (hashtagsMatched === null) {
     return;
   }
-  const hashtags = hashtagsMatched.map((hashtag) => hashtag.replace("#", ""));
+  const hashtags = hashtagsMatched?.map((hashtag) => hashtag.replace("#", ""));
   try {
     await api.postHashtags(token, hashtags);
   } catch (error) {
