@@ -6,6 +6,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import UserContext from '../../contexts/UserContext';
 import api from '../../services/api';
 import ReactTooltip from 'react-tooltip';
+import Repost from '../Repost';
 
 
 export default function Likes({ renderPage, route, post }) {
@@ -105,6 +106,13 @@ export default function Likes({ renderPage, route, post }) {
             <p data-tip={tooltipMessage} onClick={() => toggleLike(post.id)} className="likes-quantity">
                 {post?.likeQuantity} {post?.likeQuantity <= 1 ? 'like' : 'likes'}
             </p>
+
+            <Repost
+                post={post}
+                renderPage={renderPage}
+                route={route}
+            />
+
         </ImageLikes>
     );
 }
