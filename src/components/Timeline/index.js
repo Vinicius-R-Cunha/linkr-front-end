@@ -6,7 +6,7 @@ import {
 import Publish from "../Publish";
 import SearchBarMobile from "../SearchBarMobile";
 import ConfirmationModal from "../ConfirmationModal";
-import Likes from "../Likes";
+import PostLeftContent from "../PostLeftContent";
 import PostContent from "../PostContent";
 
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -105,7 +105,7 @@ export default function Timeline({ showPublish, route, mainTitle, hashtags, setH
             return (
               <Post key={post?.id}>
 
-                <Likes
+                <PostLeftContent
                   post={post}
                   renderPage={renderPage}
                   route={route}

@@ -1,13 +1,11 @@
-import { ImageLikes } from "./style";
+import { LikesContainer } from "./style";
 import { useContext, useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 import ReactTooltip from "react-tooltip";
-import Repost from "../Repost";
-import Comments from "../Comments";
 
-export default function Likes({ renderPage, route, post }) {
+export default function Likes({ post, renderPage, route }) {
     const { token, name } = useContext(UserContext);
 
     const numberLikeQuantityMinusTwo = Number(post?.likeQuantity) - 2;
@@ -90,9 +88,7 @@ export default function Likes({ renderPage, route, post }) {
     useEffect(renderTooltip, [effectTooltip]);
 
     return (
-        <ImageLikes>
-            <img className="profile-image" src={post.image} alt="" />
-
+        <LikesContainer>
             <ReactTooltip
                 className="tooltip-style"
                 effect="float"
@@ -100,36 +96,28 @@ export default function Likes({ renderPage, route, post }) {
                 backgroundColor="rgba(255, 255, 255, 0.9)"
                 textColor="#505050"
             />
-            {post?.isLiked ? (
-                <FaHeart
-                    className="like-icon"
-                    style={{ color: "#ac0000" }}
-                    onClick={() => toggleLike(post.id)}
-                />
-            ) : (
-                <FaRegHeart
-                    className="like-icon"
-                    style={{ color: "#ffffff" }}
-                    onClick={() => toggleLike(post.id)}
-                />
-            )}
+            {
+                post?.isLiked ? (
+                    <FaHeart
+                        className="left-icon"
+                        style={{ color: "#ac0000" }}
+                        onClick={() => toggleLike(post.id)}
+                    />
+                ) : (
+                    <FaRegHeart
+                        className="left-icon"
+                        style={{ color: "#ffffff" }}
+                        onClick={() => toggleLike(post.id)}
+                    />
+                )
+            }
             <p
                 data-tip={tooltipMessage}
                 onClick={() => toggleLike(post.id)}
-                className="likes-quantity"
+                className="left-quantity"
             >
                 {post?.likeQuantity} {post?.likeQuantity === 1 ? "like" : "likes"}
             </p>
-
-            <Comments
-                post={post}
-            />
-
-            <Repost
-                post={post}
-                renderPage={renderPage}
-                route={route}
-            />
-        </ImageLikes>
+        </LikesContainer>
     );
 }

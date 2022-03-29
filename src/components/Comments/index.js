@@ -5,11 +5,11 @@ export default function Comments({ post }) {
     return (
         <CommentsContainer>
             <AiOutlineComment
-                className="like-icon"
+                className="left-icon"
                 style={{ color: "#ffffff" }}
             // onClick={() => addComments(post.id)}
             />
-            <p className="likes-quantity">
+            <p className="left-quantity">
                 {post?.commentQuantity}{" "}
                 {post?.commentQuantity === 1 ? "comment" : "comments"}
             </p>

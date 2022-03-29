@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const RepostContainer = styled.div`
+const RepostsContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,4 +26,4 @@ const RepostContainer = styled.div`
     }
 `
 
-export { RepostContainer }
+export { RepostsContainer }
