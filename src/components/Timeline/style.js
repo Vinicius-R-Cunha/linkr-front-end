@@ -8,35 +8,35 @@ const PostsContainer = styled.div`
     align-items: center;
 
     margin-right: 25px;
+    overflow: auto;
 
-  .input-icon-mobile {
-    width: 100%;
-    position: relative;
+    .input-icon-mobile {
+        width: 100%;
+        position: relative;
 
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 17px;
+        font-family: "Lato";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 17px;
 
-    display: none;
-    justify-content: center;
-    align-items: center;
+        display: none;
+        justify-content: center;
+        align-items: center;
 
-    margin-bottom: 22px;
+        margin-bottom: 22px;
 
-    .search-icon-mobile {
-      font-size: 23px;
-      color: #c6c6c6;
+        .search-icon-mobile {
+            font-size: 23px;
+            color: #c6c6c6;
 
-      position: absolute;
-      right: 20px;
-      z-index: 3;
+            position: absolute;
+            right: 20px;
+            z-index: 3;
+        }
     }
-  }
 
-  .timeline-title {
-    width: 100%;
-
+    .timeline-title {
+        width: 100%;
 
         font-family: "Oswald";
         font-weight: 700;
@@ -59,13 +59,13 @@ const PostsContainer = styled.div`
         color: #ffffff;
     }
 
-  @media (max-width: 960px) {
-    margin-right: 0;
+    @media (max-width: 960px) {
+        margin-right: 0;
 
-    .input-icon-mobile {
-      display: flex;
+        .input-icon-mobile {
+            display: flex;
+        }
     }
-  }
 
     @media (max-width: 630px) {
         width: 100%;
@@ -105,7 +105,4 @@ const Post = styled.div`
     }
 `;
 
-export {
-    PostsContainer,
-    Post
-};
+export { PostsContainer, Post };

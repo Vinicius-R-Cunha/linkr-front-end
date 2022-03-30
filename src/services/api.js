@@ -42,7 +42,7 @@ async function toggleLike(postId, token) {
     const config = createConfig(token);
     const promise = await axios.post(`${BASE_URL}like/${postId}`, {}, config);
     return promise;
-};
+}
 
 async function getPosts(route, token) {
     const config = createConfig(token);
@@ -77,7 +77,7 @@ const api = {
     getPosts,
     editOnePost,
     publishPost,
-    getUsers
+    getUsers,
 };
 
 export default api;
