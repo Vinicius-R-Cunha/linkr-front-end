@@ -1,11 +1,14 @@
-import { PostsContainer, Post } from "./style";
+import {
+  PostsContainer,
+  Post
+} from "./style";
 
 import Publish from "../Publish";
 import SearchBarMobile from "../SearchBarMobile";
-import ConfirmationModal from "../ConfirmationModal";
-import Likes from "../Likes";
+import DeleteConfirmationModal from "../DeleteConfirmationModal";
+import RepostConfirmationModal from '../RepostConfirmationModal';
+import PostLeftContent from "../PostLeftContent";
 import PostContent from "../PostContent";
-import NewPostsNotificationBar from "../NewPostsNotificationBar";
 
 import { useCallback, useContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -14,134 +17,144 @@ import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 
-export default function Timeline({
-    showPublish,
-    route,
-    mainTitle,
-    hashtags,
-    setHashtags,
-    setIsValidUser,
-}) {
-    const { token, setImage, setName, setId } = useContext(UserContext);
 
-    const navigate = useNavigate();
+export default function Timeline({ showPublish, route, mainTitle, hashtags, setHashtags, setIsValidUser }) {
 
-    const [postsArray, setPostsArray] = useState();
-    const [postsState, setPostsState] = useState("loading");
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [postId, setPostId] = useState();
+  const { token, setImage, setName, setId } = useContext(UserContext);
 
-    const renderPage = useCallback(
-        async (route) => {
-            try {
-                const posts = await api.getPosts(route, token);
-                const hashtagsApi = await api.getHashtags(token);
+  const navigate = useNavigate();
 
-                setPostsArray(posts.data);
+  const [postsArray, setPostsArray] = useState();
+  const [postsState, setPostsState] = useState("loading");
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [repostModalIsOpen, setRepostModalIsOpen] = useState(false);
+  const [postId, setPostId] = useState();
 
-                if (posts?.data.length === 0) {
-                    setPostsState("empty");
-                } else {
-                    setPostsState("full");
-                }
+  const renderPage = useCallback(
+    async (route) => {
+      try {
+        const posts = await api.getPosts(route, token);
+        const hashtagsApi = await api.getHashtags(token);
 
-                setHashtags([...hashtagsApi.data]);
-                setIsValidUser(true);
-            } catch (error) {
-                setPostsState("error");
-            }
-        },
-        // eslint-disable-next-line
-        [token, setHashtags, setIsValidUser, hashtags]
-    );
+        setPostsArray(posts.data);
 
-    const getUser = useCallback(async () => {
-        try {
-            const response = await api.getUserInfos(token);
-            setImage(response?.data.image);
-            setName(response?.data.name);
-            setId(response?.data.id);
-        } catch (error) {
-            console.log(error);
-        }
-    }, [setId, setImage, setName, token]);
-
-    useEffect(() => {
-        if (token) {
-            getUser();
-            renderPage(route);
+        if (posts?.data.length === 0) {
+          setPostsState("empty");
         } else {
-            navigate("/");
+          setPostsState("full");
         }
-        // eslint-disable-next-line
-    }, [token, route, getUser]);
 
-    function openModal() {
-        setModalIsOpen(true);
+        setHashtags([...hashtagsApi.data]);
+        setIsValidUser(true);
+      } catch (error) {
+        setPostsState("error");
+      }
+    },
+    // eslint-disable-next-line
+    [token, setHashtags, setIsValidUser, hashtags]
+  );
+
+  const getUser = useCallback(async () => {
+    try {
+      const response = await api.getUserInfos(token);
+      setImage(response?.data.image);
+      setName(response?.data.name);
+      setId(response?.data.id);
+    } catch (error) {
+      console.log(error);
     }
+  }, [setId, setImage, setName, token]);
 
-    function closeModal() {
-        setModalIsOpen(false);
+  useEffect(() => {
+    if (token) {
+      getUser();
+      renderPage(route);
+    } else {
+      navigate("/");
     }
+    // eslint-disable-next-line
+  }, [token, route, getUser]);
 
-    return (
-        <>
-            <PostsContainer>
-                <ToastContainer />
-                <SearchBarMobile />
-                <ConfirmationModal
-                    postId={postId}
-                    openModal={openModal}
-                    closeModal={closeModal}
-                    modalIsOpen={modalIsOpen}
-                    renderPage={renderPage}
-                    route={route}
+  function openDeleteModal() {
+    setDeleteModalIsOpen(true);
+  }
+
+  function closeDeleteModal() {
+    setDeleteModalIsOpen(false);
+  }
+
+  function openRepostModal() {
+    setRepostModalIsOpen(true);
+  }
+
+  function closeRepostModal() {
+    setRepostModalIsOpen(false);
+  }
+
+  return (
+    <>
+      <PostsContainer>
+
+        <ToastContainer />
+        <SearchBarMobile />
+        <DeleteConfirmationModal
+          postId={postId}
+          closeModal={closeDeleteModal}
+          modalIsOpen={deleteModalIsOpen}
+          renderPage={renderPage}
+          route={route}
+        />
+
+        <RepostConfirmationModal
+          postId={postId}
+          closeModal={closeRepostModal}
+          modalIsOpen={repostModalIsOpen}
+          renderPage={renderPage}
+          route={route}
+        />
+
+        <h1 className="timeline-title">{mainTitle}</h1>
+
+        {showPublish && <Publish renderPage={renderPage} route={route} />}
+
+        {postsState === "full" &&
+          postsArray.map((post) => {
+            return (
+              <Post key={post?.id}>
+
+                <PostLeftContent
+                  post={post}
+                  renderPage={renderPage}
+                  route={route}
+                  openModal={openRepostModal}
+                  setPostId={setPostId}
                 />
 
-                <h1 className="timeline-title">{mainTitle}</h1>
-
-                {showPublish && (
-                    <Publish renderPage={renderPage} route={route} />
-                )}
-                <NewPostsNotificationBar
-                    route={route}
-                    token={token}
-                    postsArray={postsArray}
-                    setPostsArray={setPostsArray}
+                <PostContent
+                  post={post}
+                  renderPage={renderPage}
+                  route={route}
+                  openModal={openDeleteModal}
+                  setPostId={setPostId}
                 />
-                {postsState === "full" &&
-                    postsArray.map((post) => {
-                        return (
-                            <Post key={post?.id}>
-                                <Likes
-                                    post={post}
-                                    renderPage={renderPage}
-                                    route={route}
-                                />
 
-                                <PostContent
-                                    post={post}
-                                    renderPage={renderPage}
-                                    route={route}
-                                    openModal={openModal}
-                                    setPostId={setPostId}
-                                />
-                            </Post>
-                        );
-                    })}
-                {postsState === "loading" && (
-                    <p className="loading-message">Loading...</p>
-                )}
-                {postsState === "empty" && (
-                    <p className="get-error-message">There are no posts yet</p>
-                )}
-                {postsState === "error" && (
-                    <p className="get-error-message">
-                        An error occured while trying to fetch the posts, please
-                        refresh the page
-                    </p>
-                )}
-            </PostsContainer>
-        </>
-    );
+              </Post>
+            );
+          })}
+        {postsState === "loading" && (
+          <p className="loading-message">Loading...</p>
+        )}
+        {postsState === "empty" && (
+          <p className="get-error-message">There are no posts yet</p>
+        )}
+        {postsState === "error" && (
+          <p className="get-error-message">
+            An error occured while trying to fetch the posts, please
+            refresh the page
+          </p>
+        )}
+      </PostsContainer>
+    </>
+  );
 }
+

@@ -1,55 +1,22 @@
 import styled from "styled-components";
 
-const ImageLikes = styled.div`
-  width: 86px;
-  height: 100%;
+const LikesContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    margin-top: 15px;
 
-  .profile-image {
-    width: 50px;
-    height: 50px;
-
-    border-radius: 26.5px;
-
-    margin-bottom: 18px;
-
-    &:hover {
-      cursor: pointer;
+    .tooltip-style {
+        font-family: "Lato";
+        font-weight: 700;
+        font-size: 11px;
+        line-height: 13px;
     }
-  }
 
-  .like-icon {
-    font-size: 25px;
-    cursor: pointer;
-  }
-
-  .likes-quantity {
-    font-family: "Lato";
-    font-weight: 400;
-    font-size: 11px;
-    text-align: center;
-    color: #ffffff;
-    cursor: pointer;
-    margin-top: 4px;
-    margin-bottom: 8px;
-  }
-
-  .tooltip-style {
-    font-family: "Lato";
-    font-weight: 700;
-    font-size: 11px;
-    line-height: 13px;
-  }
-
-  @media (max-width: 630px) {
-    .profile-image {
-      width: 40px;
-      height: 40px;
+    @media (max-width: 630px) {
+        margin-top: 8px;
     }
-  }
-`;
+`
 
-export { ImageLikes };
+export { LikesContainer }
