@@ -3,7 +3,7 @@ import Likes from "../Likes";
 import Reposts from "../Reposts";
 import Comments from "../Comments";
 
-export default function PostLeftContent({ renderPage, route, post }) {
+export default function PostLeftContent({ renderPage, route, post, setPostId, openModal }) {
 
     return (
         <LeftContentContainer>
@@ -17,12 +17,16 @@ export default function PostLeftContent({ renderPage, route, post }) {
 
             <Comments
                 post={post}
+                renderPage={renderPage}
+                route={route}
             />
 
             <Reposts
                 post={post}
                 renderPage={renderPage}
                 route={route}
+                openModal={openModal}
+                setPostId={setPostId}
             />
         </LeftContentContainer>
     );

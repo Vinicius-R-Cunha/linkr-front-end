@@ -5,7 +5,8 @@ import {
 
 import Publish from "../Publish";
 import SearchBarMobile from "../SearchBarMobile";
-import ConfirmationModal from "../ConfirmationModal";
+import DeleteConfirmationModal from "../DeleteConfirmationModal";
+import RepostConfirmationModal from '../RepostConfirmationModal';
 import PostLeftContent from "../PostLeftContent";
 import PostContent from "../PostContent";
 
@@ -25,7 +26,8 @@ export default function Timeline({ showPublish, route, mainTitle, hashtags, setH
 
   const [postsArray, setPostsArray] = useState();
   const [postsState, setPostsState] = useState("loading");
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [repostModalIsOpen, setRepostModalIsOpen] = useState(false);
   const [postId, setPostId] = useState();
 
   const renderPage = useCallback(
@@ -73,12 +75,20 @@ export default function Timeline({ showPublish, route, mainTitle, hashtags, setH
     // eslint-disable-next-line
   }, [token, route, getUser]);
 
-  function openModal() {
-    setModalIsOpen(true);
+  function openDeleteModal() {
+    setDeleteModalIsOpen(true);
   }
 
-  function closeModal() {
-    setModalIsOpen(false);
+  function closeDeleteModal() {
+    setDeleteModalIsOpen(false);
+  }
+
+  function openRepostModal() {
+    setRepostModalIsOpen(true);
+  }
+
+  function closeRepostModal() {
+    setRepostModalIsOpen(false);
   }
 
   return (
@@ -87,11 +97,18 @@ export default function Timeline({ showPublish, route, mainTitle, hashtags, setH
 
         <ToastContainer />
         <SearchBarMobile />
-        <ConfirmationModal
+        <DeleteConfirmationModal
           postId={postId}
-          openModal={openModal}
-          closeModal={closeModal}
-          modalIsOpen={modalIsOpen}
+          closeModal={closeDeleteModal}
+          modalIsOpen={deleteModalIsOpen}
+          renderPage={renderPage}
+          route={route}
+        />
+
+        <RepostConfirmationModal
+          postId={postId}
+          closeModal={closeRepostModal}
+          modalIsOpen={repostModalIsOpen}
           renderPage={renderPage}
           route={route}
         />
@@ -109,13 +126,15 @@ export default function Timeline({ showPublish, route, mainTitle, hashtags, setH
                   post={post}
                   renderPage={renderPage}
                   route={route}
+                  openModal={openRepostModal}
+                  setPostId={setPostId}
                 />
 
                 <PostContent
                   post={post}
                   renderPage={renderPage}
                   route={route}
-                  openModal={openModal}
+                  openModal={openDeleteModal}
                   setPostId={setPostId}
                 />
 

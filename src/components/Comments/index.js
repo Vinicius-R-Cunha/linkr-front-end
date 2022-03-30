@@ -1,7 +1,7 @@
 import { CommentsContainer } from "./style";
 import { AiOutlineComment } from "react-icons/ai";
 
-export default function Comments({ post }) {
+export default function Comments({ post, renderPage, route }) {
     return (
         <CommentsContainer>
             <AiOutlineComment
