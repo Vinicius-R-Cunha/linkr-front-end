@@ -70,6 +70,11 @@ async function getComments(token, postId) {
   return promise;
 }
 
+async function postComment(token, body) {
+  const config = createConfig(token);
+  await axios.post(`${BASE_URL}comments/`, body, config);
+}
+
 const api = {
   getHashtags,
   getUserInfos,
@@ -81,6 +86,7 @@ const api = {
   publishPost,
   getUsers,
   getComments,
+  postComment,
 };
 
 export default api;

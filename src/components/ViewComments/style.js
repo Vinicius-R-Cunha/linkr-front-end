@@ -24,6 +24,14 @@ const CommentsContainer = styled.div`
     display: flex;
     gap: 14px;
     align-items: center;
+    position: relative;
+    .icone {
+      height: 15px;
+      width: 14px;
+      color: #f3f3f3;
+      position: absolute;
+      right: 12px;
+    }
     img {
       height: 39px;
       width: 39px;

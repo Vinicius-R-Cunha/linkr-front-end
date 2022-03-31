@@ -4,7 +4,6 @@ import CommentsContext from "../../contexts/CommentsContext";
 import { useContext, useState } from "react";
 import api from "../../services/api";
 import UserContext from "../../contexts/UserContext";
-import PostContent from "../PostContent";
 import PostsContext from "../../contexts/PostsContext";
 
 export default function Comments({ post, renderPage, route }) {

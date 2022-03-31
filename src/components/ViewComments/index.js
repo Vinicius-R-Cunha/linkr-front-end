@@ -1,13 +1,26 @@
 import { useContext, useState } from "react";
-
+import api from "../../services/api";
 import { CommentsContainer, CommentContainer } from "./style";
 import UserContext from "../../contexts/UserContext";
 import CommentsContext from "../../contexts/CommentsContext";
+import { IoPaperPlaneOutline } from "react-icons/io5";
 
 export default function ViewComments({ postId }) {
   const { token, image } = useContext(UserContext);
   const { comments } = useContext(CommentsContext);
   const [textComment, setTextComment] = useState("");
+  async function submitComment() {
+    try {
+      const body = {
+        postId,
+        comment: textComment,
+      };
+      console.log(body);
+      await api.postComment(token, body);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <CommentsContainer>
@@ -36,6 +49,10 @@ export default function ViewComments({ postId }) {
           value={textComment}
           onChange={(e) => setTextComment(e.target.value)}
           placeholder="write a comment..."
+        />
+        <IoPaperPlaneOutline
+          className="icone"
+          onClick={() => submitComment()}
         />
       </div>
     </CommentsContainer>
