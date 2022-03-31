@@ -11,13 +11,16 @@ export default function Comments({ post, renderPage, route }) {
   const { comments, setComments } = useContext(CommentsContext);
   const { posts, setPosts } = useContext(PostsContext);
   const [viewComment, setViewComment] = useState("false");
+  const [disable, setDisable] = useState(false);
   async function toggleComment() {
     try {
-      if (viewComment === false && post?.commentQuantity > 0) {
+      if (viewComment === false) {
+        setDisable(true);
         const selectComments = await api.getComments(token, post?.id);
         setPosts(post?.id);
         setComments(selectComments.data);
         setViewComment(true);
+        setDisable(false);
       } else {
         setComments(null);
         setViewComment(false);
@@ -28,7 +31,11 @@ export default function Comments({ post, renderPage, route }) {
   }
   return (
     <CommentsContainer>
-      <AiOutlineComment className="left-icon" onClick={() => toggleComment()} />
+      <AiOutlineComment
+        className="left-icon"
+        onClick={() => toggleComment()}
+        disabled={disable}
+      />
       <p className="left-quantity">
         {post?.commentQuantity}{" "}
         {post?.commentQuantity === 1 ? "comment" : "comments"}

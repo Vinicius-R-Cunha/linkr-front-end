@@ -26,11 +26,11 @@ const CommentsContainer = styled.div`
     align-items: center;
     position: relative;
     .icone {
-      height: 15px;
-      width: 14px;
+      height: 16px;
+      width: 15px;
       color: #f3f3f3;
       position: absolute;
-      right: 12px;
+      right: 23px;
     }
     img {
       height: 39px;

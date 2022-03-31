@@ -7,18 +7,29 @@ import { IoPaperPlaneOutline } from "react-icons/io5";
 
 export default function ViewComments({ postId }) {
   const { token, image } = useContext(UserContext);
-  const { comments } = useContext(CommentsContext);
+  const { comments, setComments } = useContext(CommentsContext);
   const [textComment, setTextComment] = useState("");
+  const [disable, setDisable] = useState(false);
   async function submitComment() {
     try {
       const body = {
         postId,
         comment: textComment,
       };
-      console.log(body);
+      setDisable(true);
       await api.postComment(token, body);
+      setTextComment("");
+      const selectComments = await api.getComments(token, postId);
+      setComments(selectComments.data);
+      setDisable(false);
     } catch (error) {
       console.log(error);
+    }
+  }
+  function handleKeyDown(e) {
+    if (e.keyCode === 13 || e.keyCode === 10) {
+      e.preventDefault();
+      submitComment();
     }
   }
 
@@ -45,9 +56,11 @@ export default function ViewComments({ postId }) {
       <div className="inputComment">
         <img src={image} />
         <input
+          disabled={disable}
           type="text"
           value={textComment}
           onChange={(e) => setTextComment(e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e)}
           placeholder="write a comment..."
         />
         <IoPaperPlaneOutline
