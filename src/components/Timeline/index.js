@@ -95,7 +95,7 @@ export default function Timeline({
   function closeRepostModal() {
     setRepostModalIsOpen(false);
   }
-  console.log(comments);
+
   return (
     <>
       <PostsContainer>
@@ -124,8 +124,8 @@ export default function Timeline({
         {postsState === "full" &&
           postsArray.map((post) => {
             return (
-              <ContainerComments>
-                <Post key={post?.id}>
+              <ContainerComments key={post?.id}>
+                <Post>
                   <PostLeftContent
                     post={post}
                     renderPage={renderPage}
