@@ -31,16 +31,18 @@ const SnippetContainer = styled.div`
             font-weight: 400;
             font-size: 16px;
             line-height: 19px;
-
+            word-break: break-all;
+            
             color: #cecece;
         }
-
+        
         .description {
             font-family: "Lato";
             font-style: normal;
             font-weight: 400;
             font-size: 11px;
             line-height: 13px;
+            word-break: break-all;
 
             color: #9b9595;
         }
@@ -51,10 +53,9 @@ const SnippetContainer = styled.div`
             font-weight: 400;
             font-size: 11px;
             line-height: 15px;
+            word-break: break-all;
 
             color: #cecece;
-
-            word-break: break-all;
         }
     }
 
