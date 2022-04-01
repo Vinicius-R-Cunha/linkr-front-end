@@ -7,40 +7,42 @@ const PostsContainer = styled.div`
   flex-direction: column;
   align-items: center;
 
-  margin-right: 25px;
+    margin-right: 25px;
+    overflow: auto;
 
-  .input-icon-mobile {
-    width: 100%;
-    position: relative;
+    .input-icon-mobile {
+        width: 100%;
+        position: relative;
+
 
     font-family: "Lato";
     font-style: normal;
     font-weight: 400;
     font-size: 17px;
 
-    display: none;
-    justify-content: center;
-    align-items: center;
+        display: none;
+        justify-content: center;
+        align-items: center;
 
-    margin-bottom: 22px;
+        margin-bottom: 22px;
 
-    .search-icon-mobile {
-      font-size: 23px;
-      color: #c6c6c6;
+        .search-icon-mobile {
+            font-size: 23px;
+            color: #c6c6c6;
 
-      position: absolute;
-      right: 20px;
-      z-index: 3;
+            position: absolute;
+            right: 20px;
+            z-index: 3;
+        }
     }
-  }
 
-  .timeline-title {
-    width: 100%;
-
+    .timeline-title {
+        width: 100%;
     font-family: "Oswald";
     font-weight: 700;
     font-size: 43px;
     color: #ffffff;
+
 
     margin-bottom: 43px;
   }
@@ -58,13 +60,13 @@ const PostsContainer = styled.div`
     color: #ffffff;
   }
 
-  @media (max-width: 960px) {
-    margin-right: 0;
+    @media (max-width: 960px) {
+        margin-right: 0;
 
-    .input-icon-mobile {
-      display: flex;
+        .input-icon-mobile {
+            display: flex;
+        }
     }
-  }
 
   @media (max-width: 630px) {
     width: 100%;
@@ -89,6 +91,8 @@ const ContainerComments = styled.div`
   margin-top: 16px;
   border-radius: 16px;
 `;
+
+
 const Post = styled.div`
   width: 100%;
 
@@ -98,7 +102,6 @@ const Post = styled.div`
   background: #171717;
 
   border-radius: 16px;
-  //box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   @media (max-width: 630px) {
     padding: 10px 0 15px 0;
@@ -107,4 +110,35 @@ const Post = styled.div`
   }
 `;
 
-export { PostsContainer, Post, ContainerComments };
+
+const Repost = styled.div`
+  height: 33px;
+
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+
+  .reposted-icon {
+    font-size: 18px;
+    color: #ffffff;
+  }
+  
+  p {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: #ffffff;
+
+    margin-left: 5px;
+
+    span {
+      font-weight: 700;
+    }
+  }
+
+`
+
+export { PostsContainer, Post, ContainerComments, Repost };
+
