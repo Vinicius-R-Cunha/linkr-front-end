@@ -91,6 +91,8 @@ const ContainerComments = styled.div`
   margin-top: 16px;
   border-radius: 16px;
 `;
+
+
 const Post = styled.div`
   width: 100%;
 
@@ -100,7 +102,6 @@ const Post = styled.div`
   background: #171717;
 
   border-radius: 16px;
-  //box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
   @media (max-width: 630px) {
     padding: 10px 0 15px 0;
@@ -108,4 +109,36 @@ const Post = styled.div`
     border-radius: 0;
   }
 `;
-export { PostsContainer, Post, ContainerComments };
+
+
+const Repost = styled.div`
+  height: 33px;
+
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+
+  .reposted-icon {
+    font-size: 18px;
+    color: #ffffff;
+  }
+  
+  p {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: #ffffff;
+
+    margin-left: 5px;
+
+    span {
+      font-weight: 700;
+    }
+  }
+
+`
+
+export { PostsContainer, Post, ContainerComments, Repost };
+

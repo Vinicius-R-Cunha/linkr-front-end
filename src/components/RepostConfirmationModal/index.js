@@ -5,6 +5,7 @@ import {
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import UserContext from "../../contexts/UserContext";
+import api from "../../services/api";
 
 export default function RepostConfirmationModal({ postId, closeModal, renderPage, route, modalIsOpen }) {
 
@@ -13,10 +14,14 @@ export default function RepostConfirmationModal({ postId, closeModal, renderPage
 
     async function handleRepost() {
         setLoading(true);
+
         try {
+            await api.publishRepost(postId, token);
+
             closeModal();
             renderPage(route);
         } catch (error) {
+            console.log(error.response)
             toast.error("Could not repost this post", {
                 position: "top-center",
                 autoClose: 3000,

@@ -1,4 +1,4 @@
-import { PostsContainer, Post, ContainerComments } from "./style";
+import { PostsContainer, Post, ContainerComments, Repost } from "./style";
 
 import Publish from "../Publish";
 import SearchBarMobile from "../SearchBarMobile";
@@ -18,7 +18,7 @@ import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import ViewComments from "../ViewComments";
 import PostsContext from "../../contexts/PostsContext";
-
+import { TiArrowSync } from 'react-icons/ti';
 export default function Timeline({
     showPublish,
     route,
@@ -41,15 +41,18 @@ export default function Timeline({
     const renderPage = useCallback(
         async (route) => {
             try {
+                const followers = await api.checkFollowers(token);
                 const posts = await api.getPosts(route, token);
                 const hashtagsApi = await api.getHashtags(token);
 
                 setPostsArray(posts.data);
 
-                if (posts?.data.length === 0) {
-                    setPostsState("empty");
-                } else {
+                if (posts?.data.length !== 0) {
                     setPostsState("full");
+                } else if (followers?.data.length === 0) {
+                    setPostsState("no-followers");
+                } else {
+                    setPostsState("empty");
                 }
 
                 setHashtags([...hashtagsApi.data]);
@@ -98,7 +101,7 @@ export default function Timeline({
     function closeRepostModal() {
         setRepostModalIsOpen(false);
     }
-    console.log(comments);
+
     return (
         <>
             <PostsContainer>
@@ -122,9 +125,8 @@ export default function Timeline({
 
                 <h1 className="timeline-title">{mainTitle}</h1>
 
-                {showPublish && (
-                    <Publish renderPage={renderPage} route={route} />
-                )}
+                {showPublish && <Publish renderPage={renderPage} route={route} />}
+
                 {/* <NewPostsNotificationBar
                     route={route}
                     token={token}
@@ -140,45 +142,56 @@ export default function Timeline({
                         postsArray={postsArray}
                         setPostsArray={setPostsArray}
                     >
-                {postsState === "full" &&
-                    postsArray.map((post) => {
-                        return (
-                            <ContainerComments>
-                                <Post key={post?.id}>
-                                    <PostLeftContent
-                                        post={post}
-                                        renderPage={renderPage}
-                                        route={route}
-                                        openModal={openRepostModal}
-                                        setPostId={setPostId}
-                                    />
+                        {postsState === "full" &&
+                            postsArray.map((post) => {
+                                return (
+                                    <ContainerComments key={post?.id}>
 
-                                    <PostContent
-                                        post={post}
-                                        renderPage={renderPage}
-                                        route={route}
-                                        openModal={openDeleteModal}
-                                        setPostId={setPostId}
-                                    />
-                                </Post>
-                                {comments !== null && posts === post.id && (
-                                    <ViewComments postId={post.id} />
-                                )}
-                            </ContainerComments>
-                        );
-                    })}
+                                        {post?.repostId &&
+                                            <Repost>
+                                                <TiArrowSync className="reposted-icon" />
+                                                <p>Re-posted by <span>{post?.name}</span></p>
+                                            </Repost>
+                                        }
+
+                                        <Post>
+                                            <PostLeftContent
+                                                post={post}
+                                                renderPage={renderPage}
+                                                route={route}
+                                                openModal={openRepostModal}
+                                                setPostId={setPostId}
+                                            />
+
+                                            <PostContent
+                                                post={post}
+                                                renderPage={renderPage}
+                                                route={route}
+                                                openModal={openDeleteModal}
+                                                setPostId={setPostId}
+                                            />
+                                        </Post>
+                                        {comments !== null && posts === post.id && (
+                                            <ViewComments postId={post.id} />
+                                        )}
+                                    </ContainerComments>
+                                );
+                            })}
                     </ScrollContainer>
                 )}
                 {postsState === "loading" && (
                     <p className="loading-message">Loading...</p>
                 )}
+                {postsState === "no-followers" && (
+                    <p className="get-error-message">You don't follow anyone yet. Search for new friends!</p>
+                )}
                 {postsState === "empty" && (
-                    <p className="get-error-message">There are no posts yet</p>
+                    <p className="get-error-message">No posts found from your friends</p>
                 )}
                 {postsState === "error" && (
                     <p className="get-error-message">
-                        An error occured while trying to fetch the posts, please
-                        refresh the page
+                        An error occured while trying to fetch the posts, please refresh the
+                        page
                     </p>
                 )}
             </PostsContainer>
