@@ -182,7 +182,7 @@ export default function Timeline({
                 className="followButton"
                 disabled={disabledButton}
                 onClick={toggleFollow}
-                style={{ "background-color": "ffffff" }}
+                style={{ backgroundColor: "ffffff" }}
               >
                 {" "}
                 {followedUser}{" "}
@@ -195,7 +195,7 @@ export default function Timeline({
 
         {showPublish && <Publish renderPage={renderPage} route={route} />}
 
-        {route === "timeline" ? (
+        {route === "posts" ? (
           <NewPostsNotificationBar
             route={route}
             token={token}
