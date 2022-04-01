@@ -31,6 +31,7 @@ export default function Timeline({
   setIsValidUser,
   visitedUserId
 }) {
+
   const { token, setImage, setName, setId } = useContext(UserContext);
   const { comments } = useContext(CommentsContext);
   const { posts } = useContext(PostsContext);
@@ -44,6 +45,7 @@ export default function Timeline({
   const [followedUser, setFollowedUser] = useState();
   const [disabledButton, setDisabledButton] = useState(false);
   const [currentPost, setCurrentPost] = useState();
+  const [totalPosts, setTotalPosts] = useState([]);
 
   const renderPage = useCallback(
     async (route) => {
@@ -51,7 +53,11 @@ export default function Timeline({
         const followers = await api.checkFollowers(token);
         const posts = await api.getPosts(route, token);
         const hashtagsApi = await api.getHashtags(token);
-
+        const allPosts = await api.getPosts(
+                    route + "?noLimit=true",
+                    token
+                );
+        setTotalPosts(allPosts.data);
         setPostsArray(posts.data);
 
         if (posts?.data.length !== 0) {
@@ -170,16 +176,20 @@ export default function Timeline({
 
         {showPublish && <Publish renderPage={renderPage} route={route} />}
 
-        {/* <NewPostsNotificationBar
+
+                <NewPostsNotificationBar
                     route={route}
                     token={token}
                     postsArray={postsArray}
                     setPostsArray={setPostsArray}
-                /> */}
-        {postsArray?.length === 0 ? (
-          <></>
-        ) : (
-          <ScrollContainer
+
+                    totalPosts={totalPosts}
+                    setTotalPosts={setTotalPosts}
+                />
+                {postsArray?.length === 0 ? (
+                    <></>
+                ) : (
+                    <ScrollContainer
             route={route}
             token={token}
             postsArray={postsArray}
