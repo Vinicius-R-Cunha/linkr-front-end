@@ -43,6 +43,7 @@ export default function Timeline({
   const [postId, setPostId] = useState();
   const [followedUser, setFollowedUser] = useState();
   const [disabledButton, setDisabledButton] = useState(false);
+  const [currentPost, setCurrentPost] = useState();
 
   const renderPage = useCallback(
     async (route) => {
@@ -204,6 +205,7 @@ export default function Timeline({
                         route={route}
                         openModal={openRepostModal}
                         setPostId={setPostId}
+                        setCurrentPost={setCurrentPost}
                       />
 
                       <PostContent

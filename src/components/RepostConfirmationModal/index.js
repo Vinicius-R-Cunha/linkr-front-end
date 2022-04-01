@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 
-export default function RepostConfirmationModal({ postId, closeModal, renderPage, route, modalIsOpen }) {
+export default function RepostConfirmationModal({ currentPost, closeModal, renderPage, route, modalIsOpen }) {
 
     const { token } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
@@ -16,7 +16,11 @@ export default function RepostConfirmationModal({ postId, closeModal, renderPage
         setLoading(true);
 
         try {
-            await api.publishRepost(postId, token);
+            if (currentPost?.repostId === null) {
+                await api.publishRepost(currentPost?.id, token);
+            } else {
+                await api.publishRepost(currentPost?.repostId, token);
+            }
 
             closeModal();
             renderPage(route);
