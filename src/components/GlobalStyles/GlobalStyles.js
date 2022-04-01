@@ -46,6 +46,34 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+.scroll-loader{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap:15px;
+
+
+	width:100%;
+	margin-bottom: 200px;
+
+	img{
+		width:60px;
+		height:60px;
+	}
+
+	p{
+		font-family: 'Lato';
+		font-style: normal;
+		font-weight: 400;
+		font-size: 1.375rem;
+		letter-spacing: 0.05em;
+
+		color: #6D6D6D;
+	}
+}
+
 `;
 
 export default GlobalStyles;
