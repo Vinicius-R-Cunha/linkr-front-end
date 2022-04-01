@@ -1,4 +1,4 @@
-import { PostsContainer, Post } from "./style";
+import { PostsContainer, Post, ContainerComments } from "./style";
 
 import Publish from "../Publish";
 import SearchBarMobile from "../SearchBarMobile";
@@ -13,8 +13,11 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UserContext from "../../contexts/UserContext";
+import CommentsContext from "../../contexts/CommentsContext";
 import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import ViewComments from "../ViewComments";
+import PostsContext from "../../contexts/PostsContext";
 
 export default function Timeline({
     showPublish,
@@ -25,10 +28,11 @@ export default function Timeline({
     setIsValidUser,
 }) {
     const { token, setImage, setName, setId } = useContext(UserContext);
-
+    const { comments } = useContext(CommentsContext);
+    const { posts } = useContext(PostsContext);
     const navigate = useNavigate();
 
-    const [postsArray, setPostsArray] = useState([]);
+    const [postsArray, setPostsArray] = useState();
     const [postsState, setPostsState] = useState("loading");
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const [repostModalIsOpen, setRepostModalIsOpen] = useState(false);
@@ -94,7 +98,7 @@ export default function Timeline({
     function closeRepostModal() {
         setRepostModalIsOpen(false);
     }
-
+    console.log(comments);
     return (
         <>
             <PostsContainer>
@@ -121,12 +125,12 @@ export default function Timeline({
                 {showPublish && (
                     <Publish renderPage={renderPage} route={route} />
                 )}
-                <NewPostsNotificationBar
+                {/* <NewPostsNotificationBar
                     route={route}
                     token={token}
                     postsArray={postsArray}
                     setPostsArray={setPostsArray}
-                />
+                /> */}
                 {postsArray?.length === 0 ? (
                     <></>
                 ) : (
@@ -136,28 +140,33 @@ export default function Timeline({
                         postsArray={postsArray}
                         setPostsArray={setPostsArray}
                     >
-                        {postsState === "full" &&
-                            postsArray.map((post) => {
-                                return (
-                                    <Post key={post?.id}>
-                                        <PostLeftContent
-                                            post={post}
-                                            renderPage={renderPage}
-                                            route={route}
-                                            openModal={openRepostModal}
-                                            setPostId={setPostId}
-                                        />
+                {postsState === "full" &&
+                    postsArray.map((post) => {
+                        return (
+                            <ContainerComments>
+                                <Post key={post?.id}>
+                                    <PostLeftContent
+                                        post={post}
+                                        renderPage={renderPage}
+                                        route={route}
+                                        openModal={openRepostModal}
+                                        setPostId={setPostId}
+                                    />
 
-                                        <PostContent
-                                            post={post}
-                                            renderPage={renderPage}
-                                            route={route}
-                                            openModal={openDeleteModal}
-                                            setPostId={setPostId}
-                                        />
-                                    </Post>
-                                );
-                            })}
+                                    <PostContent
+                                        post={post}
+                                        renderPage={renderPage}
+                                        route={route}
+                                        openModal={openDeleteModal}
+                                        setPostId={setPostId}
+                                    />
+                                </Post>
+                                {comments !== null && posts === post.id && (
+                                    <ViewComments postId={post.id} />
+                                )}
+                            </ContainerComments>
+                        );
+                    })}
                     </ScrollContainer>
                 )}
                 {postsState === "loading" && (
