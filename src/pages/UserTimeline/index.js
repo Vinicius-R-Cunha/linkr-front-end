@@ -42,6 +42,7 @@ export default function UserTimeline() {
                 mainTitle={`${user?.name}'s posts`}
                 setHashtags={setHashtags}
                 setIsValidUser={setIsValidUser}
+                visitedUserId={id}
             />
             <HashtagBox
                 hashtags={hashtags}
