@@ -73,6 +73,7 @@ export default function Timeline({
       setId(response?.data.id);
     } catch (error) {
       console.log(error);
+      console.log(error);
     }
   }, [setId, setImage, setName, token]);
 
