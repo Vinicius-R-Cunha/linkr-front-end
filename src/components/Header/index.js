@@ -34,10 +34,19 @@ export default function Header() {
     }
   }
 
+  function compare(a, b) {
+    if (a.isFollowing > b.isFollowing) return -1;
+    if (a.isFollowing < b.isFollowing) return 1;
+    return 0;
+  }
+
   const renderHeader = useCallback(async () => {
     try {
       const users = await api.getUsers(token);
-      setUsers(users.data);
+
+      let usersOrdenado = users.data;
+      usersOrdenado.sort(compare);
+      setUsers(usersOrdenado);
     } catch (error) {
       console.log(error);
     }
