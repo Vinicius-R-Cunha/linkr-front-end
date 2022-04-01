@@ -140,7 +140,7 @@ export default function Timeline({
       console.log(error);
     }
   }
-console.log(followedUser)
+  
   return (
     <>
       <PostsContainer>
