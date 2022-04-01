@@ -1,6 +1,7 @@
 import InfiniteScroll from "react-infinite-scroller";
 import api from "../../services/api";
 import { useState, useEffect } from "react";
+import spinner from "../../assets/spinner.gif";
 
 export default function ScrollContainer({
     postsArray,
@@ -9,37 +10,60 @@ export default function ScrollContainer({
     token,
     children,
 }) {
-    const [offset, setOffset] = useState(5);
-    const [loadMoreBoo, setLoadMoreBoo] = useState(false);
+    const [offset, setOffset] = useState(10);
+    const [loadMoreBoolean, setLoadMoreBoolean] = useState(false);
     const [newPosts, setNewPosts] = useState([]);
-    console.log(loadMoreBoo);
-
+    const [handlerTimestamp, setHandlerTimestamp] = useState(0);
     useEffect(() => {
-        const promise = api.getPosts(route + `?offset=${offset}`, token);
-        promise.then((res) => {
-            if (res.data?.length === 0) {
-                return setLoadMoreBoo(false);
-            }
-            setOffset(offset + 5);
-            setNewPosts([...res.data]);
-            setLoadMoreBoo(true);
-        });
-        promise.catch((error) => setLoadMoreBoo(false));
+        getNewPosts();
     }, []);
 
-    function handleLoadMore() {
-        setPostsArray(postsArray?.concat(newPosts));
-    }
+    const getNewPosts = async () => {
+        try {
+            const { data } = await api.getPosts(
+                route + `?offset=${offset}`,
+                token
+            );
 
+            if (data?.length === 0) {
+                return setLoadMoreBoolean(false);
+            }
+            setOffset(offset + 10);
+            setNewPosts([...data]);
+            setLoadMoreBoolean(true);
+        } catch (error) {
+            console.log(error.response);
+            setLoadMoreBoolean(false);
+        }
+    };
+
+    async function handleLoadMore() {
+        try {
+            if (
+                Date.now() - handlerTimestamp < 1000 ||
+                Date.now() - handlerTimestamp < 100
+            ) {
+                return;
+            }
+            setHandlerTimestamp(Date.now());
+            if (!loadMoreBoolean) return;
+
+            const updatedContent = postsArray?.concat(newPosts);
+            setPostsArray([...updatedContent]);
+            await getNewPosts();
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <InfiniteScroll
-            threshold={1}
             pageStart={0}
             loadMore={handleLoadMore}
-            hasMore={loadMoreBoo}
+            hasMore={loadMoreBoolean}
             loader={
-                <div className="loader" key={0}>
-                    Loading ...
+                <div className="scroll-loader" key={0}>
+                    <img src={spinner} alt="Loading animation" />
+                    <p>Loading more posts...</p>
                 </div>
             }
         >

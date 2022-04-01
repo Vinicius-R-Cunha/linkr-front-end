@@ -127,35 +127,39 @@ export default function Timeline({
                     postsArray={postsArray}
                     setPostsArray={setPostsArray}
                 />
-                <ScrollContainer
-                    route={route}
-                    token={token}
-                    postsArray={postsArray}
-                    setPostsArray={setPostsArray}
-                >
-                    {postsState === "full" &&
-                        postsArray.map((post) => {
-                            return (
-                                <Post key={post?.id}>
-                                    <PostLeftContent
-                                        post={post}
-                                        renderPage={renderPage}
-                                        route={route}
-                                        openModal={openRepostModal}
-                                        setPostId={setPostId}
-                                    />
+                {postsArray?.length === 0 ? (
+                    <></>
+                ) : (
+                    <ScrollContainer
+                        route={route}
+                        token={token}
+                        postsArray={postsArray}
+                        setPostsArray={setPostsArray}
+                    >
+                        {postsState === "full" &&
+                            postsArray.map((post) => {
+                                return (
+                                    <Post key={post?.id}>
+                                        <PostLeftContent
+                                            post={post}
+                                            renderPage={renderPage}
+                                            route={route}
+                                            openModal={openRepostModal}
+                                            setPostId={setPostId}
+                                        />
 
-                                    <PostContent
-                                        post={post}
-                                        renderPage={renderPage}
-                                        route={route}
-                                        openModal={openDeleteModal}
-                                        setPostId={setPostId}
-                                    />
-                                </Post>
-                            );
-                        })}
-                </ScrollContainer>
+                                        <PostContent
+                                            post={post}
+                                            renderPage={renderPage}
+                                            route={route}
+                                            openModal={openDeleteModal}
+                                            setPostId={setPostId}
+                                        />
+                                    </Post>
+                                );
+                            })}
+                    </ScrollContainer>
+                )}
                 {postsState === "loading" && (
                     <p className="loading-message">Loading...</p>
                 )}
