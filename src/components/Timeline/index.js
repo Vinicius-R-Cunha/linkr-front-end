@@ -194,7 +194,7 @@ console.log(followedUser)
 
         {showPublish && <Publish renderPage={renderPage} route={route} />}
 
-        {route === "timeline" ? (
+        {route === "posts" ? (
           <NewPostsNotificationBar
             route={route}
             token={token}
