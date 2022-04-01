@@ -77,21 +77,28 @@ export default function PostContent({ post, renderPage, route, openModal, setPos
 
             <div className="profile-name">
 
-                <p name={post?.userId}
-                    onClick={e => {
-                        navigate(`/users/${e.target.attributes.name.value}`)
-                    }}
-                >{post?.name}</p>
+                {!post?.repostId ?
+                    <p name={post?.userId}
+                        onClick={e => {
+                            navigate(`/users/${e.target.attributes.name.value}`)
+                        }}
+                    >{post?.name}</p>
+                    :
+                    <p name={post?.idUserPost}
+                        onClick={e => {
+                            navigate(`/users/${e.target.attributes.name.value}`)
+                        }}
+                    >{post?.namePost}</p>}
 
                 {id === post?.userId && (
                     <div className="remove-edit-icons">
-                        <AiTwotoneEdit
+                        {!post?.repostId && <AiTwotoneEdit
                             onClick={() => {
                                 setEditText(post?.text)
                                 handleEdit(post)
                             }}
                             className="edit-icon"
-                        />
+                        />}
                         <FaTrashAlt
                             onClick={() => {
                                 openModal();
