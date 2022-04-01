@@ -37,6 +37,7 @@ export default function Timeline({
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const [repostModalIsOpen, setRepostModalIsOpen] = useState(false);
     const [postId, setPostId] = useState();
+    const [totalPosts, setTotalPosts] = useState([]);
 
     const renderPage = useCallback(
         async (route) => {
@@ -44,7 +45,12 @@ export default function Timeline({
                 const followers = await api.checkFollowers(token);
                 const posts = await api.getPosts(route, token);
                 const hashtagsApi = await api.getHashtags(token);
-
+                const allPosts = await api.getPosts(
+                    route + "?noLimit=true",
+                    token
+                );
+                setTotalPosts(allPosts.data);
+                console.log("Entrou em useCallback");
                 setPostsArray(posts.data);
 
                 if (posts?.data.length !== 0) {
@@ -129,12 +135,14 @@ export default function Timeline({
                     <Publish renderPage={renderPage} route={route} />
                 )}
 
-                {/* <NewPostsNotificationBar
+                <NewPostsNotificationBar
                     route={route}
                     token={token}
                     postsArray={postsArray}
                     setPostsArray={setPostsArray}
-                /> */}
+                    totalPosts={totalPosts}
+                    setTotalPosts={setTotalPosts}
+                />
                 {postsArray?.length === 0 ? (
                     <></>
                 ) : (
