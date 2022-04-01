@@ -159,6 +159,7 @@ export default function Timeline({
                     modalIsOpen={repostModalIsOpen}
                     renderPage={renderPage}
                     route={route}
+                    currentPost={currentPost}
                 />
 
                 {mainTitle.includes("'s posts") ? (

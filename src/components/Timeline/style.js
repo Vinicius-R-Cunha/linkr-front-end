@@ -42,7 +42,6 @@ const PostsContainer = styled.div`
 
       display: flex;
       justify-content: space-between;
-      
     }
 
     .timeline-title {
@@ -52,7 +51,7 @@ const PostsContainer = styled.div`
       font-size: 2.6875em;
       color: #ffffff;
       padding-top:0px; 
-      margin-bottom: 0px;
+      padding-bottom: 42px;
     }
 
     .followButton{      
@@ -70,7 +69,7 @@ const PostsContainer = styled.div`
       font-weight: 700;
       font-size: 14px;
 
-      margin-top: 25px;
+      margin-top: 15px;
 
       :hover{
         filter: brightness(0.9)
@@ -101,8 +100,12 @@ const PostsContainer = styled.div`
       .timeline-title {
         font-size: 33px;
         text-indent: 17px;
-        padding-top:20px;
-        margin-bottom: 26px;
+        padding-top: 20px;
+        margin-bottom: 0px;
+      }
+
+      .followButton{
+        margin-top: 25px;
       }
 
         .input-icon-mobile {
