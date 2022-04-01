@@ -75,6 +75,18 @@ async function postComment(token, body) {
   await axios.post(`${BASE_URL}comments/`, body, config);
 }
 
+async function checkFollowers(token) {
+  const config = createConfig(token);
+  const promise = await axios.get(`${BASE_URL}userfollows`, config);
+  return promise
+}
+
+async function publishRepost(postId, token) {
+  const config = createConfig(token);
+  const promise = await axios.post(`${BASE_URL}repost/${postId}`, {}, config);
+  return promise;
+}
+
 const api = {
   getHashtags,
   getUserInfos,
@@ -87,6 +99,8 @@ const api = {
   getUsers,
   getComments,
   postComment,
+  checkFollowers,
+  publishRepost
 };
 
 export default api;

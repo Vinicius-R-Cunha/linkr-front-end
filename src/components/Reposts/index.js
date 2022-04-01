@@ -5,14 +5,14 @@ export default function Reposts({ post, renderPage, route, openModal, setPostId 
 
     return (
         <RepostsContainer>
-            <TiArrowSync
+            {!post?.repostId && <TiArrowSync
                 className='left-icon'
                 onClick={() => {
                     openModal();
                     setPostId(post?.id);
                 }}
-            />
-            <p className='left-quantity'>0 re-posts</p>
+            />}
+            <p className='left-quantity'>{`${post?.repostQuantity} re-posts`}</p>
         </RepostsContainer>
     );
 }

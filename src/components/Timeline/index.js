@@ -1,4 +1,4 @@
-import { PostsContainer, Post, ContainerComments } from "./style";
+import { PostsContainer, Post, ContainerComments, Repost } from "./style";
 
 import Publish from "../Publish";
 import SearchBarMobile from "../SearchBarMobile";
@@ -16,6 +16,7 @@ import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import ViewComments from "../ViewComments";
 import PostsContext from "../../contexts/PostsContext";
+import { TiArrowSync } from 'react-icons/ti';
 export default function Timeline({
   showPublish,
   route,
@@ -38,15 +39,18 @@ export default function Timeline({
   const renderPage = useCallback(
     async (route) => {
       try {
+        const followers = await api.checkFollowers(token);
         const posts = await api.getPosts(route, token);
         const hashtagsApi = await api.getHashtags(token);
 
         setPostsArray(posts.data);
 
-        if (posts?.data.length === 0) {
-          setPostsState("empty");
-        } else {
+        if (posts?.data.length !== 0) {
           setPostsState("full");
+        } else if (followers?.data.length === 0) {
+          setPostsState("no-followers");
+        } else {
+          setPostsState("empty");
         }
 
         setHashtags([...hashtagsApi.data]);
@@ -125,6 +129,14 @@ export default function Timeline({
           postsArray.map((post) => {
             return (
               <ContainerComments key={post?.id}>
+
+                {post?.repostId &&
+                  <Repost>
+                    <TiArrowSync className="reposted-icon" />
+                    <p>Re-posted by <span>{post?.name}</span></p>
+                  </Repost>
+                }
+
                 <Post>
                   <PostLeftContent
                     post={post}
@@ -151,8 +163,11 @@ export default function Timeline({
         {postsState === "loading" && (
           <p className="loading-message">Loading...</p>
         )}
+        {postsState === "no-followers" && (
+          <p className="get-error-message">You don't follow anyone yet. Search for new friends!</p>
+        )}
         {postsState === "empty" && (
-          <p className="get-error-message">There are no posts yet</p>
+          <p className="get-error-message">No posts found from your friends</p>
         )}
         {postsState === "error" && (
           <p className="get-error-message">
