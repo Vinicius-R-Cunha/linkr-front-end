@@ -34,7 +34,8 @@ export default function Timeline({
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [repostModalIsOpen, setRepostModalIsOpen] = useState(false);
   const [postId, setPostId] = useState();
-
+  const route2 = route.split("/", 1).join();
+  console.log(route2);
   const renderPage = useCallback(
     async (route) => {
       try {
@@ -116,7 +117,7 @@ export default function Timeline({
           renderPage={renderPage}
           route={route}
         />
-
+        {route2 == "users"}
         <h1 className="timeline-title">{mainTitle}</h1>
 
         {showPublish && <Publish renderPage={renderPage} route={route} />}
