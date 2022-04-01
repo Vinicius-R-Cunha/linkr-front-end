@@ -1,4 +1,4 @@
-import { PostsContainer, Post, ContainerComments, Repost } from "./style";
+import { PostsContainer, Post, ContainerComments, Repost, FollowButton } from "./style";
 
 import Publish from "../Publish";
 import SearchBarMobile from "../SearchBarMobile";
@@ -88,14 +88,13 @@ export default function Timeline({
   useEffect(() => {
     if (token) {
       getUser();
-
       verifyIfFollow();
       renderPage(route);
     } else {
       navigate("/");
     }
     // eslint-disable-next-line
-  }, [token, route, getUser]);
+  }, [token, route, getUser, followedUser]);
 
   function openDeleteModal() {
     setDeleteModalIsOpen(true);
@@ -141,7 +140,7 @@ export default function Timeline({
       console.log(error);
     }
   }
-
+console.log(followedUser)
   return (
     <>
       <PostsContainer>
@@ -169,24 +168,24 @@ export default function Timeline({
             <h1 className="timeline-title">{mainTitle}</h1>
 
             {disabledButton ? (
-              <button
+              <FollowButton
                 className="followButton"
                 disabled={disabledButton}
                 onClick={toggleFollow}
               >
                 {" "}
                 loading...{" "}
-              </button>
+              </FollowButton>
             ) : (
-              <button
+              <FollowButton
                 className="followButton"
                 disabled={disabledButton}
                 onClick={toggleFollow}
-                style={{ "background-color": "ffffff" }}
+                followeduser={followedUser}
               >
                 {" "}
                 {followedUser}{" "}
-              </button>
+              </FollowButton>
             )}
           </div>
         ) : (

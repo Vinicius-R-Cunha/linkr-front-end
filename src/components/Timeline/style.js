@@ -57,9 +57,6 @@ const PostsContainer = styled.div`
     .followButton{      
       width: 112px;
       height: 31px;
-      
-      color: white;
-      background: #1877F2;
 
       border-radius: 5px;
       cursor: pointer;
@@ -195,6 +192,16 @@ const Repost = styled.div`
   }
 
 `
+const FollowButton = styled.button`	
 
-export { PostsContainer, Post, ContainerComments, Repost };
+  background-color: ${props => props.followeduser === 'Follow' ? '#1877F2' : '#ffffff'};
+  color: ${props => props.followeduser === 'Follow' ? '#ffffff' : '#1877F2'};
+
+	:disabled{
+		background-color: #6D6D6D;
+    color: #ffffff;
+	}
+`;
+
+export { PostsContainer, Post, ContainerComments, Repost, FollowButton };
 

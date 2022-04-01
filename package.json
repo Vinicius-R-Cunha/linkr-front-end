@@ -16,7 +16,7 @@
     "react-scripts": "^4.0.3",
     "react-toastify": "^8.2.0",
     "react-tooltip": "^4.2.21",
-    "styled-components": "^5.3.3",
+    "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.7",
     "use-interval": "^1.4.0",
     "uuid": "^8.3.2"
