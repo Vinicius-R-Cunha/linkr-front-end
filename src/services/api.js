@@ -87,6 +87,18 @@ async function publishRepost(postId, token) {
   return promise;
 }
 
+async function toggleFollow(visitedUserId, token) {
+  const config = createConfig(token);
+  const promise = await axios.post(`${BASE_URL}followers/${visitedUserId}`, {}, config);
+  return promise;
+}
+
+async function verifyIfFollow(visitedUserId, token) {
+  const config = createConfig(token);
+  const promise = await axios.get(`${BASE_URL}followers/${visitedUserId}`, config);
+  return promise;
+}
+
 const api = {
   getHashtags,
   getUserInfos,
@@ -100,7 +112,9 @@ const api = {
   getComments,
   postComment,
   checkFollowers,
-  publishRepost
+  publishRepost,
+  toggleFollow,
+  verifyIfFollow
 };
 
 export default api;

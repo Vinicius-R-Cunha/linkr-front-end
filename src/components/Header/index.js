@@ -16,7 +16,6 @@ import UserContext from "../../contexts/UserContext";
 import { v4 as uuid } from "uuid";
 
 export default function Header() {
-
   const [showLogout, setShowLogout] = useState(false);
   const [search, setSearch] = useState();
   const { token, image, users, setUsers, setToken } = useContext(UserContext);
@@ -35,18 +34,23 @@ export default function Header() {
     }
   }
 
-  const renderHeader = useCallback(
-    async () => {
-      try {
-        const users = await api.getUsers(token);
-        setUsers(users.data);
+  function compare(a, b) {
+    if (a.isFollowing > b.isFollowing) return -1;
+    if (a.isFollowing < b.isFollowing) return 1;
+    return 0;
+  }
 
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    [token, setUsers]
-  );
+  const renderHeader = useCallback(async () => {
+    try {
+      const users = await api.getUsers(token);
+
+      let usersOrdenado = users.data;
+      usersOrdenado.sort(compare);
+      setUsers(usersOrdenado);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [token, setUsers]);
 
   useEffect(() => {
     if (token) {
@@ -54,13 +58,13 @@ export default function Header() {
     }
   }, [token, renderHeader]);
 
-
-
   const getFilteredItems = (query, users) => {
     if (!query) {
       return;
     }
-    return users.filter((user) => user.name.includes(query));
+    return users.filter((user) =>
+      user.name.toLowerCase().includes(query.toLowerCase())
+    );
   };
 
   const filteredItems = getFilteredItems(search, users);
@@ -91,8 +95,8 @@ export default function Header() {
                   return x.isFollowingLoggedUser === y.isFollowingLoggedUser
                     ? 0
                     : x.isFollowingLoggedUser
-                      ? -1
-                      : 1;
+                    ? -1
+                    : 1;
                 })
                 .map((user) => (
                   <LinkStyle

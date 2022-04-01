@@ -10,6 +10,7 @@ export default function PostLeftContent({
   post,
   setPostId,
   openModal,
+  setCurrentPost
 }) {
   return (
     <LeftContentContainer>
@@ -24,7 +25,7 @@ export default function PostLeftContent({
         renderPage={renderPage}
         route={route}
         openModal={openModal}
-        setPostId={setPostId}
+        setCurrentPost={setCurrentPost}
       />
     </LeftContentContainer>
   );

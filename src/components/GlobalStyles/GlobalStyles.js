@@ -74,6 +74,11 @@ table {
 	}
 }
 
+.followButton{
+	:disabled{
+		background-color: #6D6D6D;
+	}
+}
 `;
 
 export default GlobalStyles;
