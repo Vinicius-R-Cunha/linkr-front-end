@@ -8,6 +8,7 @@ import PostLeftContent from "../PostLeftContent";
 import PostContent from "../PostContent";
 import NewPostsNotificationBar from "../NewPostsNotificationBar";
 import ScrollContainer from "../ScrollContainer";
+import Swal from "sweetalert2";
 
 import { useCallback, useContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -19,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import ViewComments from "../ViewComments";
 import PostsContext from "../../contexts/PostsContext";
 import { TiArrowSync } from "react-icons/ti";
+import reactDom from "react-dom";
+import { FaGratipay } from "react-icons/fa";
 export default function Timeline({
   showPublish,
   route,
@@ -26,6 +29,7 @@ export default function Timeline({
   hashtags,
   setHashtags,
   setIsValidUser,
+  visitedUserId
 }) {
   const { token, setImage, setName, setId } = useContext(UserContext);
   const { comments } = useContext(CommentsContext);
@@ -37,6 +41,8 @@ export default function Timeline({
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [repostModalIsOpen, setRepostModalIsOpen] = useState(false);
   const [postId, setPostId] = useState();
+  const [followedUser, setFollowedUser] = useState();
+  const [disabledButton, setDisabledButton] = useState(false);
 
   const renderPage = useCallback(
     async (route) => {
@@ -73,13 +79,13 @@ export default function Timeline({
       setId(response?.data.id);
     } catch (error) {
       console.log(error);
-      console.log(error);
     }
   }, [setId, setImage, setName, token]);
 
   useEffect(() => {
     if (token) {
       getUser();
+      verifyIfFollow()
       renderPage(route);
     } else {
       navigate("/");
@@ -103,6 +109,32 @@ export default function Timeline({
     setRepostModalIsOpen(false);
   }
 
+  async function toggleFollow() {
+      try {
+        setDisabledButton(true)
+        await api.toggleFollow(visitedUserId, token);
+        const response = await api.verifyIfFollow(visitedUserId, token);
+        setFollowedUser(response?.data)
+        setDisabledButton(false)            
+      } catch (error) {
+          return Swal.fire({
+              icon: "error",
+              title: "Ops...",
+              text: "Não foi possível realizar esta ação! Tente mais tarde!"
+          });
+      };
+  };
+
+  async function verifyIfFollow() {
+        try {
+            const response = await api.verifyIfFollow(visitedUserId, token);
+            setFollowedUser(response?.data)
+            
+        } catch (error) {
+          console.log(error)
+        };
+  };  
+
   return (
     <>
       <PostsContainer>
@@ -124,7 +156,16 @@ export default function Timeline({
           route={route}
         />
 
+        {mainTitle.includes("'s posts") ?
+          <div className="usernameAndFollowButton">
+            <h1 className="timeline-title">{mainTitle}</h1>
+
+            {disabledButton ? <button className="followButton" disabled={disabledButton} onClick={toggleFollow}> loading... </button> : <button className="followButton" disabled={disabledButton} onClick={toggleFollow}> {followedUser} </button> }
+            
+          </div>  
+        :
         <h1 className="timeline-title">{mainTitle}</h1>
+        }
 
         {showPublish && <Publish renderPage={renderPage} route={route} />}
 
