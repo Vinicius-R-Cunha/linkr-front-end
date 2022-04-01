@@ -25,12 +25,12 @@ export default function SignUp() {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (token) {
-            navigate("/timeline");
-        }
-        // eslint-disable-next-line
-    }, [token]);
+    // useEffect(() => {
+    //     if (token) {
+    //         navigate("/timeline");
+    //     }
+    //     // eslint-disable-next-line
+    // }, [token]);
 
     function handleInput(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,9 +60,11 @@ export default function SignUp() {
                 formData
             );
             promise.then((response) => {
+                setDisabledButton(false);
                 navigate("/");
             });
             promise.catch((error) => {
+                setDisabledButton(false);
                 console.log(error.response);
                 if (error.response.status === 409) {
                     return Swal.fire({
@@ -80,7 +82,6 @@ export default function SignUp() {
                 }
             });
         }
-        setDisabledButton(false);
     }
 
     return (
@@ -146,7 +147,7 @@ export default function SignUp() {
                             alt="Loading"
                         />
                     ) : (
-                        "Log In"
+                        "Sign up"
                     )}
                 </button>
 

@@ -18,7 +18,7 @@ import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import ViewComments from "../ViewComments";
 import PostsContext from "../../contexts/PostsContext";
-import { TiArrowSync } from 'react-icons/ti';
+import { TiArrowSync } from "react-icons/ti";
 export default function Timeline({
     showPublish,
     route,
@@ -32,7 +32,7 @@ export default function Timeline({
     const { posts } = useContext(PostsContext);
     const navigate = useNavigate();
 
-    const [postsArray, setPostsArray] = useState();
+    const [postsArray, setPostsArray] = useState([]);
     const [postsState, setPostsState] = useState("loading");
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const [repostModalIsOpen, setRepostModalIsOpen] = useState(false);
@@ -125,7 +125,9 @@ export default function Timeline({
 
                 <h1 className="timeline-title">{mainTitle}</h1>
 
-                {showPublish && <Publish renderPage={renderPage} route={route} />}
+                {showPublish && (
+                    <Publish renderPage={renderPage} route={route} />
+                )}
 
                 {/* <NewPostsNotificationBar
                     route={route}
@@ -146,13 +148,15 @@ export default function Timeline({
                             postsArray.map((post) => {
                                 return (
                                     <ContainerComments key={post?.id}>
-
-                                        {post?.repostId &&
+                                        {post?.repostId && (
                                             <Repost>
                                                 <TiArrowSync className="reposted-icon" />
-                                                <p>Re-posted by <span>{post?.name}</span></p>
+                                                <p>
+                                                    Re-posted by{" "}
+                                                    <span>{post?.name}</span>
+                                                </p>
                                             </Repost>
-                                        }
+                                        )}
 
                                         <Post>
                                             <PostLeftContent
@@ -171,9 +175,12 @@ export default function Timeline({
                                                 setPostId={setPostId}
                                             />
                                         </Post>
-                                        {comments !== null && posts === post.id && (
-                                            <ViewComments postId={post.id} />
-                                        )}
+                                        {comments !== null &&
+                                            posts === post.id && (
+                                                <ViewComments
+                                                    postId={post.id}
+                                                />
+                                            )}
                                     </ContainerComments>
                                 );
                             })}
@@ -183,15 +190,19 @@ export default function Timeline({
                     <p className="loading-message">Loading...</p>
                 )}
                 {postsState === "no-followers" && (
-                    <p className="get-error-message">You don't follow anyone yet. Search for new friends!</p>
+                    <p className="get-error-message">
+                        You don't follow anyone yet. Search for new friends!
+                    </p>
                 )}
                 {postsState === "empty" && (
-                    <p className="get-error-message">No posts found from your friends</p>
+                    <p className="get-error-message">
+                        No posts found from your friends
+                    </p>
                 )}
                 {postsState === "error" && (
                     <p className="get-error-message">
-                        An error occured while trying to fetch the posts, please refresh the
-                        page
+                        An error occured while trying to fetch the posts, please
+                        refresh the page
                     </p>
                 )}
             </PostsContainer>

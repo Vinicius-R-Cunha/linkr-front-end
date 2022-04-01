@@ -36,17 +36,17 @@ export default function Login() {
     function handleSubmit(e) {
         e.preventDefault();
 
-        setDisabledButton(true);
-
         const emailNotEmpty = formData.email !== "";
         const passwordNotEmpty = formData.password !== "";
 
         if (emailNotEmpty && passwordNotEmpty) {
+            setDisabledButton(true);
             const promise = axios.post(
                 process.env.REACT_APP_BACK_URL + "sign-in",
                 formData
             );
             promise.then((response) => {
+                setDisabledButton(false);
                 setAndPersistToken(response.data);
                 navigate("/timeline");
             });
@@ -55,11 +55,11 @@ export default function Login() {
             setError(true);
             setTimeout(() => setError(false), 2500);
         }
-        setDisabledButton(false);
         return;
     }
 
     function handleError() {
+        setDisabledButton(false);
         setError(true);
         setTimeout(() => setError(false), 2500);
     }
