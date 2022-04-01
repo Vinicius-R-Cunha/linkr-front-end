@@ -37,6 +37,7 @@ export default function Timeline({
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
     const [repostModalIsOpen, setRepostModalIsOpen] = useState(false);
     const [postId, setPostId] = useState();
+    const [currentPost, setCurrentPost] = useState();
 
     const renderPage = useCallback(
         async (route) => {
@@ -116,7 +117,7 @@ export default function Timeline({
                 />
 
                 <RepostConfirmationModal
-                    postId={postId}
+                    currentPost={currentPost}
                     closeModal={closeRepostModal}
                     modalIsOpen={repostModalIsOpen}
                     renderPage={renderPage}
@@ -165,6 +166,7 @@ export default function Timeline({
                                                 route={route}
                                                 openModal={openRepostModal}
                                                 setPostId={setPostId}
+                                                setCurrentPost={setCurrentPost}
                                             />
 
                                             <PostContent
